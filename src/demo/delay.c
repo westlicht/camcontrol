@@ -8,22 +8,17 @@
 
 #define DFACTOR 	4
 
-volatile unsigned long i;
+static volatile unsigned long i;
 
 
-
-
-void delay_us(unsigned long d) {
-
-	i=DFACTOR*d;
-	while (--i!=0);
-
+void delay_us(unsigned long d)
+{
+	i = DFACTOR * d;
+	while (--i != 0);
 }
 
-
-void delay_ms(unsigned long d) {
-	
-	i=DFACTOR*1000*d;
-	while (--i!=0);
-
+void delay_ms(unsigned long d)
+{
+	i = DFACTOR * d * 1000;
+	while (--i != 0);
 }

@@ -1,10 +1,7 @@
-#ifndef __DELAY
-#define __DELAY
+#ifndef __DELAY_H_
+#define __DELAY_H_
 
 void delay_us(unsigned long d);
-
 void delay_ms(unsigned long d);
 
-#endif
-
-
+#endif // __DELAY_H__
