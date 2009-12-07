@@ -1,0 +1,503 @@
+Archive member included because of file (symbol)
+
+c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_copy_data.o)
+                              rel\bsp.o (__do_copy_data)
+c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_clear_bss.o)
+                              rel\bsp.o (__do_clear_bss)
+
+Allocating common symbols
+Common symbol       size              file
+
+AO_Pelican          0xb               rel\pelican.o
+AO_Ped              0xb               rel\ped.o
+QF_readySet_        0x1               rel\qfn.o
+
+Discarded input sections
+
+ .stabstr       0x00000000        0x0 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00020000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800100
+LOAD c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+LOAD rel\bsp.o
+LOAD rel\main.o
+LOAD rel\ped.o
+LOAD rel\pelican.o
+LOAD rel\qepn.o
+LOAD rel\qfn.o
+LOAD rel\qkn.o
+LOAD c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a
+LOAD c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5\libc.a
+LOAD c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000      0xd02
+ *(.vectors)
+ .vectors       0x00000000       0x5c c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ *(.progmem*)
+ .progmem.data  0x0000005c        0xf rel\main.o
+                0x0000005c                QF_active
+ .progmem.data  0x0000006b        0xc rel\qepn.o
+ .progmem.data  0x00000077        0xd rel\qfn.o
+ .progmem.data  0x00000084       0x1d rel\qkn.o
+                0x000000a2                . = ALIGN (0x2)
+ *fill*         0x000000a1        0x1 00
+                0x000000a2                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x000000a2        0x0 linker stubs
+ *(.trampolines*)
+                0x000000a2                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x000000a2                __ctors_start = .
+ *(.ctors)
+                0x000000a2                __ctors_end = .
+                0x000000a2                __dtors_start = .
+ *(.dtors)
+                0x000000a2                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x000000a2        0x0 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+                0x000000a2                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x000000a2        0xc c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x000000ae       0x16 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_copy_data.o)
+                0x000000ae                __do_copy_data
+ .init4         0x000000c4       0x10 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_clear_bss.o)
+                0x000000c4                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x000000d4        0x4 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+ *(.init9)
+ *(.text)
+ .text          0x000000d8        0x4 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+                0x000000d8                __vector_22
+                0x000000d8                __vector_1
+                0x000000d8                __vector_12
+                0x000000d8                __bad_interrupt
+                0x000000d8                __vector_6
+                0x000000d8                __vector_3
+                0x000000d8                __vector_11
+                0x000000d8                __vector_13
+                0x000000d8                __vector_17
+                0x000000d8                __vector_19
+                0x000000d8                __vector_7
+                0x000000d8                __vector_5
+                0x000000d8                __vector_4
+                0x000000d8                __vector_9
+                0x000000d8                __vector_2
+                0x000000d8                __vector_21
+                0x000000d8                __vector_15
+                0x000000d8                __vector_8
+                0x000000d8                __vector_14
+                0x000000d8                __vector_16
+                0x000000d8                __vector_18
+                0x000000d8                __vector_20
+ .text          0x000000dc       0xd8 rel\bsp.o
+                0x0000010a                Q_onAssert
+                0x000000f8                QK_onIdle
+                0x00000112                BSP_signalCars
+                0x000000dc                BSP_init
+                0x00000142                BSP_signalPeds
+                0x000000e8                QF_onStartup
+                0x00000160                __vector_10
+ .text          0x000001b4       0x12 rel\main.o
+                0x000001b4                main
+ .text          0x000001c6       0xd8 rel\ped.o
+                0x000001c6                Ped_ctor
+ .text          0x0000029e      0x308 rel\pelican.o
+                0x0000029e                Pelican_ctor
+ .text          0x000005a6      0x3e6 rel\qepn.o
+                0x000005b2                QHsm_dispatch
+                0x000005a6                QP_getVersion
+                0x000005ac                QHsm_top
+                0x00000892                QHsm_init
+ .text          0x0000098c      0x1e8 rel\qfn.o
+                0x00000998                QActive_disarm
+                0x00000ab0                QActive_post
+                0x000009a4                QActive_postISR
+                0x0000098c                QActive_arm
+                0x00000a60                QF_tick
+ .text          0x00000b74      0x18e rel\qkn.o
+                0x00000b74                QK_schedule_
+                0x00000c6e                QF_run
+ .text          0x00000d02        0x0 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_copy_data.o)
+ .text          0x00000d02        0x0 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_clear_bss.o)
+                0x00000d02                . = ALIGN (0x2)
+ *(.text.*)
+ .text.libgcc   0x00000d02        0x0 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x00000d02        0x0 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_clear_bss.o)
+                0x00000d02                . = ALIGN (0x2)
+ *(.fini9)
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ *(.fini0)
+                0x00000d02                _etext = .
+
+.data           0x00800100        0x2 load address 0x00000d02
+                0x00800100                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800100        0x0 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+ .data          0x00800100        0x0 rel\bsp.o
+ .data          0x00800100        0x0 rel\main.o
+ .data          0x00800100        0x0 rel\ped.o
+ .data          0x00800100        0x0 rel\pelican.o
+ .data          0x00800100        0x0 rel\qepn.o
+ .data          0x00800100        0x0 rel\qfn.o
+ .data          0x00800100        0x1 rel\qkn.o
+                0x00800100                QK_currPrio_
+ .data          0x00800101        0x0 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_copy_data.o)
+ .data          0x00800101        0x0 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_clear_bss.o)
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ *(.gnu.linkonce.d*)
+                0x00800102                . = ALIGN (0x2)
+ *fill*         0x00800101        0x1 00
+                0x00800102                _edata = .
+                0x00800102                PROVIDE (__data_end, .)
+
+.bss            0x00800102       0x23
+                0x00800102                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x00800102        0x0 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+ .bss           0x00800102        0x0 rel\bsp.o
+ .bss           0x00800102        0x6 rel\main.o
+ .bss           0x00800108        0x0 rel\ped.o
+ .bss           0x00800108        0x0 rel\pelican.o
+ .bss           0x00800108        0x0 rel\qepn.o
+ .bss           0x00800108        0x3 rel\qfn.o
+ .bss           0x0080010b        0x3 rel\qkn.o
+ .bss           0x0080010e        0x0 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_copy_data.o)
+ .bss           0x0080010e        0x0 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_clear_bss.o)
+ *(.bss*)
+ *(COMMON)
+ COMMON         0x0080010e        0xb rel\ped.o
+                0x0080010e                AO_Ped
+ COMMON         0x00800119        0xb rel\pelican.o
+                0x00800119                AO_Pelican
+ COMMON         0x00800124        0x1 rel\qfn.o
+                0x00800124                QF_readySet_
+                0x00800125                PROVIDE (__bss_end, .)
+                0x00000d02                __data_load_start = LOADADDR (.data)
+                0x00000d04                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x00800125        0x0
+                0x00800125                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x00800125                PROVIDE (__noinit_end, .)
+                0x00800125                _end = .
+                0x00800125                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000        0x0
+ *(.eeprom*)
+                0x00810000                __eeprom_end = .
+
+.stab           0x00000000      0x36c
+ *(.stab)
+ .stab          0x00000000      0x36c c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+
+.stabstr        0x00000000       0x84
+ *(.stabstr)
+ .stabstr       0x00000000       0x84 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges
+ *(.debug_aranges)
+
+.debug_pubnames
+ *(.debug_pubnames)
+
+.debug_info
+ *(.debug_info)
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev
+ *(.debug_abbrev)
+
+.debug_line
+ *(.debug_line)
+
+.debug_frame
+ *(.debug_frame)
+
+.debug_str
+ *(.debug_str)
+
+.debug_loc
+ *(.debug_loc)
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(rel\pelican-qk-butterfly.elf elf32-avr)
+LOAD linker stubs
+
+Cross Reference Table
+
+Symbol                                            File
+AO_Ped                                            rel\ped.o
+                                                  rel\main.o
+AO_Pelican                                        rel\pelican.o
+                                                  rel\ped.o
+                                                  rel\main.o
+BSP_init                                          rel\bsp.o
+                                                  rel\main.o
+BSP_signalCars                                    rel\bsp.o
+                                                  rel\pelican.o
+BSP_signalPeds                                    rel\bsp.o
+                                                  rel\pelican.o
+Ped_ctor                                          rel\ped.o
+                                                  rel\main.o
+Pelican_ctor                                      rel\pelican.o
+                                                  rel\main.o
+QActive_arm                                       rel\qfn.o
+                                                  rel\pelican.o
+                                                  rel\ped.o
+QActive_disarm                                    rel\qfn.o
+QActive_post                                      rel\qfn.o
+                                                  rel\ped.o
+QActive_postISR                                   rel\qfn.o
+QF_active                                         rel\main.o
+                                                  rel\qkn.o
+                                                  rel\qfn.o
+QF_onStartup                                      rel\bsp.o
+                                                  rel\qkn.o
+QF_readySet_                                      rel\qkn.o
+                                                  rel\qfn.o
+                                                  rel\bsp.o
+QF_run                                            rel\qkn.o
+                                                  rel\main.o
+QF_tick                                           rel\qfn.o
+                                                  rel\bsp.o
+QHsm_dispatch                                     rel\qepn.o
+                                                  rel\qkn.o
+QHsm_init                                         rel\qepn.o
+                                                  rel\qkn.o
+QHsm_top                                          rel\qepn.o
+                                                  rel\pelican.o
+                                                  rel\ped.o
+QK_currPrio_                                      rel\qkn.o
+QK_onIdle                                         rel\bsp.o
+                                                  rel\qkn.o
+QK_schedule_                                      rel\qkn.o
+                                                  rel\qfn.o
+                                                  rel\bsp.o
+QP_getVersion                                     rel\qepn.o
+Q_onAssert                                        rel\bsp.o
+                                                  rel\qkn.o
+                                                  rel\qfn.o
+                                                  rel\qepn.o
+__bad_interrupt                                   c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__bss_end                                         c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_clear_bss.o)
+__bss_start                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_clear_bss.o)
+__data_end                                        c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_copy_data.o)
+__data_load_start                                 c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_copy_data.o)
+__data_start                                      c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_copy_data.o)
+__do_clear_bss                                    c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_clear_bss.o)
+                                                  rel\qkn.o
+                                                  rel\qfn.o
+                                                  rel\qepn.o
+                                                  rel\pelican.o
+                                                  rel\ped.o
+                                                  rel\main.o
+                                                  rel\bsp.o
+__do_copy_data                                    c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/avr5\libgcc.a(_copy_data.o)
+                                                  rel\qkn.o
+                                                  rel\qfn.o
+                                                  rel\qepn.o
+                                                  rel\pelican.o
+                                                  rel\ped.o
+                                                  rel\main.o
+                                                  rel\bsp.o
+__heap_end                                        c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__init                                            c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__stack                                           c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_1                                        c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_10                                       rel\bsp.o
+                                                  c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_11                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_12                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_13                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_14                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_15                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_16                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_17                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_18                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_19                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_2                                        c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_20                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_21                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_22                                       c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_3                                        c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_4                                        c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_5                                        c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_6                                        c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_7                                        c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_8                                        c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_9                                        c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vector_default                                  c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+__vectors                                         c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o
+main                                              rel\main.o
+                                                  c:/tools/gnu/winavr/bin/../lib/gcc/avr/4.1.1/../../../../avr/lib/avr5/crtm169.o

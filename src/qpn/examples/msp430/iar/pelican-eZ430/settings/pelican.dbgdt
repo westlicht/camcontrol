@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<Project>
+  <Desktop>
+    <Static>
+      <Debug-Log><PreferedWindows><Position>3</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows><Window><Factory>Build</Factory></Window></Windows></PreferedWindows></Debug-Log>
+      <Workspace>
+        <ColumnWidths>
+          
+          
+          
+          
+        <Column0>112</Column0><Column1>17</Column1><Column2>27</Column2><Column3>1242340</Column3></ColumnWidths>
+      </Workspace>
+      <Disassembly>
+        
+        
+        
+      <MixedMode>1</MixedMode><CodeCovEnabled>0</CodeCovEnabled><CodeCovShow>0</CodeCovShow></Disassembly>
+      <Build>
+        <ColumnWidth0>16</ColumnWidth0>
+        <ColumnWidth1>1100</ColumnWidth1>
+        <ColumnWidth2>293</ColumnWidth2>
+        <ColumnWidth3>73</ColumnWidth3>
+      <PreferedWindows><Position>3</Position><ScreenPosX>0</ScreenPosX><ScreenPosY>0</ScreenPosY><Windows><Window><Factory>Debug-Log</Factory></Window></Windows></PreferedWindows></Build>
+    <Memory><FindDirection>1</FindDirection><FindAsHex>0</FindAsHex></Memory><Register/></Static>
+    <Windows>
+      
+      
+      
+    <Wnd2>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-5093-1392</Identity>
+            <TabName>Workspace</TabName>
+            <Factory>Workspace</Factory>
+            <Session>
+              
+            <NodeDict><ExpandedNode>pelican</ExpandedNode><ExpandedNode>pelican/QP-nano</ExpandedNode></NodeDict></Session>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd2><Wnd3>
+        <Tabs>
+          <Tab>
+            <Identity>TabID-15841-1395</Identity>
+            <TabName>Disassembly</TabName>
+            <Factory>Disassembly</Factory>
+            <Session/>
+          </Tab>
+        </Tabs>
+        
+      <SelectedTab>0</SelectedTab></Wnd3><Wnd5><Tabs><Tab><Identity>TabID-7203-31905</Identity><TabName>Register</TabName><Factory>Register</Factory><Session><REG1>0</REG1><REG2>0</REG2><Group>0</Group><States>1</States><State0>SR</State0></Session></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd5><Wnd8><Tabs><Tab><Identity>TabID-695-28385</Identity><TabName>Memory</TabName><Factory>Memory</Factory><Session><ZoneNumber>0</ZoneNumber><SelectionAnchor>560</SelectionAnchor><SelectionEnd>560</SelectionEnd><UnitsPerGroup>1</UnitsPerGroup><EndianMode>0</EndianMode><DataCovEnabled>0</DataCovEnabled><DataCovShown>0</DataCovShown><HScroll>0</HScroll><VScroll>51</VScroll></Session></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd8><Wnd9><Tabs><Tab><Identity>TabID-2511-27123</Identity><TabName>Debug Log</TabName><Factory>Debug-Log</Factory><Session/></Tab></Tabs><SelectedTab>0</SelectedTab></Wnd9></Windows>
+    <Editor>
+      
+      
+      
+      
+    <Pane><Tab><Factory>TextEditor</Factory><Filename>C:\software\qpn\examples\msp430\iar\pelican-eZ430\main.c</Filename><XPos>0</XPos><YPos>0</YPos><SelStart>2252</SelStart><SelEnd>2252</SelEnd></Tab><ActiveTab>0</ActiveTab></Pane><ActivePane>0</ActivePane><Sizes><Pane><X>1000000</X><Y>1000000</Y></Pane></Sizes><SplitMode>1</SplitMode></Editor>
+    <Positions>
+      
+      
+      
+      
+      
+    <Top><Row0><Sizes><Toolbar-015fce10><key>430fet1</key></Toolbar-015fce10></Sizes></Row0><Row1><Sizes><Toolbar-01501ef8><key>iaridepm.enu1</key></Toolbar-01501ef8></Sizes></Row1><Row2><Sizes><Toolbar-015fcd50><key>debuggergui.enu1</key></Toolbar-015fcd50></Sizes></Row2></Top><Left><Row0><Sizes><Wnd2><Rect><Top>-2</Top><Left>-2</Left><Bottom>732</Bottom><Right>176</Right><x>-2</x><y>-2</y><xscreen>203</xscreen><yscreen>204</yscreen><sizeHorzCX>127513</sizeHorzCX><sizeHorzCY>177237</sizeHorzCY><sizeVertCX>111809</sizeVertCX><sizeVertCY>637706</sizeVertCY></Rect></Wnd2></Sizes></Row0></Left><Right><Row0><Sizes><Wnd3><Rect><Top>-2</Top><Left>-2</Left><Bottom>434</Bottom><Right>447</Right><x>-2</x><y>-2</y><xscreen>203</xscreen><yscreen>204</yscreen><sizeHorzCX>127513</sizeHorzCX><sizeHorzCY>177237</sizeHorzCY><sizeVertCX>282035</sizeVertCX><sizeVertCY>378801</sizeVertCY></Rect></Wnd3><Wnd8><Rect><Top>0</Top><Left>0</Left><Bottom>0</Bottom><Right>7</Right><x>-2</x><y>432</y><xscreen>203</xscreen><yscreen>198</yscreen><sizeHorzCX>127513</sizeHorzCX><sizeHorzCY>172024</sizeHorzCY><sizeVertCX>282035</sizeVertCX><sizeVertCY>260643</sizeVertCY></Rect></Wnd8></Sizes></Row0><Row1><Sizes><Wnd5><Rect><Top>-2</Top><Left>445</Left><Bottom>732</Bottom><Right>760</Right><x>445</x><y>-2</y><xscreen>203</xscreen><yscreen>198</yscreen><sizeHorzCX>127513</sizeHorzCX><sizeHorzCY>172024</sizeHorzCY><sizeVertCX>197864</sizeVertCX><sizeVertCY>637706</sizeVertCY></Rect></Wnd5></Sizes></Row1></Right><Bottom><Row0><Sizes><Wnd9><Rect><Top>-2</Top><Left>-2</Left><Bottom>327</Bottom><Right>1594</Right><x>-2</x><y>-2</y><xscreen>1596</xscreen><yscreen>329</yscreen><sizeHorzCX>1002513</sizeHorzCX><sizeHorzCY>285838</sizeHorzCY><sizeVertCX>127513</sizeVertCX><sizeVertCY>172024</sizeVertCY></Rect></Wnd9></Sizes></Row0></Bottom><Float><Sizes/></Float></Positions>
+  </Desktop>
+</Project>
+
+
