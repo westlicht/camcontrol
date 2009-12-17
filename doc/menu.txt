@@ -1,0 +1,28 @@
+
+
+Main menu
+
+ * Setup
+ * Panorama
+ * Panorama 360
+ * HDR
+ * Timelapse
+
+
+Setup
+
+ * Focal length (mm)
+ * Sensor width (mm)
+ * Sensor height (mm)
+ * Center position (deg, deg)
+
+Panorama
+
+ * Area (deg, deg)
+ * 
+
+HDR
+
+ * Setup shutter series (time, num)
+ * 
+
