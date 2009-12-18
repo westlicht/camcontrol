@@ -73,6 +73,7 @@ $(BINDIR)/$(APP_NAME).hex : $(BINDIR)/$(APP_NAME).elf
 
 $(BINDIR)/$(APP_NAME).elf : \
 	$(BINDIR)/bsp.o \
+	$(BINDIR)/delay.o \
 	$(BINDIR)/globals.o \
 	$(BINDIR)/hd44780.o \
 	$(BINDIR)/key.o \
@@ -80,6 +81,7 @@ $(BINDIR)/$(APP_NAME).elf : \
 	$(BINDIR)/main.o \
 	$(BINDIR)/menu.o \
 	$(BINDIR)/mmi.o \
+	$(BINDIR)/servo.o \
 	$(BINDIR)/uart.o \
 	$(BINDIR)/qepn.o \
 	$(BINDIR)/qfn.o
@@ -87,6 +89,7 @@ $(BINDIR)/$(APP_NAME).elf : \
 	-o $(BINDIR)/$(APP_NAME).elf \
 	-Wl,-Map,$(BINDIR)/$(APP_NAME).map,--cref \
 	$(BINDIR)/bsp.o \
+	$(BINDIR)/delay.o \
 	$(BINDIR)/globals.o \
 	$(BINDIR)/hd44780.o \
 	$(BINDIR)/key.o \
@@ -94,6 +97,7 @@ $(BINDIR)/$(APP_NAME).elf : \
 	$(BINDIR)/main.o \
 	$(BINDIR)/menu.o \
 	$(BINDIR)/mmi.o \
+	$(BINDIR)/servo.o \
 	$(BINDIR)/uart.o \
 	$(BINDIR)/qepn.o \
 	$(BINDIR)/qfn.o
@@ -101,6 +105,9 @@ $(BINDIR)/$(APP_NAME).elf : \
 
 
 $(BINDIR)/bsp.o: $(BLDDIR)/bsp.c $(APP_DEP) $(QP_DEP)
+	$(CC) $(CCFLAGS) $(CCINC) $<
+
+$(BINDIR)/delay.o: $(BLDDIR)/delay.c $(APP_DEP) $(QP_DEP)
 	$(CC) $(CCFLAGS) $(CCINC) $<
 
 $(BINDIR)/globals.o: $(BLDDIR)/globals.c $(APP_DEP) $(QP_DEP)
@@ -122,6 +129,9 @@ $(BINDIR)/menu.o: $(BLDDIR)/menu.c $(APP_DEP) $(QP_DEP)
 	$(CC) $(CCFLAGS) $(CCINC) $<
 
 $(BINDIR)/mmi.o: $(BLDDIR)/mmi.c $(APP_DEP) $(QP_DEP)
+	$(CC) $(CCFLAGS) $(CCINC) $<
+
+$(BINDIR)/servo.o: $(BLDDIR)/servo.c $(APP_DEP) $(QP_DEP)
 	$(CC) $(CCFLAGS) $(CCINC) $<
 
 $(BINDIR)/uart.o: $(BLDDIR)/uart.c $(APP_DEP) $(QP_DEP)

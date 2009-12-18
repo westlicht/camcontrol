@@ -23,6 +23,9 @@ static inline void update_menu_cur(void)
 	menu_cur = &pos->page[pos->item];
 }
 
+/**
+ * Initializes the menu system.
+ */
 void menu_init(void)
 {
 	pos_index = 0;
@@ -32,6 +35,10 @@ void menu_init(void)
 	update_menu_cur();
 }
 
+/**
+ * Navigates to the next menu item on the page.
+ * @return Returns 1 if successful.
+ */
 int menu_next(void)
 {
 	if (pos->page[pos->item + 1].name) {
@@ -42,6 +49,10 @@ int menu_next(void)
 	return 0;
 }
 
+/**
+ * Navigates to the previous menu item on the page.
+ * @return Returns 1 if successful.
+ */
 int menu_prev(void)
 {
 	if (pos->item > 0) {
@@ -52,6 +63,10 @@ int menu_prev(void)
 	return 0;
 }
 
+/**
+ * Navigates to the sub menu.
+ * @return Returns 1 if successful.
+ */
 int menu_sub(void)
 {
 	if (pos->page[pos->item].sub && pos_index < MAX_DEPTH - 1) {
@@ -65,6 +80,10 @@ int menu_sub(void)
 	return 0;
 }
 
+/**
+ * Navigates to the parent menu.
+ * @return Returns 1 if successful.
+ */
 int menu_parent(void)
 {
 	if (pos_index > 0) {

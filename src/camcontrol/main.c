@@ -5,6 +5,8 @@
 #include "lcd.h"
 #include "key.h"
 #include "debug.h"
+#include "servo.h"
+#include "delay.h"
 
 /* Event queues */
 static QEvent mmi_queue[8];
@@ -28,6 +30,16 @@ int main (void)
 	lcd_init();
 
 	key_init();
+
+	servo_init();
+
+	while (1) {
+		for (int i = 0; i < 1000; i++) {
+			servo_set_pos(0, i / 1000.0);
+			servo_set_pos(1, 1.0 - i / 1000.0);
+			delay_ms(2);
+		}
+	}
 
 	// Load from EEPROM or use default globals
 	//if (globals_load() != 0)
