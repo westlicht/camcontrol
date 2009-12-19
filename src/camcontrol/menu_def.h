@@ -2,6 +2,7 @@
 #define __MENU_DEF_H__
 
 #include "globals.h"
+#include "menu_param.h"
 
 extern void start_panorama_handler(void);
 extern void save_settings_handler(void);
@@ -30,11 +31,11 @@ static const struct menu_item page_hdr[] = {
 
 static const struct menu_item page_setup[] = {
 	{
-		MENU_ITEM("Focal length"),
+		MENU_ITEM_PARAM("Focal length", &globals.focal_length, modify_focal_length, print_focal_length, NULL),
 	}, {
-		MENU_ITEM("Sensor width"),
+		MENU_ITEM_PARAM("Sensor width", &globals.sensor_width, modify_sensor_dim, print_sensor_dim, NULL),
 	}, {
-		MENU_ITEM("Sensor height"),
+		MENU_ITEM_PARAM("Sensor height", &globals.sensor_height, modify_sensor_dim, print_sensor_dim, NULL),
 	}, {
 		MENU_ITEM_CMD("Save", save_settings_handler),
 	}, {

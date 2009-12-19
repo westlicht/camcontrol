@@ -12,6 +12,9 @@
 #define KEY_RIGHT	3
 #define KEY_DOWN	4
 
+#define ENC_UP		0
+#define ENC_DOWN	1
+
 void key_init(void);
 
 #endif // __KEY_H__

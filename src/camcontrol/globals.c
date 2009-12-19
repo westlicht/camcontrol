@@ -68,7 +68,7 @@ static uint16_t compute_crc16(void)
  */
 void globals_default(void)
 {
-	globals.focal_length = 20;
+	globals.focal_length = 200;
 	globals.sensor_width = 100;
 	globals.sensor_height = 100;
 	globals.fov_h = compute_fov_angle(globals.focal_length, globals.sensor_width);

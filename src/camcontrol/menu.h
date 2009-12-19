@@ -9,14 +9,13 @@ typedef enum {
 	MENU_TYP_ITEM,
 	MENU_TYP_SUB,
 	MENU_TYP_CMD,
+	MENU_TYP_PARAM,
 	MENU_TYP_LAST,
 } menu_typ_t;
 
-/** Parameter types */
-typedef enum {
-	PARAM_TYP_SENSOR_DIM,
-	PARAM_TYP_DEG,
-} param_typ_t;
+struct menu_item;
+
+typedef const struct menu_item *menu_item_t;
 
 /** Menu item */
 struct menu_item {
@@ -28,13 +27,13 @@ struct menu_item {
 			void (*handler)(void);	/**< Handler callback */
 		} cmd;
 		struct {
-			param_typ_t typ;
 			void *data;
+			int (*modify)(menu_item_t item, int dir);
+			void (*print)(menu_item_t item);
+			void (*changed)(menu_item_t item);
 		} param;
 	} u;
 };
-
-typedef const struct menu_item *menu_item_t;
 
 #define MENU_ITEM(_name_)								\
 	.typ = MENU_TYP_ITEM,								\
@@ -51,6 +50,14 @@ typedef const struct menu_item *menu_item_t;
 	.name = _name_,										\
 	.sub = NULL,										\
 	.u.cmd.handler = _handler_
+
+#define MENU_ITEM_PARAM(_name_, _data_, _modify_, _print_, _changed_) \
+	.typ = MENU_TYP_PARAM,								\
+	.name = _name_,										\
+	.u.param.data = _data_,								\
+	.u.param.modify = _modify_,							\
+	.u.param.print = _print_,							\
+	.u.param.changed = _changed_
 
 #define MENU_ITEM_LAST()								\
 	.typ = MENU_TYP_LAST

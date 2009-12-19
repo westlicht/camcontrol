@@ -34,8 +34,8 @@ int main (void)
 	servo_init();
 
 	// Load from EEPROM or use default globals
-	//if (globals_load() != 0)
-	//	globals_default();
+	if (globals_load() != 0)
+		globals_default();
 
 	mmi_ctor();
 

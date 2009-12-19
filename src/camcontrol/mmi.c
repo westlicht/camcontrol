@@ -5,6 +5,7 @@
 #include "key.h"
 #include "lcd.h"
 #include "debug.h"
+#include "globals.h"
 
 /** MMI active object structure */
 struct mmi_ao {
@@ -86,12 +87,30 @@ static QState mmi_navigate(struct mmi_ao *me)
 	case Q_EXIT_SIG:
 		return Q_HANDLED();
 	case SIG_ENCODER:
-		if (Q_PAR(me) == 1) {
-			if (menu_next())
-				update_screen(me);
-		} else {
-			if (menu_prev())
-				update_screen(me);
+		switch (menu_cur->typ) {
+		case MENU_TYP_PARAM:
+			if (menu_cur->u.param.modify)
+				if (menu_cur->u.param.modify(menu_cur, Q_PAR(me))) {
+					if (menu_cur->u.param.print)
+						menu_cur->u.param.print(menu_cur);
+					if (menu_cur->u.param.changed)
+						menu_cur->u.param.changed(menu_cur);
+				}
+			break;
+		default:
+			switch (Q_PAR(me)) {
+			case ENC_UP:
+				// Go to previous item
+				if (menu_prev())
+					update_screen(me);
+				break;
+			case ENC_DOWN:
+				// Go to next item
+				if (menu_next())
+					update_screen(me);
+				break;
+			}
+			break;
 		}
 		return Q_HANDLED();
 	case SIG_KEY_PRESS:
@@ -120,7 +139,8 @@ static QState mmi_navigate(struct mmi_ao *me)
 			switch (menu_cur->typ) {
 			case MENU_TYP_CMD:
 				// Execute command
-				ASSERT(menu_cur->u.cmd.handler);
+				if (menu_cur->u.cmd.handler)
+					menu_cur->u.cmd.handler();
 				break;
 			case MENU_TYP_SUB:
 				// Go to sub item
@@ -142,6 +162,15 @@ static void update_screen(struct mmi_ao *me)
 {
 	lcd_clear();
 	lcd_write(0, 0, (char *) menu_cur->name);
+
+	switch (menu_cur->typ) {
+	case MENU_TYP_PARAM:
+		if (menu_cur->u.param.print)
+			menu_cur->u.param.print(menu_cur);
+		break;
+	default:
+		break;
+	}
 }
 
 // Menu handlers
@@ -153,5 +182,5 @@ void start_panorama_handler(void)
 
 void save_settings_handler(void)
 {
-
+	globals_save();
 }

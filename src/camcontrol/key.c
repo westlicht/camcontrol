@@ -13,8 +13,8 @@
 #define KEY_PORT		A
 
 #define ENC_PORT		B
-#define ENC_UP			2
-#define ENC_DOWN		3
+#define ENC_PIN_UP		2
+#define ENC_PIN_DOWN	3
 
 #define GLUE(a, b)		a##b
 #define PIN(x)			GLUE(PIN, x)
@@ -59,29 +59,29 @@ ISR(TIMER2_COMP_vect)
 	enc = PIN_ENC;
 	switch (enc_dir) {
 	case 0:
-		if (!(enc & _BV(ENC_UP)))
+		if (!(enc & _BV(ENC_PIN_UP)))
 			enc_dir = 1;
-		else if (!(enc & _BV(ENC_DOWN)))
+		else if (!(enc & _BV(ENC_PIN_DOWN)))
 			enc_dir = -1;
 		break;
 	case 1:
-		if (!(enc & _BV(ENC_DOWN))) {
-			encoder(1);
+		if (!(enc & _BV(ENC_PIN_DOWN))) {
+			encoder(ENC_DOWN);
 			enc_dir = 2;
 		}
-		if (enc & _BV(ENC_UP))
+		if (enc & _BV(ENC_PIN_UP))
 			enc_dir = 0;
 		break;
 	case -1:
-		if (!(enc & _BV(ENC_UP))) {
-			encoder(-1);
+		if (!(enc & _BV(ENC_PIN_UP))) {
+			encoder(ENC_UP);
 			enc_dir = 2;
 		}
-		if (enc & _BV(ENC_DOWN))
+		if (enc & _BV(ENC_PIN_DOWN))
 			enc_dir = 0;
 		break;
 	case 2:
-		if ((enc & _BV(ENC_UP)) && (enc & _BV(ENC_DOWN)))
+		if ((enc & _BV(ENC_PIN_UP)) && (enc & _BV(ENC_PIN_DOWN)))
 			enc_dir = 0;
 		break;
 	}

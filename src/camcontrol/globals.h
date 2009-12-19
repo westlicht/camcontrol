@@ -5,9 +5,9 @@
 
 /** Global variables structure */
 struct globals {
-	uint16_t focal_length;		/**< Focal length (mm) */
-	uint16_t sensor_width;		/**< Sensor width (mm) */
-	uint16_t sensor_height;		/**< Sensor height (mm) */
+	uint16_t focal_length;		/**< Focal length (mm * 0.1) */
+	uint16_t sensor_width;		/**< Sensor width (mm * 0.1) */
+	uint16_t sensor_height;		/**< Sensor height (mm * 0.1) */
 	uint16_t fov_h;				/**< Horizontal field of view (deg * 0.01) */
 	uint16_t fov_v;				/**< Vertical field of view (deg * 0.01) */
 	uint16_t center_h;			/**< Horizontal center position (deg * 0.01) */
