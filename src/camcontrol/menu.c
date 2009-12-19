@@ -2,10 +2,10 @@
 #include <stddef.h>
 #include "menu.h"
 
-
 #include "menu_def.h"
 
-#define MAX_DEPTH	8
+
+#define MAX_DEPTH		8
 
 menu_item_t menu_cur;
 
@@ -14,9 +14,10 @@ struct menu_pos {
 	int item;
 };
 
-static struct menu_pos pos_stack[MAX_DEPTH];
-static struct menu_pos *pos;
-static int pos_index;
+static struct menu_pos pos_stack[MAX_DEPTH];	/**< Menu position stack */
+static int pos_index;							/**< Current stack index */
+static struct menu_pos *pos;					/**< Current stack entry */
+
 
 static inline void update_menu_cur(void)
 {
@@ -41,7 +42,7 @@ void menu_init(void)
  */
 int menu_next(void)
 {
-	if (pos->page[pos->item + 1].name) {
+	if (pos->page[pos->item + 1].typ != MENU_TYP_LAST) {
 		pos->item++;
 		update_menu_cur();
 		return 1;
@@ -69,7 +70,7 @@ int menu_prev(void)
  */
 int menu_sub(void)
 {
-	if (pos->page[pos->item].sub && pos_index < MAX_DEPTH - 1) {
+	if (pos->page[pos->item].typ == MENU_TYP_SUB && pos_index < MAX_DEPTH - 1) {
 		pos_index++;
 		pos_stack[pos_index].page = pos->page[pos->item].sub;
 		pos_stack[pos_index].item = 0;

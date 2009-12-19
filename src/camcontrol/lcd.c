@@ -62,9 +62,11 @@ void lcd_clear(void)
 
 void lcd_write(int x, int y, char *str)
 {
+	int i = 0;
+
 	hd44780_wait_ready();
 	hd44780_outcmd(HD44780_DDADDR((y * 40 + x)));
-	while (*str != '\0') {
+	while (*str != '\0' && i++ < 16) {
 		hd44780_wait_ready();
 		hd44780_outdata(*str++);
 	}

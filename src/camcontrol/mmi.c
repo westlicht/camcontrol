@@ -4,6 +4,7 @@
 #include "menu.h"
 #include "key.h"
 #include "lcd.h"
+#include "debug.h"
 
 /** MMI active object structure */
 struct mmi_ao {
@@ -111,10 +112,24 @@ static QState mmi_navigate(struct mmi_ao *me)
 				update_screen(me);
 			break;
 		case KEY_RIGHT:
-		case KEY_ENTER:
 			// Go to sub item
 			if (menu_sub())
 				update_screen(me);
+			break;
+		case KEY_ENTER:
+			switch (menu_cur->typ) {
+			case MENU_TYP_CMD:
+				// Execute command
+				ASSERT(menu_cur->u.cmd.handler);
+				break;
+			case MENU_TYP_SUB:
+				// Go to sub item
+				if (menu_sub())
+					update_screen(me);
+				break;
+			default:
+				break;
+			}
 			break;
 		}
 		return Q_HANDLED();
@@ -126,5 +141,17 @@ static QState mmi_navigate(struct mmi_ao *me)
 static void update_screen(struct mmi_ao *me)
 {
 	lcd_clear();
-	lcd_write(0, 0, menu_cur->name);
+	lcd_write(0, 0, (char *) menu_cur->name);
+}
+
+// Menu handlers
+
+void start_panorama_handler(void)
+{
+
+}
+
+void save_settings_handler(void)
+{
+
 }
