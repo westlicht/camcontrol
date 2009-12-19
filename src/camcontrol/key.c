@@ -12,21 +12,31 @@
 #define NUM_DEBOUNCE	10
 #define KEY_PORT		A
 
+#define ENC_PORT		B
+#define ENC_UP			2
+#define ENC_DOWN		3
+
 #define GLUE(a, b)		a##b
 #define PIN(x)			GLUE(PIN, x)
-#define KEY_INPORT		PIN(KEY_PORT)
+
+#define PIN_KEY			PIN(KEY_PORT)
+#define PIN_ENC			PIN(ENC_PORT)
 
 static uint8_t debounce[NUM_KEYS];
+static int enc_dir;
 
 static void press(int index);
 static void release(int index);
+static void encoder(int dir);
 
 ISR(TIMER2_COMP_vect)
 {
 	int i;
+	uint8_t enc;
 
+	// Handle buttons
 	for (i = 0; i < NUM_KEYS; i++) {
-		if (KEY_INPORT & _BV(i)) {
+		if (PIN_KEY & _BV(i)) {
 			// Key is up
 			if (debounce[i] != 0) {
 				release(i);
@@ -44,10 +54,49 @@ ISR(TIMER2_COMP_vect)
 			}
 		}
 	}
+
+	// Handle encodersb
+	enc = PIN_ENC;
+	switch (enc_dir) {
+	case 0:
+		if (!(enc & _BV(ENC_UP)))
+			enc_dir = 1;
+		else if (!(enc & _BV(ENC_DOWN)))
+			enc_dir = -1;
+		break;
+	case 1:
+		if (!(enc & _BV(ENC_DOWN))) {
+			encoder(1);
+			enc_dir = 2;
+		}
+		if (enc & _BV(ENC_UP))
+			enc_dir = 0;
+		break;
+	case -1:
+		if (!(enc & _BV(ENC_UP))) {
+			encoder(-1);
+			enc_dir = 2;
+		}
+		if (enc & _BV(ENC_DOWN))
+			enc_dir = 0;
+		break;
+	case 2:
+		if ((enc & _BV(ENC_UP)) && (enc & _BV(ENC_DOWN)))
+			enc_dir = 0;
+		break;
+	}
 }
 
 void key_init(void)
 {
+	// Set button pins
+	PORTA &= ~0x1f;
+	DDRA &= ~0x1f;
+
+	// Set ENC pins
+	PORTB &= ~0x0c;
+	DDRB &= ~0x0c;
+
     // Set compare register
     OCR2 = 32;
 	// Set Timer2 in CTC mode, 1/1024 prescaler
@@ -65,4 +114,9 @@ static void press(int index)
 static void release(int index)
 {
 	QActive_postISR((QActive *) &mmi_ao, SIG_KEY_RELEASE, index);
+}
+
+static void encoder(int dir)
+{
+	QActive_postISR((QActive *) &mmi_ao, SIG_ENCODER, dir);
 }

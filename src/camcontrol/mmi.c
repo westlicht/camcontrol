@@ -85,6 +85,13 @@ static QState mmi_navigate(struct mmi_ao *me)
 	case Q_EXIT_SIG:
 		return Q_HANDLED();
 	case SIG_ENCODER:
+		if (Q_PAR(me) == 1) {
+			if (menu_next())
+				update_screen(me);
+		} else {
+			if (menu_prev())
+				update_screen(me);
+		}
 		return Q_HANDLED();
 	case SIG_KEY_PRESS:
 		switch (Q_PAR(me)) {
