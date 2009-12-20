@@ -23,7 +23,11 @@ static const struct menu_item page_panorama[] = {
 
 static const struct menu_item page_hdr[] = {
 	{
-		MENU_ITEM_CMD("Shoot 1", NULL),
+		MENU_ITEM_PARAM("Shutter time 1", &param_hdr_time1),
+	}, {
+		MENU_ITEM_PARAM("Shutter time 2", &param_hdr_time2),
+	}, {
+		MENU_ITEM_PARAM("Num of shots", &param_hdr_shots),
 	}, {
 		MENU_ITEM_LAST(),
 	}
