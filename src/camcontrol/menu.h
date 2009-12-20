@@ -3,6 +3,7 @@
 #define __MENU_H__
 
 #include <stdlib.h>
+#include <stdint.h>
 
 /** Menu node types */
 typedef enum {
@@ -14,8 +15,10 @@ typedef enum {
 } menu_typ_t;
 
 struct menu_item;
+struct menu_param;
 
 typedef const struct menu_item *menu_item_t;
+typedef const struct menu_param *menu_param_t;
 
 /** Menu item */
 struct menu_item {
@@ -26,12 +29,7 @@ struct menu_item {
 		struct {
 			void (*handler)(void);	/**< Handler callback */
 		} cmd;
-		struct {
-			void *data;
-			int (*modify)(menu_item_t item, int dir);
-			void (*print)(menu_item_t item);
-			void (*changed)(menu_item_t item);
-		} param;
+		menu_param_t param;
 	} u;
 };
 
@@ -51,21 +49,35 @@ struct menu_item {
 	.sub = NULL,										\
 	.u.cmd.handler = _handler_
 
-#define MENU_ITEM_PARAM(_name_, _data_, _modify_, _print_, _changed_) \
+#define MENU_ITEM_PARAM(_name_, _param_) 				\
 	.typ = MENU_TYP_PARAM,								\
 	.name = _name_,										\
-	.u.param.data = _data_,								\
-	.u.param.modify = _modify_,							\
-	.u.param.print = _print_,							\
-	.u.param.changed = _changed_
+	.u.param = _param_
 
 #define MENU_ITEM_LAST()								\
 	.typ = MENU_TYP_LAST
 
-#define MENU_PARAM(_typ_, _data_)						\
-	.typ = MENU_TYP_PARAM,								\
-	.u.param.typ = _typ_,								\
-	.u.param.data = _data_
+
+struct menu_param {
+	void *data;
+	uint16_t min;
+	uint16_t max;
+	int (*modify)(menu_item_t item, int dir);
+	void (*print)(menu_item_t item);
+	void (*changed)(menu_item_t item);
+};
+
+#define MENU_PARAM(_name_, _data_, _min_, _max_, _modify_, _print_, _changed_) \
+struct menu_param _name_ = {							\
+	.data = _data_,										\
+	.min = _min_,										\
+	.max = _max_,										\
+	.modify = _modify_,									\
+	.print = _print_,									\
+	.changed = _changed_,								\
+};
+
+
 
 /** Current menu item */
 extern menu_item_t menu_cur;

@@ -9,9 +9,9 @@ extern void save_settings_handler(void);
 
 static const struct menu_item page_panorama[] = {
 	{
-		MENU_ITEM("Panorama width"),
+		MENU_ITEM_PARAM("Panorama width", &param_pan_width),
 	}, {
-		MENU_ITEM("Panorama height"),
+		MENU_ITEM_PARAM("Panorama height", &param_pan_height),
 	}, {
 		MENU_ITEM("Focal length"),
 	}, {
@@ -31,11 +31,11 @@ static const struct menu_item page_hdr[] = {
 
 static const struct menu_item page_setup[] = {
 	{
-		MENU_ITEM_PARAM("Focal length", &globals.focal_length, modify_focal_length, print_focal_length, NULL),
+		MENU_ITEM_PARAM("Focal length", &param_focal_length),
 	}, {
-		MENU_ITEM_PARAM("Sensor width", &globals.sensor_width, modify_sensor_dim, print_sensor_dim, NULL),
+		MENU_ITEM_PARAM("Sensor width", &param_sensor_width),
 	}, {
-		MENU_ITEM_PARAM("Sensor height", &globals.sensor_height, modify_sensor_dim, print_sensor_dim, NULL),
+		MENU_ITEM_PARAM("Sensor height", &param_sensor_height),
 	}, {
 		MENU_ITEM_CMD("Save", save_settings_handler),
 	}, {
