@@ -6,6 +6,7 @@
 #include "lcd.h"
 #include "debug.h"
 #include "globals.h"
+#include "shutter.h"
 
 /** MMI active object structure */
 struct mmi_ao {
@@ -176,6 +177,11 @@ static void update_screen(struct mmi_ao *me)
 void start_panorama_handler(void)
 {
 
+}
+
+void start_hdr_handler(void)
+{
+	shutter_trigger(1000000);
 }
 
 void save_settings_handler(void)

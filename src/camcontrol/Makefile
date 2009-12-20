@@ -83,6 +83,7 @@ $(BINDIR)/$(APP_NAME).elf : \
 	$(BINDIR)/menu.o \
 	$(BINDIR)/mmi.o \
 	$(BINDIR)/servo.o \
+	$(BINDIR)/shutter.o \
 	$(BINDIR)/uart.o \
 	$(BINDIR)/qepn.o \
 	$(BINDIR)/qfn.o
@@ -100,6 +101,7 @@ $(BINDIR)/$(APP_NAME).elf : \
 	$(BINDIR)/menu.o \
 	$(BINDIR)/mmi.o \
 	$(BINDIR)/servo.o \
+	$(BINDIR)/shutter.o \
 	$(BINDIR)/uart.o \
 	$(BINDIR)/qepn.o \
 	$(BINDIR)/qfn.o \
@@ -138,6 +140,9 @@ $(BINDIR)/mmi.o: $(BLDDIR)/mmi.c $(APP_DEP) $(QP_DEP)
 	$(CC) $(CCFLAGS) $(CCINC) $<
 
 $(BINDIR)/servo.o: $(BLDDIR)/servo.c $(APP_DEP) $(QP_DEP)
+	$(CC) $(CCFLAGS) $(CCINC) $<
+
+$(BINDIR)/shutter.o: $(BLDDIR)/shutter.c $(APP_DEP) $(QP_DEP)
 	$(CC) $(CCFLAGS) $(CCINC) $<
 
 $(BINDIR)/uart.o: $(BLDDIR)/uart.c $(APP_DEP) $(QP_DEP)

@@ -7,6 +7,7 @@
 #include "debug.h"
 #include "servo.h"
 #include "delay.h"
+#include "shutter.h"
 
 /* Event queues */
 static QEvent mmi_queue[8];
@@ -28,10 +29,9 @@ int main (void)
 	bsp_init();
 
 	lcd_init();
-
 	key_init();
-
 	servo_init();
+	shutter_init();
 
 	// Load from EEPROM or use default globals
 	if (globals_load() != 0)

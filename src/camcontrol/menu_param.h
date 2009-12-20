@@ -156,8 +156,4 @@ MENU_PARAM(param_hdr_time1, &globals.hdr_time1, 0, NUM_SHUTTER_TIMES - 1, 1, 5, 
 MENU_PARAM(param_hdr_time2, &globals.hdr_time2, 0, NUM_SHUTTER_TIMES - 1, 1, 5, modify_param, print_shutter_time, NULL);
 MENU_PARAM(param_hdr_shots, &globals.hdr_shots, 2, 10, 1, 1, modify_param, print_decimal, NULL);
 
-
-
-
-
 #endif // __MENU_PARAM_H__

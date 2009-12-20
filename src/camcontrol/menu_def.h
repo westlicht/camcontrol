@@ -5,6 +5,7 @@
 #include "menu_param.h"
 
 extern void start_panorama_handler(void);
+extern void start_hdr_handler(void);
 extern void save_settings_handler(void);
 
 static const struct menu_item page_panorama[] = {
@@ -30,6 +31,8 @@ static const struct menu_item page_hdr[] = {
 		MENU_ITEM_PARAM("Shutter time 2", &param_hdr_time2),
 	}, {
 		MENU_ITEM_PARAM("Num of shots", &param_hdr_shots),
+	}, {
+		MENU_ITEM_CMD("Start", start_hdr_handler),
 	}, {
 		MENU_ITEM_LAST(),
 	}
