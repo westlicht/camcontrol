@@ -33,6 +33,7 @@
 #include "bsp.h"
 #include "lcd.h"
 #include "debug.h"
+#include "defines.h"
 
 
 

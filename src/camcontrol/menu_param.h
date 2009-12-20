@@ -5,65 +5,53 @@
 #include <stdio.h>
 #include "lcd.h"
 #include "key.h"
+#include "globals.h"
 
-#define SENSOR_DIM_MIN		100
-#define SENSOR_DIM_MAX		500
 
-#define FOCAL_LENGTH_MIN	100
-#define FOCAL_LENGTH_MAX	5000
 
-// Sensor dimension
 
-static int modify_sensor_dim(menu_item_t item, int dir)
+static int modify_param(menu_item_t item, int dir)
 {
-	uint16_t *value = item->u.param.data;
+	uint16_t *value = item->u.param->data;
 
-	if (dir == ENC_UP && *value > SENSOR_DIM_MIN) {
-		(*value)--;
+	if (dir == ENC_UP && *value > item->u.param->min) {
+		(*value) -= 5;
 		return 1;
 	}
-	if (dir == ENC_DOWN && *value < SENSOR_DIM_MAX) {
-		(*value)++;
+	if (dir == ENC_DOWN && *value < item->u.param->max) {
+		(*value) += 5;
 		return 1;
 	}
 
 	return 0;
 }
 
-static void print_sensor_dim(menu_item_t item)
+static void print_mm(menu_item_t item)
 {
 	char tmp[17];
-	uint16_t *value = item->u.param.data;
+	uint16_t *value = item->u.param->data;
 
 	snprintf(tmp, sizeof(tmp), "%u.%01u mm", *value / 10, *value % 10);
 	lcd_write(0, 1, tmp);
 }
 
-// Focal length
-
-static int modify_focal_length(menu_item_t item, int dir)
-{
-	uint16_t *value = item->u.param.data;
-
-	if (dir == ENC_UP && *value > FOCAL_LENGTH_MIN) {
-		(*value)--;
-		return 1;
-	}
-	if (dir == ENC_DOWN && *value < FOCAL_LENGTH_MAX) {
-		(*value)++;
-		return 1;
-	}
-
-	return 0;
-}
-
-static void print_focal_length(menu_item_t item)
+static void print_deg(menu_item_t item)
 {
 	char tmp[17];
-	uint16_t *value = item->u.param.data;
+	uint16_t *value = item->u.param->data;
 
-	snprintf(tmp, sizeof(tmp), "%u.%01u mm", *value / 10, *value % 10);
+	snprintf(tmp, sizeof(tmp), "%u deg", *value);
 	lcd_write(0, 1, tmp);
 }
+
+
+MENU_PARAM(param_pan_width, &globals.pan_width, 0, 360, modify_param, print_deg, NULL);
+MENU_PARAM(param_pan_height, &globals.pan_height, 0, 180, modify_param, print_deg, NULL);
+MENU_PARAM(param_sensor_width, &globals.sensor_width, 100, 500, modify_param, print_mm, NULL);
+MENU_PARAM(param_sensor_height, &globals.sensor_height, 100, 500, modify_param, print_mm, NULL);
+MENU_PARAM(param_focal_length, &globals.focal_length, 100, 500, modify_param, print_mm, NULL);
+
+
+
 
 #endif // __MENU_PARAM_H__

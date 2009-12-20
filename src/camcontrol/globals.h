@@ -10,8 +10,10 @@ struct globals {
 	uint16_t sensor_height;		/**< Sensor height (mm * 0.1) */
 	uint16_t fov_h;				/**< Horizontal field of view (deg * 0.01) */
 	uint16_t fov_v;				/**< Vertical field of view (deg * 0.01) */
-	uint16_t center_h;			/**< Horizontal center position (deg * 0.01) */
-	uint16_t center_v;			/**< Vertical center position (deg * 0.01) */
+	uint16_t center_h;			/**< Horizontal center position (deg) */
+	uint16_t center_v;			/**< Vertical center position (deg) */
+	uint16_t pan_width;			/**< Panorama width (deg) */
+	uint16_t pan_height;		/**< Panorama height (deg) */
 };
 
 /** Global variables */

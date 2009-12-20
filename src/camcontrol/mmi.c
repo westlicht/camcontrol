@@ -89,12 +89,12 @@ static QState mmi_navigate(struct mmi_ao *me)
 	case SIG_ENCODER:
 		switch (menu_cur->typ) {
 		case MENU_TYP_PARAM:
-			if (menu_cur->u.param.modify)
-				if (menu_cur->u.param.modify(menu_cur, Q_PAR(me))) {
-					if (menu_cur->u.param.print)
-						menu_cur->u.param.print(menu_cur);
-					if (menu_cur->u.param.changed)
-						menu_cur->u.param.changed(menu_cur);
+			if (menu_cur->u.param->modify)
+				if (menu_cur->u.param->modify(menu_cur, Q_PAR(me))) {
+					if (menu_cur->u.param->print)
+						menu_cur->u.param->print(menu_cur);
+					if (menu_cur->u.param->changed)
+						menu_cur->u.param->changed(menu_cur);
 				}
 			break;
 		default:
@@ -165,8 +165,8 @@ static void update_screen(struct mmi_ao *me)
 
 	switch (menu_cur->typ) {
 	case MENU_TYP_PARAM:
-		if (menu_cur->u.param.print)
-			menu_cur->u.param.print(menu_cur);
+		if (menu_cur->u.param->print)
+			menu_cur->u.param->print(menu_cur);
 		break;
 	default:
 		break;
