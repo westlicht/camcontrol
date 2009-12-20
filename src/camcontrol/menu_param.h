@@ -15,11 +15,11 @@ static int modify_param(menu_item_t item, int dir)
 	uint16_t *value = item->u.param->data;
 
 	if (dir == ENC_UP && *value > item->u.param->min) {
-		(*value)--;
+		(*value) -= 5;
 		return 1;
 	}
 	if (dir == ENC_DOWN && *value < item->u.param->max) {
-		(*value)++;
+		(*value) += 5;
 		return 1;
 	}
 
