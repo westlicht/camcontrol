@@ -6,6 +6,7 @@
 
 extern void start_panorama_handler(void);
 extern void start_hdr_handler(void);
+extern void start_timelapse_handler(void);
 extern void save_settings_handler(void);
 
 static const struct menu_item page_panorama[] = {
@@ -38,6 +39,16 @@ static const struct menu_item page_hdr[] = {
 	}
 };
 
+static const struct menu_item page_timelapse[] = {
+	{
+		MENU_ITEM_PARAM("Trigger rate", &param_timelapse_rate),
+	}, {
+		MENU_ITEM_CMD("Start", start_timelapse_handler),
+	}, {
+		MENU_ITEM_LAST(),
+	}
+};
+
 static const struct menu_item page_setup[] = {
 	{
 		MENU_ITEM_PARAM("Focal length", &param_focal_length),
@@ -45,6 +56,14 @@ static const struct menu_item page_setup[] = {
 		MENU_ITEM_PARAM("Sensor width", &param_sensor_width),
 	}, {
 		MENU_ITEM_PARAM("Sensor height", &param_sensor_height),
+	}, {
+		MENU_ITEM_PARAM("HDR min exposure", &param_hdr_time1),
+	}, {
+		MENU_ITEM_PARAM("HDR max exposure", &param_hdr_time2),
+	}, {
+		MENU_ITEM_PARAM("HDR shots", &param_hdr_shots),
+	}, {
+		MENU_ITEM_PARAM("Trigger delay", &param_trigger_delay),
 	}, {
 		MENU_ITEM_CMD("Save", save_settings_handler),
 	}, {
@@ -57,6 +76,8 @@ static const struct menu_item page_main[] = {
 		MENU_ITEM_SUB("Panorama", page_panorama),
 	}, {
 		MENU_ITEM_SUB("HDR", page_hdr),
+	}, {
+		MENU_ITEM_SUB("Timelapse", page_timelapse),
 	}, {
 		MENU_ITEM_SUB("Settings", page_setup),
 	}, {

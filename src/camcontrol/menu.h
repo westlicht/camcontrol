@@ -60,8 +60,8 @@ struct menu_item {
 
 struct menu_param {
 	void *data;
-	uint16_t min;
-	uint16_t max;
+	uint32_t min;
+	uint32_t max;
 	uint8_t step;
 	uint8_t shift_step;
 	int (*modify)(menu_item_t item, int dir, int shift);

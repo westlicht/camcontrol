@@ -181,7 +181,12 @@ void start_panorama_handler(void)
 
 void start_hdr_handler(void)
 {
-	shutter_trigger(1000000);
+	shutter_trigger(shutter_time[globals.hdr_time1].us);
+}
+
+void start_timelapse_handler(void)
+{
+
 }
 
 void save_settings_handler(void)
