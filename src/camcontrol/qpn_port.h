@@ -34,7 +34,7 @@
 #define Q_ROM_PTR(rom_var_)     pgm_read_word_near(&(rom_var_))
 
 #define Q_NFSM					1
-#define Q_PARAM_SIZE            1
+#define Q_PARAM_SIZE            2
 #define QF_TIMEEVT_CTR_SIZE     2
 
 /* maximum # active objects--must match EXACTLY the QF_active[] definition  */

@@ -22,7 +22,7 @@ static void update_screen(struct mmi_ao *me);
 struct mmi_ao mmi_ao;
 
 enum timeouts {
-	TIMEOUT_HELLO = TICKS(1000),
+	TIMEOUT_HELLO = 200,
 };
 
 /**
@@ -54,7 +54,7 @@ static QState mmi_hello(struct mmi_ao *me)
 		// Print hello message
 		lcd_write(0, 0, " CamControl 0.1");
 		lcd_write(0, 1, "----------------");
-		//QActive_arm((QActive *) me, TIMEOUT_HELLO);
+		QActive_arm((QActive *) me, TIMEOUT_HELLO);
 		return Q_HANDLED();
 	case Q_EXIT_SIG:
 		// Clear screen

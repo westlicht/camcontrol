@@ -83,9 +83,9 @@ void QF_onStartup(void)
 	cli();
 
     // Set the output compare value
-    OCR0  = ((F_CPU / BSP_TICKS_PER_SEC / 1024) - 1);
+    OCR0  = ((F_CPU / 1024) / BSP_TICKS_PER_SEC - 1);
 	// Set Timer0 in CTC mode, 1/1024 prescaler, start the timer ticking
-	TCCR0 = ((1 << WGM01) | (0 << WGM00) | (5 << CS00));
+	TCCR0 = ((1 << WGM01) | (0 << WGM00) | (7 << CS00));
 	TIMSK |= _BV(OCIE0);
 
 	sei();

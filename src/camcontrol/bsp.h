@@ -32,7 +32,7 @@
 #define F_CPU				16000000UL
 
 /* Ticks per second */
-#define BSP_TICKS_PER_SEC	50
+#define BSP_TICKS_PER_SEC	100UL
 
 #define TICKS(_ms_) ((_ms_) / (1000UL / BSP_TICKS_PER_SEC))
 
