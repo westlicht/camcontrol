@@ -60,7 +60,7 @@ void lcd_clear(void)
 	hd44780_outcmd(HD44780_HOME);
 }
 
-void lcd_write(int x, int y, char *str)
+void lcd_write(int x, int y, char *str, int flags)
 {
 	int i = 0;
 
@@ -70,4 +70,9 @@ void lcd_write(int x, int y, char *str)
 		hd44780_wait_ready();
 		hd44780_outdata(*str++);
 	}
+	if (flags & LCD_FILL_BLANK)
+		while (i++ < 16) {
+			hd44780_wait_ready();
+			hd44780_outdata(' ');
+		}
 }

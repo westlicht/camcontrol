@@ -72,17 +72,28 @@ struct shutter_time shutter_time[] = {
 
 #define NUM_SHUTTER_TIMES (sizeof(shutter_time) / (sizeof(shutter_time[0])))
 
+const char *shutter_mode[] = {
+		"Camera", "HDR"
+};
 
-static int modify_param(menu_item_t item, int dir)
+#define NUM_SHUTTER_MODES (sizeof(shutter_mode) / sizeof(shutter_mode[0]))
+
+
+static int modify_param(menu_item_t item, int dir, int shift)
 {
 	uint16_t *value = item->u.param->data;
+	uint8_t step = shift ? item->u.param->shift_step : item->u.param->step;
 
 	if (dir == ENC_UP && *value > item->u.param->min) {
-		(*value) -= item->u.param->step;
+		if (step > *value - item->u.param->min)
+			step = *value - item->u.param->min;
+		(*value) -= step;
 		return 1;
 	}
 	if (dir == ENC_DOWN && *value < item->u.param->max) {
-		(*value) += item->u.param->step;
+		if (step > item->u.param->max - *value)
+			step = item->u.param->max - *value;
+		(*value) += step;
 		return 1;
 	}
 
@@ -95,7 +106,7 @@ static void print_decimal(menu_item_t item)
 	uint16_t *value = item->u.param->data;
 
 	snprintf(tmp, sizeof(tmp), "%u", *value);
-	lcd_write(0, 1, tmp);
+	lcd_write(0, 1, tmp, LCD_FILL_BLANK);
 }
 
 static void print_mm(menu_item_t item)
@@ -104,7 +115,7 @@ static void print_mm(menu_item_t item)
 	uint16_t *value = item->u.param->data;
 
 	snprintf(tmp, sizeof(tmp), "%u.%01u mm", *value / 10, *value % 10);
-	lcd_write(0, 1, tmp);
+	lcd_write(0, 1, tmp, LCD_FILL_BLANK);
 }
 
 static void print_deg(menu_item_t item)
@@ -113,7 +124,7 @@ static void print_deg(menu_item_t item)
 	uint16_t *value = item->u.param->data;
 
 	snprintf(tmp, sizeof(tmp), "%u deg", *value);
-	lcd_write(0, 1, tmp);
+	lcd_write(0, 1, tmp, LCD_FILL_BLANK);
 }
 
 static void print_shutter_time(menu_item_t item)
@@ -122,18 +133,28 @@ static void print_shutter_time(menu_item_t item)
 	uint16_t *value = item->u.param->data;
 
 	snprintf(tmp, sizeof(tmp), "%s", shutter_time[*value].name);
-	lcd_write(0, 1, tmp);
+	lcd_write(0, 1, tmp, LCD_FILL_BLANK);
+}
+
+static void print_shutter_mode(menu_item_t item)
+{
+	char tmp[17];
+	uint16_t *value = item->u.param->data;
+
+	snprintf(tmp, sizeof(tmp), "%s", shutter_mode[*value]);
+	lcd_write(0, 1, tmp, LCD_FILL_BLANK);
 }
 
 
-MENU_PARAM(param_pan_width, &globals.pan_width, 0, 360, 5, modify_param, print_deg, NULL);
-MENU_PARAM(param_pan_height, &globals.pan_height, 0, 180, 5, modify_param, print_deg, NULL);
-MENU_PARAM(param_sensor_width, &globals.sensor_width, 100, 500, 1, modify_param, print_mm, NULL);
-MENU_PARAM(param_sensor_height, &globals.sensor_height, 100, 500, 1, modify_param, print_mm, NULL);
-MENU_PARAM(param_focal_length, &globals.focal_length, 100, 500, 1, modify_param, print_mm, NULL);
-MENU_PARAM(param_hdr_time1, &globals.hdr_time1, 0, NUM_SHUTTER_TIMES, 1, modify_param, print_shutter_time, NULL);
-MENU_PARAM(param_hdr_time2, &globals.hdr_time2, 0, NUM_SHUTTER_TIMES, 1, modify_param, print_shutter_time, NULL);
-MENU_PARAM(param_hdr_shots, &globals.hdr_shots, 2, 10, 1, modify_param, print_decimal, NULL);
+MENU_PARAM(param_pan_width, &globals.pan_width, 0, 360, 1, 10, modify_param, print_deg, NULL);
+MENU_PARAM(param_pan_height, &globals.pan_height, 0, 180, 1, 10, modify_param, print_deg, NULL);
+MENU_PARAM(param_sensor_width, &globals.sensor_width, 100, 500, 1, 10, modify_param, print_mm, NULL);
+MENU_PARAM(param_sensor_height, &globals.sensor_height, 100, 500, 1, 10, modify_param, print_mm, NULL);
+MENU_PARAM(param_focal_length, &globals.focal_length, 100, 500, 1, 10, modify_param, print_mm, NULL);
+MENU_PARAM(param_shutter_mode, &globals.shutter_mode, 0, NUM_SHUTTER_MODES - 1, 1, 1, modify_param, print_shutter_mode, NULL);
+MENU_PARAM(param_hdr_time1, &globals.hdr_time1, 0, NUM_SHUTTER_TIMES - 1, 1, 5, modify_param, print_shutter_time, NULL);
+MENU_PARAM(param_hdr_time2, &globals.hdr_time2, 0, NUM_SHUTTER_TIMES - 1, 1, 5, modify_param, print_shutter_time, NULL);
+MENU_PARAM(param_hdr_shots, &globals.hdr_shots, 2, 10, 1, 1, modify_param, print_decimal, NULL);
 
 
 

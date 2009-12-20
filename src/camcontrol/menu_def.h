@@ -13,7 +13,9 @@ static const struct menu_item page_panorama[] = {
 	}, {
 		MENU_ITEM_PARAM("Panorama height", &param_pan_height),
 	}, {
-		MENU_ITEM("Focal length"),
+		MENU_ITEM_PARAM("Focal length", &param_focal_length),
+	}, {
+		MENU_ITEM_PARAM("Shutter mode", &param_shutter_mode),
 	}, {
 		MENU_ITEM_CMD("Start", start_panorama_handler),
 	}, {

@@ -14,6 +14,7 @@ struct globals {
 	uint16_t center_v;			/**< Vertical center position (deg) */
 	uint16_t pan_width;			/**< Panorama width (deg) */
 	uint16_t pan_height;		/**< Panorama height (deg) */
+	uint16_t shutter_mode;
 	uint16_t hdr_time1;
 	uint16_t hdr_time2;
 	uint16_t hdr_shots;

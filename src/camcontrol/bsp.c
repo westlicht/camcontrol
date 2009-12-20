@@ -111,18 +111,7 @@ void QF_onIdle(void)
 
 void Q_onAssert(char const Q_ROM * const Q_ROM_VAR file, int line)
 {
-	char tmp[17];
-
-	DBG_LED_ON();
-
-	// Disable interrupts
-    cli();
-
-	strncpy_P(tmp, file, strlen(file));
-	lcd_clear();
-	lcd_write(0, 0, tmp);
-
-	while (1);
+	on_assert(file, line);
 }
 
 /*****************************************************************************

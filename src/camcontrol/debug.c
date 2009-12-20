@@ -13,9 +13,9 @@ void on_assert(const char *filename, uint16_t line)
 	lcd_init();
 	lcd_clear();
 	snprintf(tmp, sizeof(tmp), "ASSERT (%d)", line);
-	lcd_write(0, 0, tmp);
+	lcd_write(0, 0, tmp, 0);
 	snprintf(tmp, sizeof(tmp), "%s", filename);
-	lcd_write(0, 1, tmp);
+	lcd_write(0, 1, tmp, 0);
 
 	while (1) {
 		DBG_LED_ON();

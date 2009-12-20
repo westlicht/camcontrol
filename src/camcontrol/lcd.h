@@ -16,5 +16,7 @@
  */
 void lcd_init(void);
 
+#define LCD_FILL_BLANK	1
+
 void lcd_clear(void);
-void lcd_write(int x, int y, char *str);
+void lcd_write(int x, int y, char *str, int flags);

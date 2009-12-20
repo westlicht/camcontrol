@@ -62,18 +62,20 @@ struct menu_param {
 	void *data;
 	uint16_t min;
 	uint16_t max;
-	uint16_t step;
-	int (*modify)(menu_item_t item, int dir);
+	uint8_t step;
+	uint8_t shift_step;
+	int (*modify)(menu_item_t item, int dir, int shift);
 	void (*print)(menu_item_t item);
 	void (*changed)(menu_item_t item);
 };
 
-#define MENU_PARAM(_name_, _data_, _min_, _max_, _step_, _modify_, _print_, _changed_) \
+#define MENU_PARAM(_name_, _data_, _min_, _max_, _step_, _shift_step_, _modify_, _print_, _changed_) \
 struct menu_param _name_ = {							\
 	.data = _data_,										\
 	.min = _min_,										\
 	.max = _max_,										\
 	.step = _step_,										\
+	.shift_step = _shift_step_,							\
 	.modify = _modify_,									\
 	.print = _print_,									\
 	.changed = _changed_,								\

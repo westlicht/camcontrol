@@ -75,6 +75,9 @@ void globals_default(void)
 	globals.fov_v = compute_fov_angle(globals.focal_length, globals.sensor_height);
 	globals.center_h = 0;
 	globals.center_v = 0;
+	globals.hdr_time1 = 0;
+	globals.hdr_time2 = 0;
+	globals.hdr_shots = 5;
 }
 
 /**

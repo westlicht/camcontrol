@@ -10,6 +10,7 @@
 /** MMI active object structure */
 struct mmi_ao {
 	QActive super;
+	int shift;
 };
 
 static QState mmi_initial(struct mmi_ao *me);
@@ -52,8 +53,8 @@ static QState mmi_hello(struct mmi_ao *me)
 	switch (Q_SIG(me)) {
 	case Q_ENTRY_SIG:
 		// Print hello message
-		lcd_write(0, 0, " CamControl 0.1");
-		lcd_write(0, 1, "----------------");
+		lcd_write(0, 0, " CamControl 0.1", 0);
+		lcd_write(0, 1, "----------------", 0);
 		QActive_arm((QActive *) me, TIMEOUT_HELLO);
 		return Q_HANDLED();
 	case Q_EXIT_SIG:
@@ -90,7 +91,7 @@ static QState mmi_navigate(struct mmi_ao *me)
 		switch (menu_cur->typ) {
 		case MENU_TYP_PARAM:
 			if (menu_cur->u.param->modify)
-				if (menu_cur->u.param->modify(menu_cur, Q_PAR(me))) {
+				if (menu_cur->u.param->modify(menu_cur, Q_PAR(me), me->shift)) {
 					if (menu_cur->u.param->print)
 						menu_cur->u.param->print(menu_cur);
 					if (menu_cur->u.param->changed)
@@ -98,18 +99,6 @@ static QState mmi_navigate(struct mmi_ao *me)
 				}
 			break;
 		default:
-			switch (Q_PAR(me)) {
-			case ENC_UP:
-				// Go to previous item
-				if (menu_prev())
-					update_screen(me);
-				break;
-			case ENC_DOWN:
-				// Go to next item
-				if (menu_next())
-					update_screen(me);
-				break;
-			}
 			break;
 		}
 		return Q_HANDLED();
@@ -136,6 +125,7 @@ static QState mmi_navigate(struct mmi_ao *me)
 				update_screen(me);
 			break;
 		case KEY_ENTER:
+			me->shift = 1;
 			switch (menu_cur->typ) {
 			case MENU_TYP_CMD:
 				// Execute command
@@ -153,6 +143,14 @@ static QState mmi_navigate(struct mmi_ao *me)
 			break;
 		}
 		return Q_HANDLED();
+	case SIG_KEY_RELEASE:
+		switch (Q_PAR(me)) {
+		case KEY_ENTER:
+			me->shift = 0;
+		default:
+			break;
+		}
+		return Q_HANDLED();
 	}
 
 	return Q_SUPER(&QHsm_top);
@@ -161,7 +159,7 @@ static QState mmi_navigate(struct mmi_ao *me)
 static void update_screen(struct mmi_ao *me)
 {
 	lcd_clear();
-	lcd_write(0, 0, (char *) menu_cur->name);
+	lcd_write(0, 0, (char *) menu_cur->name, 0);
 
 	switch (menu_cur->typ) {
 	case MENU_TYP_PARAM:
