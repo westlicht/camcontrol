@@ -32,15 +32,10 @@
 #include "qpn_port.h"
 #include "bsp.h"
 #include "lcd.h"
+#include "key.h"
 #include "debug.h"
 #include "defines.h"
 
-
-
-#define LED_ON(num_)       (PORTD |= (1 << (num_)))
-#define LED_OFF(num_)      (PORTD &= ~(1 << (num_)))
-#define LED_ON_ALL()       (PORTD = 0xFF)
-#define LED_OFF_ALL()      (PORTD = 0x00)
 
 void bsp_init(void)
 {
@@ -76,15 +71,22 @@ void bsp_init(void)
 
 ISR(TIMER0_COMP_vect)
 {
-	QF_tick();
+	static uint8_t counter;
+
+	key_scan();
+	if (++counter >= BSP_MS_PER_TICK) {
+		QF_tick();
+		counter = 0;
+	}
 }
 
 void QF_onStartup(void)
 {
 	cli();
 
-    // Set the output compare value
-    OCR0  = ((F_CPU / 1024) / BSP_TICKS_PER_SEC - 1);
+	// Timer0 is used both for key scanning as well as system ticks
+    // Set the output compare value (tick once per millisecond)
+    OCR0  = ((F_CPU / 1024) / 1000 - 1);
 	// Set Timer0 in CTC mode, 1/1024 prescaler, start the timer ticking
 	TCCR0 = ((1 << WGM01) | (0 << WGM00) | (7 << CS00));
 	TIMSK |= _BV(OCIE0);

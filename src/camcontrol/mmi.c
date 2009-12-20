@@ -23,7 +23,7 @@ static void update_screen(struct mmi_ao *me);
 struct mmi_ao mmi_ao;
 
 enum timeouts {
-	TIMEOUT_HELLO = 200,
+	TIMEOUT_HELLO = TICKS(5000),
 };
 
 /**

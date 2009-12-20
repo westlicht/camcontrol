@@ -16,5 +16,6 @@
 #define ENC_DOWN	1
 
 void key_init(void);
+void key_scan(void);
 
 #endif // __KEY_H__

@@ -29,7 +29,19 @@ static void press(int index);
 static void release(int index);
 static void encoder(int dir);
 
-ISR(TIMER2_COMP_vect)
+
+void key_init(void)
+{
+	// Set button pins
+	PORTA &= ~0x1f;
+	DDRA &= ~0x1f;
+
+	// Set ENC pins
+	PORTB &= ~0x0c;
+	DDRB &= ~0x0c;
+}
+
+void key_scan(void)
 {
 	int i;
 	uint8_t enc;
@@ -86,25 +98,6 @@ ISR(TIMER2_COMP_vect)
 		break;
 	}
 }
-
-void key_init(void)
-{
-	// Set button pins
-	PORTA &= ~0x1f;
-	DDRA &= ~0x1f;
-
-	// Set ENC pins
-	PORTB &= ~0x0c;
-	DDRB &= ~0x0c;
-
-    // Set compare register
-    OCR2 = 32;
-	// Set Timer2 in CTC mode, 1/1024 prescaler
-    TCCR2 = ((1 << WGM01) | (0 << WGM00) | (5 << CS00));
-    // Enable compare interrupt
-    TIMSK |= _BV(OCIE2);
-}
-
 
 static void press(int index)
 {

@@ -31,10 +31,10 @@
 /* CPU frequency */
 #define F_CPU				16000000UL
 
-/* Ticks per second */
-#define BSP_TICKS_PER_SEC	100UL
+#define BSP_TICKS_PER_SEC	50				/**< Ticks per second */
 
-#define TICKS(_ms_) ((_ms_) / (1000UL / BSP_TICKS_PER_SEC))
+#define BSP_MS_PER_TICK		(1000UL / BSP_TICKS_PER_SEC)
+#define TICKS(_ms_) ((_ms_) / BSP_MS_PER_TICK)
 
 void bsp_init(void);
 

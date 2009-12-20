@@ -3,7 +3,7 @@
 #include <math.h>
 
 #include <avr/eeprom.h>
-#include <avr/crc16.h>
+#include <util/crc16.h>
 
 #include "globals.h"
 
