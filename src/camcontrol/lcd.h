@@ -20,3 +20,4 @@ void lcd_init(void);
 
 void lcd_clear(void);
 void lcd_write(int x, int y, char *str, int flags);
+void lcd_char(int x, int y, char c);

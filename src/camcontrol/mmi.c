@@ -7,6 +7,7 @@
 #include "debug.h"
 #include "globals.h"
 #include "shutter.h"
+#include "prog.h"
 
 /** MMI active object structure */
 struct mmi_ao {
@@ -17,6 +18,7 @@ struct mmi_ao {
 static QState mmi_initial(struct mmi_ao *me);
 static QState mmi_hello(struct mmi_ao *me);
 static QState mmi_navigate(struct mmi_ao *me);
+static QState mmi_busy(struct mmi_ao *me);
 
 static void update_screen(struct mmi_ao *me);
 
@@ -25,6 +27,7 @@ struct mmi_ao mmi_ao;
 
 enum timeouts {
 	TIMEOUT_HELLO = TICKS(5000),
+	TIMEOUT_BUSY = TICKS(250),
 };
 
 /**
@@ -152,6 +155,9 @@ static QState mmi_navigate(struct mmi_ao *me)
 			break;
 		}
 		return Q_HANDLED();
+	case SIG_PROG_START:
+		return Q_TRAN(mmi_busy);
+		break;
 	}
 
 	return Q_SUPER(&QHsm_top);
@@ -172,6 +178,37 @@ static void update_screen(struct mmi_ao *me)
 	}
 }
 
+static QState mmi_busy(struct mmi_ao *me)
+{
+	static const char busy_char[] = "abc";
+	static uint8_t busy_index;
+
+	switch (Q_SIG(me)) {
+	case Q_ENTRY_SIG:
+		// Print hello message
+		lcd_clear();
+		lcd_write(0, 0, "Busy ...", 0);
+		QActive_arm((QActive *) me, TIMEOUT_BUSY);
+		return Q_HANDLED();
+	case Q_EXIT_SIG:
+		QActive_disarm((QActive *) me);
+		return Q_HANDLED();
+	case Q_TIMEOUT_SIG:
+		lcd_char(15, 0, busy_char[busy_index]);
+		busy_index = (busy_index + 1) % (sizeof(busy_char) - 1);
+		QActive_arm((QActive *) me, TIMEOUT_BUSY);
+		return Q_HANDLED();
+	case SIG_KEY_PRESS:
+		if (Q_PAR(me) == KEY_ENTER) {
+			QActive_post((QActive *) &prog_ao, SIG_PROG_STOP, 0);
+			return Q_TRAN(mmi_navigate);
+		}
+		return Q_HANDLED();;
+	}
+
+	return Q_SUPER(&QHsm_top);
+}
+
 // Menu handlers
 
 void start_panorama_handler(void)
@@ -186,7 +223,8 @@ void start_hdr_handler(void)
 
 void start_timelapse_handler(void)
 {
-
+	QActive_post((QActive *) &prog_ao, SIG_PROG_START, PROG_TIMELAPSE);
+	QActive_post((QActive *) &mmi_ao, SIG_PROG_START, PROG_TIMELAPSE);
 }
 
 void save_settings_handler(void)
