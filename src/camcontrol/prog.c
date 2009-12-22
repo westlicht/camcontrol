@@ -15,6 +15,7 @@ struct prog_ao {
 static QState prog_initial(struct prog_ao *me);
 static QState prog_idle(struct prog_ao *me);
 static QState prog_timelapse(struct prog_ao *me);
+static QState   prog_timelapse_wait(struct prog_ao *me);
 
 /** Program active object */
 struct prog_ao prog_ao;
@@ -70,23 +71,32 @@ static QState prog_timelapse(struct prog_ao *me)
 	switch (Q_SIG(me)) {
 	case Q_ENTRY_SIG:
 		me->seconds = 0;
+		QActive_post((QActive *) &shutter_ao, SIG_SHUTTER_START, 0);
 		QActive_arm((QActive *) me, TIMEOUT_SECOND);
-		shutter_trigger(100000);
 		return Q_HANDLED();
 	case Q_EXIT_SIG:
+		QActive_post((QActive *) &shutter_ao, SIG_SHUTTER_STOP, 0);
 		QActive_disarm((QActive *) me);
 		return Q_HANDLED();
 	case Q_TIMEOUT_SIG:
 		me->seconds++;
 		if (me->seconds == globals.timelapse_rate) {
-			shutter_trigger(100000);
+			// FIXME we could overflow the sutter queue if shutter is not done yet
+			QActive_post((QActive *) &shutter_ao, SIG_SHUTTER_START, 0);
 			me->seconds = 0;
 		}
 		QActive_arm((QActive *) me, TIMEOUT_SECOND);
 		return Q_HANDLED();
 	case SIG_PROG_STOP:
 		return Q_TRAN(prog_idle);
+	case SIG_SHUTTER_DONE:
+		return Q_HANDLED();
 	}
 
 	return Q_SUPER(&QHsm_top);
+}
+
+static QState prog_timelapse_wait(struct prog_ao *me)
+{
+
 }

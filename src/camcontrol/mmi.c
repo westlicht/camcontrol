@@ -231,3 +231,21 @@ void save_settings_handler(void)
 {
 	globals_save();
 }
+
+void servo_min_handler(void)
+{
+	servo_set_pos(0, 0.0);
+	servo_set_pos(1, 0.0);
+}
+
+void servo_center_handler(void)
+{
+	servo_set_pos(0, 0.5);
+	servo_set_pos(1, 0.5);
+}
+
+void servo_max_handler(void)
+{
+	servo_set_pos(0, 1.0);
+	servo_set_pos(1, 1.0);
+}

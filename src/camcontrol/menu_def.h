@@ -8,6 +8,9 @@ extern void start_panorama_handler(void);
 extern void start_hdr_handler(void);
 extern void start_timelapse_handler(void);
 extern void save_settings_handler(void);
+extern void servo_min_handler(void);
+extern void servo_center_handler(void);
+extern void servo_max_handler(void);
 
 static const struct menu_item page_panorama[] = {
 	{
@@ -71,6 +74,18 @@ static const struct menu_item page_setup[] = {
 	}
 };
 
+static const struct menu_item page_test[] = {
+	{
+		MENU_ITEM_CMD("Servo min", servo_min_handler),
+	}, {
+		MENU_ITEM_CMD("Servo center", servo_center_handler),
+	}, {
+		MENU_ITEM_CMD("Servo max", servo_max_handler),
+	}, {
+		MENU_ITEM_LAST(),
+	}
+};
+
 static const struct menu_item page_main[] = {
 	{
 		MENU_ITEM_SUB("Panorama", page_panorama),
@@ -80,6 +95,8 @@ static const struct menu_item page_main[] = {
 		MENU_ITEM_SUB("Timelapse", page_timelapse),
 	}, {
 		MENU_ITEM_SUB("Settings", page_setup),
+	}, {
+		MENU_ITEM_SUB("Test", page_test),
 	}, {
 		MENU_ITEM_LAST(),
 	}
