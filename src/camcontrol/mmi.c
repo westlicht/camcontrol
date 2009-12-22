@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "qpn_port.h"
 #include "bsp.h"
 #include "camcontrol.h"
@@ -19,9 +20,10 @@ struct mmi_ao {
 static QState mmi_initial(struct mmi_ao *me);
 static QState mmi_hello(struct mmi_ao *me);
 static QState mmi_navigate(struct mmi_ao *me);
+static QState mmi_spherical_pan(struct mmi_ao *me);
 static QState mmi_busy(struct mmi_ao *me);
 
-static void execute_cmd(struct mmi_ao *me, int cmd);
+static QState execute_cmd(struct mmi_ao *me, int cmd);
 static int modify_param(const struct param *param, int dir, int shift);
 static void print_param(const struct param *param);
 
@@ -107,8 +109,7 @@ static QState mmi_navigate(struct mmi_ao *me)
 		}
 		return Q_HANDLED();
 	case SIG_EXECUTE_CMD:
-		execute_cmd(me, Q_PAR(me));
-		return Q_HANDLED();
+		return execute_cmd(me, Q_PAR(me));
 	case SIG_KEY_PRESS:
 		switch (Q_PAR(me)) {
 		case KEY_UP:
@@ -165,6 +166,36 @@ static QState mmi_navigate(struct mmi_ao *me)
 	return Q_SUPER(&QHsm_top);
 }
 
+static QState mmi_spherical_pan(struct mmi_ao *me)
+{
+	char tmp[17];
+
+	switch (Q_SIG(me)) {
+	case Q_ENTRY_SIG:
+		prog_init_spherical_pan();
+		lcd_clear();
+		lcd_write(0, 0, "Spherical pan", 0);
+		snprintf(tmp, sizeof(tmp), "%dx%d", spherical_pan.tiles_x, spherical_pan.tiles_y);
+		lcd_write(0, 1, tmp, 0);
+		return Q_HANDLED();
+	case Q_EXIT_SIG:
+		return Q_HANDLED();
+	case Q_TIMEOUT_SIG:
+		return Q_HANDLED();
+	case SIG_KEY_PRESS:
+		switch (Q_PAR(me)) {
+		case KEY_ENTER:
+			QActive_post((QActive *) &prog_ao, SIG_PROG_START, PROG_SPHERICAL_PAN);
+			return Q_TRAN(mmi_busy);
+		case KEY_LEFT:
+			return Q_TRAN(mmi_navigate);
+		}
+		return Q_HANDLED();;
+	}
+
+	return Q_SUPER(&QHsm_top);
+}
+
 static QState mmi_busy(struct mmi_ao *me)
 {
 	static const char busy_char[] = "abc";
@@ -186,7 +217,7 @@ static QState mmi_busy(struct mmi_ao *me)
 		QActive_arm((QActive *) me, TIMEOUT_BUSY);
 		return Q_HANDLED();
 	case SIG_KEY_PRESS:
-		if (Q_PAR(me) == KEY_ENTER) {
+		if (Q_PAR(me) == KEY_LEFT) {
 			QActive_post((QActive *) &prog_ao, SIG_PROG_STOP, 0);
 			return Q_TRAN(mmi_navigate);
 		}
@@ -196,13 +227,13 @@ static QState mmi_busy(struct mmi_ao *me)
 	return Q_SUPER(&QHsm_top);
 }
 
-static void execute_cmd(struct mmi_ao *me, int cmd)
+static QState execute_cmd(struct mmi_ao *me, int cmd)
 {
 	switch (cmd) {
 	case CMD_SINGLE_SHOT:
 		break;
 	case CMD_SPHERICAL_PAN:
-		break;
+		return Q_TRAN(mmi_spherical_pan);
 	case CMD_GIGA_PAN:
 		break;
 	case CMD_TIMELAPSE:
@@ -224,6 +255,8 @@ static void execute_cmd(struct mmi_ao *me, int cmd)
 		servo_set_pos(1, 1.0);
 		break;
 	}
+
+	return Q_HANDLED();
 }
 
 static int modify_param(const struct param *param, int dir, int shift)

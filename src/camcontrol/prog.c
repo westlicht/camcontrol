@@ -20,6 +20,8 @@ static QState   prog_timelapse_wait(struct prog_ao *me);
 /** Program active object */
 struct prog_ao prog_ao;
 
+struct spherical_pan spherical_pan;
+
 enum timeouts {
 	TIMEOUT_SECOND = TICKS(1000),
 };
@@ -30,6 +32,17 @@ enum timeouts {
 void prog_ctor(void)
 {
 	QActive_ctor((QActive *) &prog_ao, (QStateHandler) prog_initial);
+}
+
+/**
+ * Prepares the spherical pan parameters.
+ */
+void prog_init_spherical_pan(void)
+{
+	spherical_pan.fov_x = 10.0;
+	spherical_pan.fov_y = 15.0;
+	spherical_pan.tiles_x = 10;
+	spherical_pan.tiles_y = 5;
 }
 
 /**
