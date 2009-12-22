@@ -9,6 +9,7 @@
 #include "camcontrol.h"
 #include "defines.h"
 #include "shutter.h"
+#include "prog.h"
 
 /** Shutter active object structure */
 struct shutter_ao {

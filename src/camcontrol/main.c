@@ -8,6 +8,8 @@
 #include "delay.h"
 #include "shutter.h"
 #include "param.h"
+#include "mmi.h"
+#include "prog.h"
 
 /* Event queues */
 static QEvent mmi_queue[8];

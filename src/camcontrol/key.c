@@ -5,8 +5,9 @@
 #include <avr/interrupt.h>
 #include "qpn_port.h"
 #include "camcontrol.h"
-#include "key.h"
 #include "debug.h"
+#include "mmi.h"
+#include "key.h"
 
 #define NUM_KEYS		5
 #define NUM_DEBOUNCE	10
