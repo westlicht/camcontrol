@@ -73,43 +73,43 @@ const char *shutter_mode[NUM_SHUTTER_MODES] = {
 
 
 
-static void print_decimal(struct param *param, char *str, int len)
+static void print_decimal(const struct param *param, char *str, int len)
 {
 	uint16_t *value = param->value;
 	snprintf(str, len, "%u", *value);
 }
 
-static void print_mm(struct param *param, char *str, int len)
+static void print_mm(const struct param *param, char *str, int len)
 {
 	uint16_t *value = param->value;
 	snprintf(str, len, "%u.%01u mm", *value / 10, *value % 10);
 }
 
-static void print_deg(struct param *param, char *str, int len)
+static void print_deg(const struct param *param, char *str, int len)
 {
 	uint16_t *value = param->value;
 	snprintf(str, len, "%u deg", *value);
 }
 
-static void print_shutter_time(struct param *param, char *str, int len)
+static void print_shutter_time(const struct param *param, char *str, int len)
 {
 	uint8_t *value = param->value;
 	snprintf(str, len, "%s", shutter_time[*value].name);
 }
 
-static void print_shutter_mode(struct param *param, char *str, int len)
+static void print_shutter_mode(const struct param *param, char *str, int len)
 {
 	uint8_t *value = param->value;
 	snprintf(str, len, "%s", shutter_mode[*value]);
 }
 
-static void print_trigger_delay(struct param *param, char *str, int len)
+static void print_trigger_delay(const struct param *param, char *str, int len)
 {
 	uint16_t *value = param->value;
 	snprintf(str, len, "%u.%02u", *value / 100, *value % 100);
 }
 
-static void print_timelapse_rate(struct param *param, char *str, int len)
+static void print_timelapse_rate(const struct param *param, char *str, int len)
 {
 	uint32_t *value = param->value;
 	snprintf(str, len, "%02lu:%02lu:%02lu", *value / 3600, (*value / 60) % 60, *value % 60);
