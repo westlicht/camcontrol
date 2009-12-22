@@ -61,7 +61,7 @@ struct param_class {
 	uint32_t def;
 	uint8_t step;
 	uint8_t shift_step;
-	void (*print)(struct param *param, char *str, int len);
+	void (*print)(const struct param *param, char *str, int len);
 };
 
 /** Parameter definition */

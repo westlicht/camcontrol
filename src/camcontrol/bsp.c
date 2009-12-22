@@ -28,7 +28,6 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
-#include <string.h>
 #include "qpn_port.h"
 #include "bsp.h"
 #include "lcd.h"

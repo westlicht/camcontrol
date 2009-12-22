@@ -73,56 +73,6 @@ const char *shutter_mode[NUM_SHUTTER_MODES] = {
 
 
 
-static int modify_uint(struct param *param, uint32_t *value, int dir, int shift)
-{
-	uint8_t step = shift ? param->class->shift_step : param->class->step;
-
-	if (dir > 0 && *value > param->class->min) {
-		if (step > *value - param->class->min)
-			step = *value - param->class->min;
-		(*value) -= step;
-		return 1;
-	}
-	if (dir < 0 && *value < param->class->max) {
-		if (step > param->class->max - *value)
-			step = param->class->max - *value;
-		(*value) += step;
-		return 1;
-	}
-
-	return 0;
-}
-
-static int modify_uint8(struct param *param, int dir, int shift)
-{
-	int ret;
-	uint32_t value = *((uint8_t *) param->value);
-	ret = modify_uint(param, &value, dir, shift);
-	if (ret)
-		*((uint8_t *) param->value) = value;
-	return ret;
-}
-
-static int modify_uint16(struct param *param, int dir, int shift)
-{
-	int ret;
-	uint32_t value = *((uint16_t *) param->value);
-	ret = modify_uint(param, &value, dir, shift);
-	if (ret)
-		*((uint16_t *) param->value) = value;
-	return ret;
-}
-
-static int modify_uint32(struct param *param, int dir, int shift)
-{
-	int ret;
-	uint32_t value = *((uint32_t *) param->value);
-	ret = modify_uint(param, &value, dir, shift);
-	if (ret)
-		*((uint32_t *) param->value) = value;
-	return ret;
-}
-
 static void print_decimal(struct param *param, char *str, int len)
 {
 	uint16_t *value = param->value;
