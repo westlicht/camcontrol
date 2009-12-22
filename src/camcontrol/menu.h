@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include "param.h"
+#include "mmi.h"
 
 /** Menu node types */
 typedef enum {
@@ -24,10 +25,8 @@ struct menu_item {
 	menu_typ_t typ;
 	const char *name;
 	const struct menu_item *sub;
-	union {
-		int cmd;
-		const struct param *param;
-	} u;
+	enum command cmd;
+	const struct param *param;
 };
 
 #define MENU_ITEM(_name_)								\
@@ -44,12 +43,13 @@ struct menu_item {
 	.typ = MENU_TYP_CMD,								\
 	.name = _name_,										\
 	.sub = NULL,										\
-	.u.cmd = _cmd_
+	.cmd = _cmd_
 
-#define MENU_ITEM_PARAM(_name_, _param_) 				\
+#define MENU_ITEM_PARAM(_name_, _param_, _cmd_) 		\
 	.typ = MENU_TYP_PARAM,								\
 	.name = _name_,										\
-	.u.param = _param_
+	.cmd = _cmd_,										\
+	.param = _param_
 
 #define MENU_ITEM_LAST()								\
 	.typ = MENU_TYP_LAST

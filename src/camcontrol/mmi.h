@@ -3,14 +3,20 @@
 #define __MMI_H__
 
 /* Commands */
-#define CMD_SINGLE_SHOT		0
-#define CMD_SPHERICAL_PAN	1
-#define CMD_GIGA_PAN		2
-#define CMD_TIMELAPSE		3
-#define CMD_SAVE			4
-#define CMD_SERVO_MIN		5
-#define CMD_SERVO_CENTER	6
-#define CMD_SERVO_MAX		7
+enum command {
+	CMD_NONE,
+	/* Regular commands */
+	CMD_SINGLE_SHOT,
+	CMD_SPHERICAL_PAN,
+	CMD_GIGA_PAN,
+	CMD_TIMELAPSE,
+	CMD_SAVE,
+	CMD_SERVO_MIN,
+	CMD_SERVO_CENTER,
+	CMD_SERVO_MAX,
+	/* Parameter commands */
+	CMD_UPDATE_CENTER,
+};
 
 extern struct mmi_ao mmi_ao;
 

@@ -101,8 +101,11 @@ static QState mmi_navigate(struct mmi_ao *me)
 	case SIG_ENCODER:
 		switch (menu_cur->typ) {
 		case MENU_TYP_PARAM:
-			if (modify_param(menu_cur->u.param, Q_PAR(me), me->shift))
-				print_param(menu_cur->u.param);
+			if (modify_param(menu_cur->param, Q_PAR(me), me->shift)) {
+				print_param(menu_cur->param);
+				if (menu_cur->cmd != CMD_NONE)
+					QActive_post((QActive *) me, SIG_EXECUTE_CMD, menu_cur->cmd);
+			}
 			break;
 		default:
 			break;
@@ -137,7 +140,8 @@ static QState mmi_navigate(struct mmi_ao *me)
 			switch (menu_cur->typ) {
 			case MENU_TYP_CMD:
 				// Execute command
-				QActive_post((QActive *) me, SIG_EXECUTE_CMD, menu_cur->u.cmd);
+				if (menu_cur->cmd)
+					QActive_post((QActive *) me, SIG_EXECUTE_CMD, menu_cur->cmd);
 				break;
 			case MENU_TYP_SUB:
 				// Go to sub item
@@ -254,6 +258,10 @@ static QState execute_cmd(struct mmi_ao *me, int cmd)
 		servo_set_pos(0, 1.0);
 		servo_set_pos(1, 1.0);
 		break;
+	case CMD_UPDATE_CENTER:
+		servo_set_pos(0, pd.center_x / 360.0);
+		servo_set_pos(1, pd.center_y / 180.0);
+		break;
 	}
 
 	return Q_HANDLED();
@@ -286,7 +294,7 @@ static void print_param(const struct param *param)
 {
 	char tmp[17];
 
-	param_print(menu_cur->u.param, tmp, sizeof(tmp));
+	param_print(menu_cur->param, tmp, sizeof(tmp));
 	lcd_write(0, 1, tmp, LCD_FILL_BLANK);
 }
 
@@ -296,7 +304,7 @@ static void update_screen(struct mmi_ao *me)
 	lcd_write(0, 0, (char *) menu_cur->name, 0);
 	switch (menu_cur->typ) {
 	case MENU_TYP_PARAM:
-		print_param(menu_cur->u.param);
+		print_param(menu_cur->param);
 		break;
 	default:
 		break;

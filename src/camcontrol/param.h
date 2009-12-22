@@ -12,10 +12,6 @@ struct param_data {
 	uint16_t focal_length;		/**< Focal length (mm * 0.1) */
 	uint16_t sensor_width;		/**< Sensor width (mm * 0.1) */
 	uint16_t sensor_height;		/**< Sensor height (mm * 0.1) */
-	uint16_t fov_h;				/**< Horizontal field of view (deg * 0.01) */
-	uint16_t fov_v;				/**< Vertical field of view (deg * 0.01) */
-	uint16_t center_h;			/**< Horizontal center position (deg) */
-	uint16_t center_v;			/**< Vertical center position (deg) */
 	uint16_t pan_width;			/**< Panorama width (deg) */
 	uint16_t pan_height;		/**< Panorama height (deg) */
 	uint8_t shutter_mode;		/**< Shutter mode */
@@ -24,6 +20,8 @@ struct param_data {
 	uint16_t hdr_shots;			/**< Number of shots per HDR series */
 	uint16_t trigger_delay;		/**< Trigger delay between shots in s * 0.01 */
 	uint32_t timelapse_rate;	/**< Timelapse trigger rate in s */
+	uint16_t center_x;			/**< Horizontal center position (deg) */
+	uint16_t center_y;			/**< Vertical center position (deg) */
 };
 
 /** Parameter data */
