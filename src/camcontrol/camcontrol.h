@@ -7,6 +7,7 @@ enum signals {						/**< Description			Parameter		*/
 	SIG_KEY_PRESS = Q_USER_SIG,		/**< Key pressed			Key index		*/
 	SIG_KEY_RELEASE,				/**< Key release			Key index		*/
 	SIG_ENCODER,					/**< Encoder turned			Direction		*/
+	SIG_EXECUTE_CMD,				/**< Executes a command		Command			*/
 	SIG_PROG_START,					/**< Starts the program		Program			*/
 	SIG_PROG_STOP,					/**< Stops the program		-				*/
 	SIG_SHUTTER_START,				/**< Starts the shutter		-				*/

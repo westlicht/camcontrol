@@ -7,6 +7,8 @@
 #include "debug.h"
 #include "shutter.h"
 #include "prog.h"
+#include "mmi.h"
+#include "servo.h"
 
 /** MMI active object structure */
 struct mmi_ao {
@@ -19,6 +21,7 @@ static QState mmi_hello(struct mmi_ao *me);
 static QState mmi_navigate(struct mmi_ao *me);
 static QState mmi_busy(struct mmi_ao *me);
 
+static void execute_cmd(struct mmi_ao *me, int cmd);
 static int modify_param(const struct param *param, int dir, int shift);
 static void print_param(const struct param *param);
 
@@ -103,6 +106,9 @@ static QState mmi_navigate(struct mmi_ao *me)
 			break;
 		}
 		return Q_HANDLED();
+	case SIG_EXECUTE_CMD:
+		execute_cmd(me, Q_PAR(me));
+		return Q_HANDLED();
 	case SIG_KEY_PRESS:
 		switch (Q_PAR(me)) {
 		case KEY_UP:
@@ -130,8 +136,7 @@ static QState mmi_navigate(struct mmi_ao *me)
 			switch (menu_cur->typ) {
 			case MENU_TYP_CMD:
 				// Execute command
-				if (menu_cur->u.cmd.handler)
-					menu_cur->u.cmd.handler();
+				QActive_post((QActive *) me, SIG_EXECUTE_CMD, menu_cur->u.cmd);
 				break;
 			case MENU_TYP_SUB:
 				// Go to sub item
@@ -191,6 +196,35 @@ static QState mmi_busy(struct mmi_ao *me)
 	return Q_SUPER(&QHsm_top);
 }
 
+static void execute_cmd(struct mmi_ao *me, int cmd)
+{
+	switch (cmd) {
+	case CMD_SINGLE_SHOT:
+		break;
+	case CMD_SPHERICAL_PAN:
+		break;
+	case CMD_GIGA_PAN:
+		break;
+	case CMD_TIMELAPSE:
+		QActive_post((QActive *) &prog_ao, SIG_PROG_START, PROG_TIMELAPSE);
+		QActive_post((QActive *) &mmi_ao, SIG_PROG_START, PROG_TIMELAPSE);
+		break;
+	case CMD_SAVE:
+		break;
+	case CMD_SERVO_MIN:
+		servo_set_pos(0, 0.0);
+		servo_set_pos(1, 0.0);
+		break;
+	case CMD_SERVO_CENTER:
+		servo_set_pos(0, 0.5);
+		servo_set_pos(1, 0.5);
+		break;
+	case CMD_SERVO_MAX:
+		servo_set_pos(0, 1.0);
+		servo_set_pos(1, 1.0);
+		break;
+	}
+}
 
 static int modify_param(const struct param *param, int dir, int shift)
 {
@@ -234,51 +268,4 @@ static void update_screen(struct mmi_ao *me)
 	default:
 		break;
 	}
-}
-
-// Menu handlers
-
-
-void exec_single_shot(void)
-{
-
-}
-
-void exec_spherical_pan(void)
-{
-
-}
-
-void exec_giga_pan(void)
-{
-
-}
-
-void exec_timelapse(void)
-{
-	QActive_post((QActive *) &prog_ao, SIG_PROG_START, PROG_TIMELAPSE);
-	QActive_post((QActive *) &mmi_ao, SIG_PROG_START, PROG_TIMELAPSE);
-}
-
-void exec_save(void)
-{
-	param_save();
-}
-
-void exec_servo_min(void)
-{
-	servo_set_pos(0, 0.0);
-	servo_set_pos(1, 0.0);
-}
-
-void exec_servo_center(void)
-{
-	servo_set_pos(0, 0.5);
-	servo_set_pos(1, 0.5);
-}
-
-void exec_servo_max(void)
-{
-	servo_set_pos(0, 1.0);
-	servo_set_pos(1, 1.0);
 }

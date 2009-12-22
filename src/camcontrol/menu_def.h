@@ -2,21 +2,13 @@
 #define __MENU_DEF_H__
 
 #include "param.h"
-
-extern void exec_single_shot(void);
-extern void exec_spherical_pan(void);
-extern void exec_giga_pan(void);
-extern void exec_timelapse(void);
-extern void exec_save(void);
-extern void exec_servo_min(void);
-extern void exec_servo_center(void);
-extern void exec_servo_max(void);
+#include "mmi.h"
 
 static const struct menu_item page_single_shot[] = {
 	{
 		MENU_ITEM_PARAM("Shutter mode", &p_shutter_mode),
 	}, {
-		MENU_ITEM_CMD("Start", exec_single_shot),
+		MENU_ITEM_CMD("Start", CMD_SINGLE_SHOT),
 	}, {
 		MENU_ITEM_LAST(),
 	}
@@ -28,7 +20,7 @@ static const struct menu_item page_spherical_pan[] = {
 	}, {
 		MENU_ITEM_PARAM("Shutter mode", &p_shutter_mode),
 	}, {
-		MENU_ITEM_CMD("Start", exec_spherical_pan),
+		MENU_ITEM_CMD("Start", CMD_SPHERICAL_PAN),
 	}, {
 		MENU_ITEM_LAST(),
 	}
@@ -40,7 +32,7 @@ static const struct menu_item page_giga_pan[] = {
 	}, {
 		MENU_ITEM_PARAM("Shutter mode", &p_shutter_mode),
 	}, {
-		MENU_ITEM_CMD("Start", exec_giga_pan),
+		MENU_ITEM_CMD("Start", CMD_GIGA_PAN),
 	}, {
 		MENU_ITEM_LAST(),
 	}
@@ -50,7 +42,7 @@ static const struct menu_item page_timelapse[] = {
 	{
 		MENU_ITEM_PARAM("Trigger rate", &p_timelapse_rate),
 	}, {
-		MENU_ITEM_CMD("Start", exec_timelapse),
+		MENU_ITEM_CMD("Start", CMD_TIMELAPSE),
 	}, {
 		MENU_ITEM_LAST(),
 	}
@@ -72,7 +64,7 @@ static const struct menu_item page_setup[] = {
 	}, {
 		MENU_ITEM_PARAM("Trigger delay", &p_trigger_delay),
 	}, {
-		MENU_ITEM_CMD("Save", exec_save),
+		MENU_ITEM_CMD("Save", CMD_SAVE),
 	}, {
 		MENU_ITEM_LAST(),
 	}
@@ -80,11 +72,11 @@ static const struct menu_item page_setup[] = {
 
 static const struct menu_item page_test[] = {
 	{
-		MENU_ITEM_CMD("Servo min", exec_servo_min),
+		MENU_ITEM_CMD("Servo min", CMD_SERVO_MIN),
 	}, {
-		MENU_ITEM_CMD("Servo center", exec_servo_center),
+		MENU_ITEM_CMD("Servo center", CMD_SERVO_CENTER),
 	}, {
-		MENU_ITEM_CMD("Servo max", exec_servo_max),
+		MENU_ITEM_CMD("Servo max", CMD_SERVO_MAX),
 	}, {
 		MENU_ITEM_LAST(),
 	}

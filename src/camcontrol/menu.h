@@ -25,9 +25,7 @@ struct menu_item {
 	const char *name;
 	const struct menu_item *sub;
 	union {
-		struct {
-			void (*handler)(void);	/**< Handler callback */
-		} cmd;
+		int cmd;
 		const struct param *param;
 	} u;
 };
@@ -42,11 +40,11 @@ struct menu_item {
 	.name = _name_,										\
 	.sub = _sub_
 
-#define MENU_ITEM_CMD(_name_, _handler_)				\
+#define MENU_ITEM_CMD(_name_, _cmd_)					\
 	.typ = MENU_TYP_CMD,								\
 	.name = _name_,										\
 	.sub = NULL,										\
-	.u.cmd.handler = _handler_
+	.u.cmd = _cmd_
 
 #define MENU_ITEM_PARAM(_name_, _param_) 				\
 	.typ = MENU_TYP_PARAM,								\
