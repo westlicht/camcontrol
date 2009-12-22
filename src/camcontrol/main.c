@@ -1,13 +1,13 @@
 #include "qpn_port.h"
 #include "bsp.h"
 #include "camcontrol.h"
-#include "globals.h"
 #include "lcd.h"
 #include "key.h"
 #include "debug.h"
 #include "servo.h"
 #include "delay.h"
 #include "shutter.h"
+#include "param.h"
 
 /* Event queues */
 static QEvent mmi_queue[8];
@@ -37,9 +37,7 @@ int main (void)
 	lcd_init();
 	key_init();
 
-	// Load from EEPROM or use default globals
-	if (globals_load() != 0)
-		globals_default();
+	param_init();
 
 	mmi_ctor();
 	prog_ctor();

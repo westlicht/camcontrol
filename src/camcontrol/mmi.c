@@ -5,7 +5,6 @@
 #include "key.h"
 #include "lcd.h"
 #include "debug.h"
-#include "globals.h"
 #include "shutter.h"
 #include "prog.h"
 
@@ -19,6 +18,9 @@ static QState mmi_initial(struct mmi_ao *me);
 static QState mmi_hello(struct mmi_ao *me);
 static QState mmi_navigate(struct mmi_ao *me);
 static QState mmi_busy(struct mmi_ao *me);
+
+static int modify_param(const struct param *param, int dir, int shift);
+static void print_param(const struct param *param);
 
 static void update_screen(struct mmi_ao *me);
 
@@ -94,13 +96,8 @@ static QState mmi_navigate(struct mmi_ao *me)
 	case SIG_ENCODER:
 		switch (menu_cur->typ) {
 		case MENU_TYP_PARAM:
-			if (menu_cur->u.param->modify)
-				if (menu_cur->u.param->modify(menu_cur, Q_PAR(me), me->shift)) {
-					if (menu_cur->u.param->print)
-						menu_cur->u.param->print(menu_cur);
-					if (menu_cur->u.param->changed)
-						menu_cur->u.param->changed(menu_cur);
-				}
+			if (modify_param(menu_cur->u.param, Q_PAR(me), me->shift))
+				print_param(menu_cur->u.param);
 			break;
 		default:
 			break;
@@ -163,21 +160,6 @@ static QState mmi_navigate(struct mmi_ao *me)
 	return Q_SUPER(&QHsm_top);
 }
 
-static void update_screen(struct mmi_ao *me)
-{
-	lcd_clear();
-	lcd_write(0, 0, (char *) menu_cur->name, 0);
-
-	switch (menu_cur->typ) {
-	case MENU_TYP_PARAM:
-		if (menu_cur->u.param->print)
-			menu_cur->u.param->print(menu_cur);
-		break;
-	default:
-		break;
-	}
-}
-
 static QState mmi_busy(struct mmi_ao *me)
 {
 	static const char busy_char[] = "abc";
@@ -209,42 +191,93 @@ static QState mmi_busy(struct mmi_ao *me)
 	return Q_SUPER(&QHsm_top);
 }
 
+
+static int modify_param(const struct param *param, int dir, int shift)
+{
+	uint8_t step = shift ? param->class->shift_step : param->class->step;
+	uint32_t value = param_get(param);
+
+	if (dir == ENC_UP && value > param->class->min) {
+		if (step > value - param->class->min)
+			step = value - param->class->min;
+		value -= step;
+		param_set(param, value);
+		return 1;
+	}
+	if (dir == ENC_DOWN && value < param->class->max) {
+		if (step > param->class->max - value)
+			step = param->class->max - value;
+		value += step;
+		param_set(param, value);
+		return 1;
+	}
+
+	return 0;
+}
+
+static void print_param(const struct param *param)
+{
+	char tmp[17];
+
+	param_print(menu_cur->u.param, tmp, sizeof(tmp));
+	lcd_write(0, 1, tmp, LCD_FILL_BLANK);
+}
+
+static void update_screen(struct mmi_ao *me)
+{
+	lcd_clear();
+	lcd_write(0, 0, (char *) menu_cur->name, 0);
+	switch (menu_cur->typ) {
+	case MENU_TYP_PARAM:
+		print_param(menu_cur->u.param);
+		break;
+	default:
+		break;
+	}
+}
+
 // Menu handlers
 
-void start_panorama_handler(void)
+
+void exec_single_shot(void)
 {
 
 }
 
-void start_hdr_handler(void)
+void exec_spherical_pan(void)
 {
-	shutter_trigger(shutter_time[globals.hdr_time1].us);
+
 }
 
-void start_timelapse_handler(void)
+void exec_giga_pan(void)
+{
+
+}
+
+void exec_timelapse(void)
 {
 	QActive_post((QActive *) &prog_ao, SIG_PROG_START, PROG_TIMELAPSE);
 	QActive_post((QActive *) &mmi_ao, SIG_PROG_START, PROG_TIMELAPSE);
 }
 
-void save_settings_handler(void)
+void exec_save(void)
 {
-	globals_save();
+	param_save();
 }
 
-void servo_min_handler(void)
+void exec_servo_min(void)
 {
 	servo_set_pos(0, 0.0);
 	servo_set_pos(1, 0.0);
 }
 
-void servo_center_handler(void)
+void exec_servo_center(void)
 {
 	servo_set_pos(0, 0.5);
 	servo_set_pos(1, 0.5);
 }
 
-void servo_max_handler(void)
+void exec_servo_max(void)
 {
 	servo_set_pos(0, 1.0);
 	servo_set_pos(1, 1.0);

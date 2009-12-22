@@ -2,9 +2,9 @@
 #include "bsp.h"
 #include "camcontrol.h"
 #include "debug.h"
-#include "globals.h"
 #include "shutter.h"
 #include "prog.h"
+#include "param.h"
 
 /** Program active object structure */
 struct prog_ao {
@@ -80,7 +80,7 @@ static QState prog_timelapse(struct prog_ao *me)
 		return Q_HANDLED();
 	case Q_TIMEOUT_SIG:
 		me->seconds++;
-		if (me->seconds == globals.timelapse_rate) {
+		if (me->seconds == pd.timelapse_rate) {
 			// FIXME we could overflow the sutter queue if shutter is not done yet
 			QActive_post((QActive *) &shutter_ao, SIG_SHUTTER_START, 0);
 			me->seconds = 0;

@@ -1,42 +1,46 @@
 #ifndef __MENU_DEF_H__
 #define __MENU_DEF_H__
 
-#include "globals.h"
-#include "menu_param.h"
+#include "param.h"
 
-extern void start_panorama_handler(void);
-extern void start_hdr_handler(void);
-extern void start_timelapse_handler(void);
-extern void save_settings_handler(void);
-extern void servo_min_handler(void);
-extern void servo_center_handler(void);
-extern void servo_max_handler(void);
+extern void exec_single_shot(void);
+extern void exec_spherical_pan(void);
+extern void exec_giga_pan(void);
+extern void exec_timelapse(void);
+extern void exec_save(void);
+extern void exec_servo_min(void);
+extern void exec_servo_center(void);
+extern void exec_servo_max(void);
 
-static const struct menu_item page_panorama[] = {
+static const struct menu_item page_single_shot[] = {
 	{
-		MENU_ITEM_PARAM("Panorama width", &param_pan_width),
+		MENU_ITEM_PARAM("Shutter mode", &p_shutter_mode),
 	}, {
-		MENU_ITEM_PARAM("Panorama height", &param_pan_height),
-	}, {
-		MENU_ITEM_PARAM("Focal length", &param_focal_length),
-	}, {
-		MENU_ITEM_PARAM("Shutter mode", &param_shutter_mode),
-	}, {
-		MENU_ITEM_CMD("Start", start_panorama_handler),
+		MENU_ITEM_CMD("Start", exec_single_shot),
 	}, {
 		MENU_ITEM_LAST(),
 	}
 };
 
-static const struct menu_item page_hdr[] = {
+static const struct menu_item page_spherical_pan[] = {
 	{
-		MENU_ITEM_PARAM("Shutter time 1", &param_hdr_time1),
+		MENU_ITEM_PARAM("Focal length", &p_focal_length),
 	}, {
-		MENU_ITEM_PARAM("Shutter time 2", &param_hdr_time2),
+		MENU_ITEM_PARAM("Shutter mode", &p_shutter_mode),
 	}, {
-		MENU_ITEM_PARAM("Num of shots", &param_hdr_shots),
+		MENU_ITEM_CMD("Start", exec_spherical_pan),
 	}, {
-		MENU_ITEM_CMD("Start", start_hdr_handler),
+		MENU_ITEM_LAST(),
+	}
+};
+
+static const struct menu_item page_giga_pan[] = {
+	{
+		MENU_ITEM_PARAM("Focal length", &p_focal_length),
+	}, {
+		MENU_ITEM_PARAM("Shutter mode", &p_shutter_mode),
+	}, {
+		MENU_ITEM_CMD("Start", exec_giga_pan),
 	}, {
 		MENU_ITEM_LAST(),
 	}
@@ -44,9 +48,9 @@ static const struct menu_item page_hdr[] = {
 
 static const struct menu_item page_timelapse[] = {
 	{
-		MENU_ITEM_PARAM("Trigger rate", &param_timelapse_rate),
+		MENU_ITEM_PARAM("Trigger rate", &p_timelapse_rate),
 	}, {
-		MENU_ITEM_CMD("Start", start_timelapse_handler),
+		MENU_ITEM_CMD("Start", exec_timelapse),
 	}, {
 		MENU_ITEM_LAST(),
 	}
@@ -54,21 +58,21 @@ static const struct menu_item page_timelapse[] = {
 
 static const struct menu_item page_setup[] = {
 	{
-		MENU_ITEM_PARAM("Focal length", &param_focal_length),
+		MENU_ITEM_PARAM("Focal length", &p_focal_length),
 	}, {
-		MENU_ITEM_PARAM("Sensor width", &param_sensor_width),
+		MENU_ITEM_PARAM("Sensor width", &p_sensor_width),
 	}, {
-		MENU_ITEM_PARAM("Sensor height", &param_sensor_height),
+		MENU_ITEM_PARAM("Sensor height", &p_sensor_height),
 	}, {
-		MENU_ITEM_PARAM("HDR min exposure", &param_hdr_time1),
+		MENU_ITEM_PARAM("HDR min exposure", &p_hdr_time1),
 	}, {
-		MENU_ITEM_PARAM("HDR max exposure", &param_hdr_time2),
+		MENU_ITEM_PARAM("HDR max exposure", &p_hdr_time2),
 	}, {
-		MENU_ITEM_PARAM("HDR shots", &param_hdr_shots),
+		MENU_ITEM_PARAM("HDR shots", &p_hdr_shots),
 	}, {
-		MENU_ITEM_PARAM("Trigger delay", &param_trigger_delay),
+		MENU_ITEM_PARAM("Trigger delay", &p_trigger_delay),
 	}, {
-		MENU_ITEM_CMD("Save", save_settings_handler),
+		MENU_ITEM_CMD("Save", exec_save),
 	}, {
 		MENU_ITEM_LAST(),
 	}
@@ -76,11 +80,11 @@ static const struct menu_item page_setup[] = {
 
 static const struct menu_item page_test[] = {
 	{
-		MENU_ITEM_CMD("Servo min", servo_min_handler),
+		MENU_ITEM_CMD("Servo min", exec_servo_min),
 	}, {
-		MENU_ITEM_CMD("Servo center", servo_center_handler),
+		MENU_ITEM_CMD("Servo center", exec_servo_center),
 	}, {
-		MENU_ITEM_CMD("Servo max", servo_max_handler),
+		MENU_ITEM_CMD("Servo max", exec_servo_max),
 	}, {
 		MENU_ITEM_LAST(),
 	}
@@ -88,9 +92,11 @@ static const struct menu_item page_test[] = {
 
 static const struct menu_item page_main[] = {
 	{
-		MENU_ITEM_SUB("Panorama", page_panorama),
+		MENU_ITEM_SUB("Single shot", page_single_shot),
 	}, {
-		MENU_ITEM_SUB("HDR", page_hdr),
+		MENU_ITEM_SUB("Spherical pan", page_spherical_pan),
+	}, {
+		MENU_ITEM_SUB("Giga pan", page_giga_pan),
 	}, {
 		MENU_ITEM_SUB("Timelapse", page_timelapse),
 	}, {

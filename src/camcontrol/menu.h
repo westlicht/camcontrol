@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include "param.h"
 
 /** Menu node types */
 typedef enum {
@@ -15,10 +16,8 @@ typedef enum {
 } menu_typ_t;
 
 struct menu_item;
-struct menu_param;
 
 typedef const struct menu_item *menu_item_t;
-typedef const struct menu_param *menu_param_t;
 
 /** Menu item */
 struct menu_item {
@@ -29,7 +28,7 @@ struct menu_item {
 		struct {
 			void (*handler)(void);	/**< Handler callback */
 		} cmd;
-		menu_param_t param;
+		const struct param *param;
 	} u;
 };
 
@@ -57,29 +56,6 @@ struct menu_item {
 #define MENU_ITEM_LAST()								\
 	.typ = MENU_TYP_LAST
 
-
-struct menu_param {
-	void *data;
-	uint32_t min;
-	uint32_t max;
-	uint8_t step;
-	uint8_t shift_step;
-	int (*modify)(menu_item_t item, int dir, int shift);
-	void (*print)(menu_item_t item);
-	void (*changed)(menu_item_t item);
-};
-
-#define MENU_PARAM(_name_, _data_, _min_, _max_, _step_, _shift_step_, _modify_, _print_, _changed_) \
-struct menu_param _name_ = {							\
-	.data = _data_,										\
-	.min = _min_,										\
-	.max = _max_,										\
-	.step = _step_,										\
-	.shift_step = _shift_step_,							\
-	.modify = _modify_,									\
-	.print = _print_,									\
-	.changed = _changed_,								\
-};
 
 
 
