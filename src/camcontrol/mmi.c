@@ -247,20 +247,16 @@ static QState execute_cmd(struct mmi_ao *me, int cmd)
 	case CMD_SAVE:
 		break;
 	case CMD_SERVO_MIN:
-		servo_set_pos(0, 0.0);
-		servo_set_pos(1, 0.0);
+		servo_move(0.0, 0.0);
 		break;
 	case CMD_SERVO_CENTER:
-		servo_set_pos(0, 0.5);
-		servo_set_pos(1, 0.5);
+		servo_move(180.0, 90.0);
 		break;
 	case CMD_SERVO_MAX:
-		servo_set_pos(0, 1.0);
-		servo_set_pos(1, 1.0);
+		servo_move(360.0, 180.0);
 		break;
 	case CMD_UPDATE_CENTER:
-		servo_set_pos(0, pd.center_x / 360.0);
-		servo_set_pos(1, pd.center_y / 180.0);
+		servo_move(pd.center_x, pd.center_y);
 		break;
 	}
 
