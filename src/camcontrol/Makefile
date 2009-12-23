@@ -186,5 +186,5 @@ clean:
 .PHONY: download
 
 download: all
-	$(AVRDUDE) -B 1 -p $(AVRDUDE_TARGET) -c $(AVRDUDE_PROGRAMMER) -P $(AVRDUDE_DEV) -e -U flash:w:$(BINDIR)/$(APP_NAME).hex
+	$(AVRDUDE) -B 1 -p $(AVRDUDE_TARGET) -c $(AVRDUDE_PROGRAMMER) -P $(AVRDUDE_DEV) -U flash:w:$(BINDIR)/$(APP_NAME).hex
 	
