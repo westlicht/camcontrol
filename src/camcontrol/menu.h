@@ -31,7 +31,7 @@ struct menu_item {
 	menu_typ_t typ;
 	const char *name;
 	const struct menu_item *sub;
-	enum command cmd;
+	int cmd;
 	const struct param *param;
 };
 

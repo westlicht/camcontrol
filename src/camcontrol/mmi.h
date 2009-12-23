@@ -9,7 +9,7 @@
 #define __MMI_H__
 
 /* Commands */
-enum command {
+enum commands {
 	CMD_NONE,
 	/* Regular commands */
 	CMD_SINGLE_SHOT,

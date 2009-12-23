@@ -9,15 +9,19 @@
 #define __KEY_H__
 
 /* Keys */
-#define KEY_UP		0
-#define KEY_LEFT	1
-#define KEY_ENTER	2
-#define KEY_RIGHT	3
-#define KEY_DOWN	4
+enum keys {
+	KEY_UP,
+	KEY_LEFT,
+	KEY_ENTER,
+	KEY_RIGHT,
+	KEY_DOWN,
+};
 
-/* Encoder */
-#define ENC_UP		0
-#define ENC_DOWN	1
+/* Encoder directions */
+enum enc_dirs {
+	ENC_UP,
+	ENC_DOWN,
+};
 
 void key_init(void);
 void key_scan(void);
