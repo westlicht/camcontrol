@@ -1,6 +1,14 @@
+/** @file key.c
+ *
+ * Keyboard and rotary encoder handling.
+ *
+ * Uses Timer0 hardware timer (shared with system tick) to periodically
+ * scan the keys and encoder. Does debouncing and posts events to the mmi
+ * active object for key presses, releases and encoder turning.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
 
-#include <stdint.h>
-#include <stdio.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "qpn_port.h"
@@ -30,7 +38,9 @@ static void press(int index);
 static void release(int index);
 static void encoder(int dir);
 
-
+/**
+ * Initialies the keyboard driver. Sets ports.
+ */
 void key_init(void)
 {
 	// Set button pins
@@ -42,6 +52,9 @@ void key_init(void)
 	DDRB &= ~0x0c;
 }
 
+/**
+ * Scans the keys and the encoder. This is periodically called from the BSP.
+ */
 void key_scan(void)
 {
 	int i;
@@ -100,16 +113,28 @@ void key_scan(void)
 	}
 }
 
+/**
+ * Sends a SIG_KEY_PRESS event to the mmi active object.
+ * @param index Key index
+ */
 static void press(int index)
 {
 	QActive_postISR((QActive *) &mmi_ao, SIG_KEY_PRESS, index);
 }
 
+/**
+ * Sends a SIG_KEY_RELEASE event to the mmi active object.
+ * @param index Key index
+ */
 static void release(int index)
 {
 	QActive_postISR((QActive *) &mmi_ao, SIG_KEY_RELEASE, index);
 }
 
+/**
+ * Seds a SIG_ENCODER event to the mmi active object.
+ * @param dir Direction
+ */
 static void encoder(int dir)
 {
 	QActive_postISR((QActive *) &mmi_ao, SIG_ENCODER, dir);

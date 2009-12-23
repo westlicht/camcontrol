@@ -1,9 +1,17 @@
+/** @file prog.h
+ *
+ * Program active object. Handles the overall behaviour of the different
+ * camera control programs like, spherical pan, giga pan, timelapse etc.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
 
 #ifndef __PROG_H__
 #define __PROG_H__
 
 #include <stdint.h>
 
+/* Programs */
 #define PROG_SPHERICAL_PAN	0
 #define PROG_GIGA_PAN		1
 #define PROG_TIMELAPSE		2
@@ -16,6 +24,7 @@ struct spherical_pan {
 	uint16_t tiles_y;
 };
 
+/** Giga pan parameters */
 struct giga_pan {
 
 };

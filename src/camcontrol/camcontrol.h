@@ -1,3 +1,10 @@
+/** @file camcontrol.h
+ *
+ * Defines signals which are sent between active objects.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
+
 #ifndef __CAMCONTROL_H__
 #define __CAMCONTROL_H__
 

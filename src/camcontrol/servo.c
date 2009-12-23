@@ -1,5 +1,10 @@
-/**
- * Servo control using 16-bit PWM (timer1).
+/** @file servo.c
+ *
+ * Servo active object. Handles movement of the servos.
+ *
+ * Internally uses the Timer1 to generate PWM signals for the two servos.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
  */
 
 #include <avr/io.h>

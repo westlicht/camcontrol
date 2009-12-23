@@ -1,5 +1,8 @@
-/**
- * Servo control using 16-bit PWM (timer1).
+/** @file servo.h
+ *
+ * Servo active object. Handles movement of the servos.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
  */
 
 #ifndef __SERVO_H__

@@ -1,3 +1,10 @@
+/** @file menu_def.h
+ *
+ * Menu definition file.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
+
 #ifndef __MENU_DEF_H__
 #define __MENU_DEF_H__
 

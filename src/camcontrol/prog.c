@@ -1,3 +1,11 @@
+/** @file prog.c
+ *
+ * Program active object. Handles the overall behaviour of the different
+ * camera control programs like, spherical pan, giga pan, timelapse etc.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
+
 #include "qpn_port.h"
 #include "bsp.h"
 #include "camcontrol.h"

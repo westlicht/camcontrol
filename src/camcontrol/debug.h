@@ -1,3 +1,9 @@
+/** @file debug.h
+ *
+ * Debug support.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
 
 #ifndef __DEBUG_H__
 #define __DEBUG_H__
@@ -12,7 +18,7 @@ void on_assert(const char *filename, uint16_t line);
 
 #define ASSERT(_expr_)							\
 	do {										\
-		if (!(_expr_)) {							\
+		if (!(_expr_)) {						\
 			on_assert(__FILE__, __LINE__);		\
 		}										\
 	} while(0)

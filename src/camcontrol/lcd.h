@@ -11,13 +11,14 @@
  * $Id: lcd.h,v 1.1 2005/12/28 21:38:59 joerg_wunsch Exp $
  */
 
-/*
- * Initialize LCD controller.  Performs a software reset.
- */
-void lcd_init(void);
+#ifndef __LCD_H__
+#define __LCD_H__
 
 #define LCD_FILL_BLANK	1
 
+void lcd_init(void);
 void lcd_clear(void);
 void lcd_write(int x, int y, char *str, int flags);
 void lcd_char(int x, int y, char c);
+
+#endif // __LCD_H__

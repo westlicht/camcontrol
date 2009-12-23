@@ -1,3 +1,9 @@
+/** @file debug.c
+ *
+ * Debug support.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
 
 #include <stdio.h>
 
@@ -5,7 +11,11 @@
 #include "delay.h"
 #include "debug.h"
 
-
+/**
+ * Shows an assertion on the LCD and enters infinite blinking led loop.
+ * @param filename Filename of assert
+ * @param line Line number of assert
+ */
 void on_assert(const char *filename, uint16_t line)
 {
 	char tmp[17];

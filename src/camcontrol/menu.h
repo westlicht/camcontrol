@@ -1,3 +1,9 @@
+/** @file menu.h
+ *
+ * Menu system.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
 
 #ifndef __MENU_H__
 #define __MENU_H__
@@ -55,13 +61,10 @@ struct menu_item {
 	.typ = MENU_TYP_LAST
 
 
-
-
 /** Current menu item */
 extern menu_item_t menu_cur;
 
 void menu_init(void);
-
 int menu_next(void);
 int menu_prev(void);
 int menu_sub(void);

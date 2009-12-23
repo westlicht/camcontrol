@@ -1,5 +1,11 @@
-/**
- * Shutter control using 8-bit timer (timer2).
+/** @file shutter.h
+ *
+ * Shutter active object. Handles the cameras shutter. Implements different
+ * behaviour for the different shutter modes.
+ *
+ * Internally uses the Timer2 to do the shutter timing.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
  */
 
 #include <avr/io.h>
@@ -36,6 +42,9 @@ enum timeouts {
 
 static uint32_t counter;
 
+/**
+ * Timer2 interrupt.
+ */
 ISR(TIMER2_COMP_vect)
 {
 	counter -= OCR2;

@@ -1,3 +1,9 @@
+/** @file menu.c
+ *
+ * Menu system.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
 
 #include <stddef.h>
 #include "menu.h"
@@ -5,20 +11,22 @@
 #include "menu_def.h"
 
 
-#define MAX_DEPTH		8
+#define MAX_DEPTH		8	/**< Max menu depth */
 
-menu_item_t menu_cur;
-
+/** Menu position */
 struct menu_pos {
 	menu_item_t page;
 	int item;
 };
 
+menu_item_t menu_cur;							/**< Current menu item */
 static struct menu_pos pos_stack[MAX_DEPTH];	/**< Menu position stack */
 static int pos_index;							/**< Current stack index */
 static struct menu_pos *pos;					/**< Current stack entry */
 
-
+/**
+ * Updates the menu_cur variable to point to the curret menu item.
+ */
 static inline void update_menu_cur(void)
 {
 	menu_cur = &pos->page[pos->item];

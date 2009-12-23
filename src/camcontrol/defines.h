@@ -1,15 +1,13 @@
-/*
- * ----------------------------------------------------------------------------
- * "THE BEER-WARE LICENSE" (Revision 42):
- * <joerg@FreeBSD.ORG> wrote this file.  As long as you retain this notice you
- * can do whatever you want with this stuff. If we meet some day, and you think
- * this stuff is worth it, you can buy me a beer in return.        Joerg Wunsch
- * ----------------------------------------------------------------------------
+/** @file defines.h
  *
- * General stdiodemo defines
+ * Global definitions. Adapted from avr-lib stdiodemo.
  *
- * $Id: defines.h,v 1.2 2006/10/08 21:47:36 joerg_wunsch Exp $
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ * @author Joerg Wunsch
  */
+
+#ifndef __DEFINES_H__
+#define __DEFINES_H__
 
 /* CPU frequency */
 #define F_CPU 16000000UL
@@ -27,3 +25,5 @@
 #define HD44780_D5 PORT5
 #define HD44780_D6 PORT6
 #define HD44780_D7 PORT7
+
+#endif // __DEFINES_H__

@@ -1,3 +1,9 @@
+/** @file mmi.h
+ *
+ * MMI active object. Handles machine man interface.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
 
 #ifndef __MMI_H__
 #define __MMI_H__

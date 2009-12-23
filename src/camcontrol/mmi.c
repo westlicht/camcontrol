@@ -1,3 +1,10 @@
+/** @file mmi.c
+ *
+ * MMI active object. Handles machine man interface.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
+
 #include <stdio.h>
 #include "qpn_port.h"
 #include "bsp.h"

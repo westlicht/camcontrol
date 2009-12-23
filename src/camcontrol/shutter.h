@@ -1,5 +1,9 @@
-/**
- * Shutter control using 8-bit timer (timer2).
+/** @file shutter.h
+ *
+ * Shutter active object. Handles the cameras shutter. Implements different
+ * behaviour for the different shutter modes.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
  */
 
 #ifndef __SHUTTER_H__

@@ -52,6 +52,9 @@ void lcd_init(void)
   hd44780_wait_ready();
 }
 
+/**
+ * Clears the LCD.
+ */
 void lcd_clear(void)
 {
 	hd44780_wait_ready();
@@ -60,6 +63,14 @@ void lcd_clear(void)
 	hd44780_outcmd(HD44780_HOME);
 }
 
+/**
+ * Writes to the LCD at position [x, y]. If LCD_FILL_BLANK is set in the flags,
+ * writes blanks to the end of the line.
+ * @param x X position
+ * @param y Y position
+ * @param str String to print
+ * @param flags Flags
+ */
 void lcd_write(int x, int y, char *str, int flags)
 {
 	hd44780_wait_ready();
@@ -75,6 +86,12 @@ void lcd_write(int x, int y, char *str, int flags)
 		}
 }
 
+/**
+ * Writes a single character at position [x, y].
+ * @param x X position
+ * @param y Y position
+ * @param c Character to print
+ */
 void lcd_char(int x, int y, char c)
 {
 	hd44780_wait_ready();

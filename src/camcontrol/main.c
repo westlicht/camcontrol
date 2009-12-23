@@ -1,3 +1,10 @@
+/** @file main.c
+ *
+ * Main of camera control software.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
+
 #include "qpn_port.h"
 #include "bsp.h"
 #include "camcontrol.h"
@@ -29,7 +36,9 @@ QActiveCB const Q_ROM Q_ROM_VAR QF_active[] = {
 /* Make sure that the QF_active[] array matches QF_MAX_ACTIVE in qpn_port.h */
 Q_ASSERT_COMPILE(QF_MAX_ACTIVE == Q_DIM(QF_active) - 1);
 
-
+/**
+ * Application entry point.
+ */
 int main (void)
 {
 	cli();

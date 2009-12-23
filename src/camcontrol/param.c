@@ -1,3 +1,10 @@
+/** @file param.c
+ *
+ * Parameter handling. Parameter are variables which can be edited via the MMI
+ * and are presistently stored in EEPROM.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
 
 #include <stdint.h>
 #include <stdio.h>

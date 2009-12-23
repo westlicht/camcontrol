@@ -1,3 +1,10 @@
+/** @file delay.c
+ *
+ * Delay functions.
+ *
+ * @author Simon Kallweit, simon@weirdsoft.ch
+ */
+
 #ifndef __DELAY_H__
 #define __DELAY_H__
 
