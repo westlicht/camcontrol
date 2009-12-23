@@ -47,6 +47,8 @@ static const struct menu_item page_giga_pan[] = {
 	}, {
 		MENU_ITEM_PARAM("Center Y", &p_giga_end_y, CMD_UPDATE_GIGA_END),
 	}, {
+		MENU_ITEM_PARAM("Overlap", &p_giga_overlap, CMD_NONE),
+	}, {
 		MENU_ITEM_PARAM("Focal length", &p_focal_length, CMD_NONE),
 	}, {
 		MENU_ITEM_PARAM("Shutter mode", &p_shutter_mode, CMD_NONE),

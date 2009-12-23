@@ -15,6 +15,7 @@ PARAM_CLASS(pc_shutter_time, UINT8, 0, NUM_SHUTTER_TIMES - 1, 0, 1, 1, print_shu
 PARAM_CLASS(pc_hdr_shots, UINT8, 2, 10, 5, 1, 5, print_decimal)
 PARAM_CLASS(pc_trigger_delay, UINT16, 10, 500, 100, 1, 10, print_trigger_delay)
 PARAM_CLASS(pc_timelapse_rate, UINT32, 1, 100000, 60, 1, 60, print_timelapse_rate)
+PARAM_CLASS(pc_overlap, UINT16, 10, 500, 100, 1, 100, print_overlap)
 
 /* Parameters */
 PARAM(p_focal_length, &pc_focal_length, &pd.focal_length)
@@ -34,3 +35,4 @@ PARAM(p_giga_start_x, &pc_deg_360, &pd.giga.start_x)
 PARAM(p_giga_start_y, &pc_deg_180, &pd.giga.start_y)
 PARAM(p_giga_end_x, &pc_deg_360, &pd.giga.end_x)
 PARAM(p_giga_end_y, &pc_deg_180, &pd.giga.end_y)
+PARAM(p_giga_overlap, &pc_overlap, &pd.giga.overlap)

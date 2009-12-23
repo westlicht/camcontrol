@@ -122,6 +122,12 @@ static void print_timelapse_rate(const struct param *param, char *str, int len)
 	snprintf(str, len, "%02lu:%02lu:%02lu", *value / 3600, (*value / 60) % 60, *value % 60);
 }
 
+static void print_overlap(const struct param *param, char *str, int len)
+{
+	uint16_t *value = param->value;
+	snprintf(str, len, "%u.%02u deg", *value / 100, *value % 100);
+}
+
 
 
 
