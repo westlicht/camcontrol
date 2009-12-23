@@ -74,7 +74,6 @@ $(BINDIR)/$(APP_NAME).hex : $(BINDIR)/$(APP_NAME).elf
 $(BINDIR)/$(APP_NAME).elf : \
 	$(BINDIR)/bsp.o \
 	$(BINDIR)/debug.o \
-	$(BINDIR)/delay.o \
 	$(BINDIR)/hd44780.o \
 	$(BINDIR)/key.o \
 	$(BINDIR)/lcd.o \
@@ -93,7 +92,6 @@ $(BINDIR)/$(APP_NAME).elf : \
 	-Wl,-Map,$(BINDIR)/$(APP_NAME).map,--cref \
 	$(BINDIR)/bsp.o \
 	$(BINDIR)/debug.o \
-	$(BINDIR)/delay.o \
 	$(BINDIR)/hd44780.o \
 	$(BINDIR)/key.o \
 	$(BINDIR)/lcd.o \
@@ -115,9 +113,6 @@ $(BINDIR)/bsp.o: $(BLDDIR)/bsp.c $(APP_DEP) $(QP_DEP)
 	$(CC) $(CCFLAGS) $(CCINC) $<
 
 $(BINDIR)/debug.o: $(BLDDIR)/debug.c $(APP_DEP) $(QP_DEP)
-	$(CC) $(CCFLAGS) $(CCINC) $<
-
-$(BINDIR)/delay.o: $(BLDDIR)/delay.c $(APP_DEP) $(QP_DEP)
 	$(CC) $(CCFLAGS) $(CCINC) $<
 
 $(BINDIR)/hd44780.o: $(BLDDIR)/hd44780.c $(APP_DEP) $(QP_DEP)

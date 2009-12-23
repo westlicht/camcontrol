@@ -8,8 +8,10 @@
 #include <stdio.h>
 
 #include "lcd.h"
-#include "delay.h"
 #include "debug.h"
+
+#include "defines.h"
+#include <util/delay.h>
 
 /**
  * Shows an assertion on the LCD and enters infinite blinking led loop.
@@ -29,8 +31,8 @@ void on_assert(const char *filename, uint16_t line)
 
 	while (1) {
 		DBG_LED_ON();
-		delay_ms(500);
+		_delay_ms(500);
 		DBG_LED_OFF();
-		delay_ms(500);
+		_delay_ms(500);
 	}
 }

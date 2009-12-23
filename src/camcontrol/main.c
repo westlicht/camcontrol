@@ -12,7 +12,6 @@
 #include "key.h"
 #include "debug.h"
 #include "servo.h"
-#include "delay.h"
 #include "shutter.h"
 #include "param.h"
 #include "mmi.h"
