@@ -11,10 +11,12 @@
  * $Id: uart.h,v 1.1 2005/12/28 21:38:59 joerg_wunsch Exp $
  */
 
+#include <stdio.h>
+
 /*
  * Perform UART startup initialization.
  */
-void	uart_init(void);
+void uart_init(void);
 
 /*
  * Send one character to the UART.

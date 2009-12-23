@@ -17,6 +17,7 @@
 #include "param.h"
 #include "mmi.h"
 #include "prog.h"
+#include "uart.h"
 
 /* Event queues */
 static QEvent mmi_queue[8];
@@ -36,6 +37,9 @@ QActiveCB const Q_ROM Q_ROM_VAR QF_active[] = {
 /* Make sure that the QF_active[] array matches QF_MAX_ACTIVE in qpn_port.h */
 Q_ASSERT_COMPILE(QF_MAX_ACTIVE == Q_DIM(QF_active) - 1);
 
+
+FILE uart_str = FDEV_SETUP_STREAM(uart_putchar, uart_getchar, _FDEV_SETUP_RW);
+
 /**
  * Application entry point.
  */
@@ -47,6 +51,11 @@ int main (void)
 
 	lcd_init();
 	key_init();
+	uart_init();
+
+	stdout = &uart_str;
+
+	printf("CamControl 0.1\n");
 
 	param_init();
 

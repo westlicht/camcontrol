@@ -11,8 +11,6 @@
  * $Id: uart.c,v 1.1 2005/12/28 21:38:59 joerg_wunsch Exp $
  */
 
-#if 0
-
 #include "defines.h"
 
 #include <stdint.h>
@@ -25,38 +23,35 @@
 /*
  * Initialize the UART to 9600 Bd, tx/rx, 8N1.
  */
-void
-uart_init(void)
+void uart_init(void)
 {
-#if F_CPU < 2000000UL && defined(U2X)
-  UCSRA = _BV(U2X);             /* improve baud rate error by using 2x clk */
-  UBRRL = (F_CPU / (8UL * UART_BAUD)) - 1;
+	UCSR1A = 0x00;
+	UCSR1B = (1 << RXEN1) | (1 << TXEN1);
+	UCSR1C = 0x06;
+
+#define BAUD UART_BAUD
+#include <util/setbaud.h>
+	UBRR1H = UBRRH_VALUE;
+	UBRR1L = UBRRL_VALUE;
+#if USE_2X
+	UCSR1A |= (1 << U2X);
 #else
-  UBRRL = (F_CPU / (16UL * UART_BAUD)) - 1;
+	UCSR1A &= ~(1 << U2X);
 #endif
-  UCSRB = _BV(TXEN) | _BV(RXEN); /* tx/rx enable */
 }
 
 /*
  * Send character c down the UART Tx, wait until tx holding register
  * is empty.
  */
-int
-uart_putchar(char c, FILE *stream)
+int uart_putchar(char c, FILE *stream)
 {
+	if (c == '\n')
+		uart_putchar('\r', stream);
+	loop_until_bit_is_set(UCSR1A, UDRE);
+	UDR1 = c;
 
-  if (c == '\a')
-    {
-      fputs("*ring*\n", stderr);
-      return 0;
-    }
-
-  if (c == '\n')
-    uart_putchar('\r', stream);
-  loop_until_bit_is_set(UCSRA, UDRE);
-  UDR = c;
-
-  return 0;
+	return 0;
 }
 
 /*
@@ -103,12 +98,12 @@ uart_getchar(FILE *stream)
   if (rxp == 0)
     for (cp = b;;)
       {
-	loop_until_bit_is_set(UCSRA, RXC);
-	if (UCSRA & _BV(FE))
+	loop_until_bit_is_set(UCSR1A, RXC);
+	if (UCSR1A & _BV(FE))
 	  return _FDEV_EOF;
-	if (UCSRA & _BV(DOR))
+	if (UCSR1A & _BV(DOR))
 	  return _FDEV_ERR;
-	c = UDR;
+	c = UDR1;
 	/* behaviour similar to Unix stty ICRNL */
 	if (c == '\r')
 	  c = '\n';
@@ -185,5 +180,3 @@ uart_getchar(FILE *stream)
 
   return c;
 }
-
-#endif
