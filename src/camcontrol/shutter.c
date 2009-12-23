@@ -3,7 +3,7 @@
  * Shutter active object. Handles the cameras shutter. Implements different
  * behaviour for the different shutter modes.
  *
- * Internally uses the Timer2 to do the shutter timing.
+ * The shutter time is measured using busy loops to get accurate timing.
  *
  * @author Simon Kallweit, simon@weirdsoft.ch
  */
@@ -16,6 +16,10 @@
 #include "defines.h"
 #include "shutter.h"
 #include "prog.h"
+#include "debug.h"
+#include "param.h"
+
+#include <util/delay.h>
 
 /** Shutter active object structure */
 struct shutter_ao {
@@ -36,26 +40,9 @@ enum timeouts {
 
 #define TIMER_INTERVAL	4		/**< Timer interval in us */
 
-#define SHUTTER_ON()	PORTA |= _BV(6)
-#define SHUTTER_OFF()	PORTA &= ~_BV(6)
-
-
-static uint32_t counter;
-
-/**
- * Timer2 interrupt.
- */
-ISR(TIMER2_COMP_vect)
-{
-	counter -= OCR2;
-	if (counter == 0) {
-		SHUTTER_OFF();
-		TIMSK &= ~_BV(OCIE2);
-		QActive_postISR((QActive *) &shutter_ao, SIG_SHUTTER_DONE, 0);
-	}
-
-	OCR2 = counter <= 0xff ? counter : 0xff;
-}
+#define SHUTTER_INIT()	DDRB |= _BV(0)
+#define SHUTTER_ON()	PORTB |= _BV(0)
+#define SHUTTER_OFF()	PORTB &= ~_BV(0)
 
 /**
  * Triggers the shutter.
@@ -63,16 +50,30 @@ ISR(TIMER2_COMP_vect)
  */
 void shutter_trigger(uint32_t us)
 {
-	TIMSK &= ~_BV(OCIE2);
+	double ms;
 
-	counter = us / TIMER_INTERVAL;
+	// Compensate for call to _delay_ms()
+	us -= 20;
+	ms = (us / 1000.0);
 
-	SHUTTER_ON();
-
-	// Setup timer and enable interrupt
-	OCR2 = counter <= 0xff ? counter : 0xff;
-	TCNT2 = 0;
-	TIMSK |= _BV(OCIE2);
+	// _delay_ms() can handle delays up to 6 seconds
+	if (ms < 6000) {
+		DBG_LED_ON();
+		SHUTTER_ON();
+		_delay_ms(ms);
+		SHUTTER_OFF();
+		DBG_LED_OFF();
+	} else {
+		DBG_LED_ON();
+		SHUTTER_ON();
+		while (ms >= 1000.0) {
+			_delay_ms(1000.0);
+			ms -= 1000.0;
+		}
+		_delay_ms(ms);
+		SHUTTER_OFF();
+		DBG_LED_OFF();
+	}
 }
 
 
@@ -81,8 +82,8 @@ void shutter_trigger(uint32_t us)
  */
 void shutter_ctor(void)
 {
-	// Set Timer2 in CTC mode, 1/64 prescaler, this gives a timer resolution of 4us
-	TCCR2 = ((1 << WGM21) | (0 << WGM20) | (3 << CS20));
+	// Set shutter pin
+	SHUTTER_INIT();
 
 	QActive_ctor((QActive *) &shutter_ao, (QStateHandler) shutter_initial);
 }
@@ -108,7 +109,7 @@ static QState shutter_idle(struct shutter_ao *me)
 	case Q_TIMEOUT_SIG:
 		return Q_HANDLED();
 	case SIG_SHUTTER_START:
-		shutter_trigger(200000);
+		shutter_trigger(shutter_time[pd.shutter_time].us);
 		QActive_post((QActive *) &prog_ao, SIG_SHUTTER_DONE, 0);
 		return Q_HANDLED();
 	case SIG_SHUTTER_STOP:
