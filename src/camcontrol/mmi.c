@@ -258,6 +258,12 @@ static QState execute_cmd(struct mmi_ao *me, int cmd)
 	case CMD_UPDATE_CENTER:
 		servo_move(pd.center_x, pd.center_y);
 		break;
+	case CMD_UPDATE_GIGA_START:
+		servo_move(pd.giga.start_x, pd.giga.start_y);
+		break;
+	case CMD_UPDATE_GIGA_END:
+		servo_move(pd.giga.end_x, pd.giga.end_y);
+		break;
 	}
 
 	return Q_HANDLED();

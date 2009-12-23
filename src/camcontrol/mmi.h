@@ -16,6 +16,8 @@ enum command {
 	CMD_SERVO_MAX,
 	/* Parameter commands */
 	CMD_UPDATE_CENTER,
+	CMD_UPDATE_GIGA_START,
+	CMD_UPDATE_GIGA_END,
 };
 
 extern struct mmi_ao mmi_ao;

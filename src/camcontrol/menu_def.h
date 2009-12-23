@@ -32,6 +32,14 @@ static const struct menu_item page_spherical_pan[] = {
 
 static const struct menu_item page_giga_pan[] = {
 	{
+		MENU_ITEM_PARAM("Start X", &p_giga_start_x, CMD_UPDATE_GIGA_START),
+	}, {
+		MENU_ITEM_PARAM("Start Y", &p_giga_start_y, CMD_UPDATE_GIGA_START),
+	}, {
+		MENU_ITEM_PARAM("Center X", &p_giga_end_x, CMD_UPDATE_GIGA_END),
+	}, {
+		MENU_ITEM_PARAM("Center Y", &p_giga_end_y, CMD_UPDATE_GIGA_END),
+	}, {
 		MENU_ITEM_PARAM("Focal length", &p_focal_length, CMD_NONE),
 	}, {
 		MENU_ITEM_PARAM("Shutter mode", &p_shutter_mode, CMD_NONE),

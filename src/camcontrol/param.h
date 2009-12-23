@@ -22,6 +22,13 @@ struct param_data {
 	uint32_t timelapse_rate;	/**< Timelapse trigger rate in s */
 	uint16_t center_x;			/**< Horizontal center position (deg) */
 	uint16_t center_y;			/**< Vertical center position (deg) */
+	/* Giga pan */
+	struct {
+		uint16_t start_x;		/**< Horizontal start position (deg) */
+		uint16_t start_y;		/**< Vertical start position (deg) */
+		uint16_t end_x;			/**< Horizontal end position (deg) */
+		uint16_t end_y;			/**< Vertical end position (deg) */
+	} giga;
 };
 
 /** Parameter data */

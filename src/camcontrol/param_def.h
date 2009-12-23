@@ -21,3 +21,9 @@ PARAM(p_trigger_delay, &pc_trigger_delay, &pd.trigger_delay)
 PARAM(p_timelapse_rate, &pc_timelapse_rate, &pd.timelapse_rate)
 PARAM(p_center_x, &pc_deg_360, &pd.center_x)
 PARAM(p_center_y, &pc_deg_180, &pd.center_y)
+
+/* Giga pan */
+PARAM(p_giga_start_x, &pc_deg_360, &pd.giga.start_x)
+PARAM(p_giga_start_y, &pc_deg_180, &pd.giga.start_y)
+PARAM(p_giga_end_x, &pc_deg_360, &pd.giga.end_x)
+PARAM(p_giga_end_y, &pc_deg_180, &pd.giga.end_y)

@@ -16,6 +16,10 @@ struct spherical_pan {
 	uint16_t tiles_y;
 };
 
+struct giga_pan {
+
+};
+
 extern struct prog_ao prog_ao;
 extern struct spherical_pan spherical_pan;
 
