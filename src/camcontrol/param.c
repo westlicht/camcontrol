@@ -136,21 +136,21 @@ static void print_overlap(const struct param *param, char *str, int len)
 
 // Parameter class and parameter definitions
 
-#define PARAM_CLASS(_name_, _typ_, _min_, _max_, _default_, _step_, _shift_step_, _print_) \
+#define PARAM_CLASS(_name_, _typ_, _min_, _max_, _step_, _shift_step_, _print_) \
 const struct param_class _name_ = {						\
 	.typ = _typ_,										\
 	.min = _min_,										\
 	.max = _max_,										\
-	.def = _default_,									\
 	.step = _step_,										\
 	.shift_step = _shift_step_,							\
 	.print = _print_,									\
 };
 
-#define PARAM(_name_, _class_, _value_)					\
+#define PARAM(_name_, _class_, _value_, _default_)		\
 const struct param _name_ = {							\
 	.class = _class_,									\
 	.value = _value_,									\
+	.def = _default_,									\
 };
 
 #include "param_def.h"
@@ -160,8 +160,8 @@ const struct param _name_ = {							\
 
 // Parameter list definition
 
-#define PARAM_CLASS(_name_, _typ_, _min_, _max_, _default_, _step_, _shift_step_, _print_)
-#define PARAM(_name_, _class_, _value_) &_name_,
+#define PARAM_CLASS(_name_, _typ_, _min_, _max_, _step_, _shift_step_, _print_)
+#define PARAM(_name_, _class_, _value_, _default_) &_name_,
 
 static const struct param *params[] = {
 #include "param_def.h"
@@ -220,7 +220,7 @@ void param_defaults(void)
 
 	for (i = 0; i < NUM_PARAMS; i++) {
 		param = params[i];
-		param_set(param, param->class->def);
+		param_set(param, param->def);
 	}
 }
 

@@ -19,6 +19,8 @@ static const struct menu_item page_single_shot[] = {
 	}, {
 		MENU_ITEM_PARAM("Shutter mode", &p_shutter_mode, CMD_NONE),
 	}, {
+		MENU_ITEM_PARAM("Shutter time", &p_shutter_time, CMD_NONE),
+	}, {
 		MENU_ITEM_CMD("Start", CMD_SINGLE_SHOT),
 	}, {
 		MENU_ITEM_LAST(),
@@ -43,9 +45,9 @@ static const struct menu_item page_giga_pan[] = {
 	}, {
 		MENU_ITEM_PARAM("Start Y", &p_giga_start_y, CMD_UPDATE_GIGA_START),
 	}, {
-		MENU_ITEM_PARAM("Center X", &p_giga_end_x, CMD_UPDATE_GIGA_END),
+		MENU_ITEM_PARAM("End X", &p_giga_end_x, CMD_UPDATE_GIGA_END),
 	}, {
-		MENU_ITEM_PARAM("Center Y", &p_giga_end_y, CMD_UPDATE_GIGA_END),
+		MENU_ITEM_PARAM("End Y", &p_giga_end_y, CMD_UPDATE_GIGA_END),
 	}, {
 		MENU_ITEM_PARAM("Overlap", &p_giga_overlap, CMD_NONE),
 	}, {

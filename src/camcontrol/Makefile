@@ -41,7 +41,7 @@ BINDIR   = dbg
 CCFLAGS  = -c -gdwarf-2 -std=gnu99 -Os -fsigned-char -fshort-enums \
  -mmcu=$(TARGET_MCU) -Wall -o$@
 
-LINKFLAGS = -gdwarf-2 -Os -mmcu=$(TARGET_MCU)
+LINKFLAGS = -gdwarf-2 -Os -mmcu=$(TARGET_MCU) -Wl,-u,vfprintf -lprintf_flt -lm
 
 
 # release ....................................................................
@@ -55,7 +55,7 @@ BINDIR   = rel
 CCFLAGS  = -c -DNDEBUG -std=gnu99 -Os -fsigned-char -fshort-enums \
  -mmcu=$(TARGET_MCU) -Wall -o$@
 
-LINKFLAGS =	-O2 -mmcu=$(TARGET_MCU)
+LINKFLAGS =	-O2 -mmcu=$(TARGET_MCU) -Wl,-u,vfprintf -lprintf_flt -lm
 
 endif
 ifeq ($(MAKECMDGOALS), rel_clean)

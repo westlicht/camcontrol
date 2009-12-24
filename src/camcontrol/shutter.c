@@ -109,7 +109,8 @@ static QState shutter_idle(struct shutter_ao *me)
 	case Q_TIMEOUT_SIG:
 		return Q_HANDLED();
 	case SIG_SHUTTER_START:
-		shutter_trigger(shutter_time[pd.shutter_time].us);
+		//shutter_trigger(shutter_time[pd.shutter_time].us);
+		shutter_trigger(200000);
 		QActive_post((QActive *) &prog_ao, SIG_SHUTTER_DONE, 0);
 		return Q_HANDLED();
 	case SIG_SHUTTER_STOP:

@@ -10,6 +10,7 @@
 #define __PROG_H__
 
 #include <stdint.h>
+#include "vector2.h"
 
 /** Programs */
 enum programs {
@@ -17,16 +18,6 @@ enum programs {
 	PROG_GIGA_PAN,
 	PROG_TIMELAPSE,
 };
-
-/** Float vector */
-typedef struct {
-	float x, y;
-} vec2f_t;
-
-/** Integer vector */
-typedef struct {
-	uint16_t x, y;
-} vec2i_t;
 
 /** Spherical pan parameters */
 struct spherical_pan {
@@ -37,9 +28,10 @@ struct spherical_pan {
 
 /** Giga pan parameters */
 struct giga_pan {
-	vec2f_t pos;
+	vec2f_t origin;
 	vec2f_t step;
 	vec2i_t tiles;
+	vec2i_t index;
 };
 
 extern struct prog_ao prog_ao;
@@ -48,7 +40,7 @@ extern struct giga_pan giga_pan;
 
 void prog_ctor(void);
 
-void prog_init_spherical_pan(void);
-void prog_init_giga_pan(void);
+int prog_init_spherical_pan(void);
+int prog_init_giga_pan(void);
 
 #endif // __PROG_H__

@@ -14,6 +14,7 @@
 #include "camcontrol.h"
 #include "defines.h"
 #include "prog.h"
+#include "debug.h"
 #include "servo.h"
 
 #define SERVO_RANGE_X	700		/**< Horizontal servo range */
@@ -23,20 +24,14 @@
 #define SERVO_ORIGIN_X	(SERVO_CENTER - (SERVO_RANGE_X >> 1))
 #define SERVO_ORIGIN_Y	(SERVO_CENTER - (SERVO_RANGE_Y >> 1))
 
-#define SERVO_RATE_X	21		/**< Horizontal move rate (ms/deg) */
-#define SERVO_RATE_Y	42		/**< Vertical move rate (ms/deg) */
-
-/** Servo position */
-struct servo_pos {
-	float x;
-	float y;
-};
+#define SERVO_RATE_X	120		/**< Horizontal move rate (ms/deg) */
+#define SERVO_RATE_Y	60		/**< Vertical move rate (ms/deg) */
 
 /** Servo active object structure */
 struct servo_ao {
 	QActive super;
-	struct servo_pos cur_pos;
-	struct servo_pos new_pos;
+	vec2f_t cur_pos;
+	vec2f_t new_pos;
 };
 
 static QState servo_initial(struct servo_ao *me);
@@ -49,7 +44,7 @@ static void servo_set_pos(int servo, float pos);
 struct servo_ao servo_ao;
 
 enum timeouts {
-	TIMEOUT_MIN_DELAY = TICKS(50),
+	TIMEOUT_MIN_DELAY = TICKS(100),
 };
 
 
@@ -80,13 +75,11 @@ void servo_ctor(void)
 
 /**
  * Moves the servos in a new position.
- * @param x X position (0..360)
- * @param y Y position (0..180)
+ * @param v New position in deg
  */
-void servo_move(float x, float y)
+void servo_move(vec2f_t *v)
 {
-	servo_ao.new_pos.x = x;
-	servo_ao.new_pos.y = y;
+	servo_ao.new_pos = *v;
 	QActive_post((QActive *) &servo_ao, SIG_SERVO_MOVE, 0);
 }
 
@@ -114,11 +107,14 @@ static QState servo_idle(struct servo_ao *me)
 		return Q_HANDLED();
 	case SIG_SERVO_MOVE:
 		// Compute time needed to move into new position
+		DBG("cur_pos %.2f/%.2f\n", me->cur_pos.x, me->cur_pos.y);
+		DBG("new_pos %.2f/%.2f\n", me->new_pos.x, me->new_pos.y);
 		delay1 = TICKS(fabs(me->new_pos.x - me->cur_pos.x) * SERVO_RATE_X);
 		delay2 = TICKS(fabs(me->new_pos.y - me->cur_pos.y) * SERVO_RATE_Y);
-		delay = delay1 < delay2 ? delay1 : delay2;
+		delay = delay1 > delay2 ? delay1 : delay2;
 		if (delay < TIMEOUT_MIN_DELAY)
 			delay = TIMEOUT_MIN_DELAY;
+		DBG("servo delay %d\n", delay * 20);
 		servo_set_pos(0, me->new_pos.x / 360.0);
 		servo_set_pos(1, me->new_pos.y / 180.0);
 		QActive_arm((QActive *) me, delay);

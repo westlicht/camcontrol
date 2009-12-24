@@ -22,6 +22,7 @@ struct param_data {
 	uint16_t pan_width;			/**< Panorama width (deg) */
 	uint16_t pan_height;		/**< Panorama height (deg) */
 	uint8_t shutter_mode;		/**< Shutter mode */
+	uint8_t shutter_time;		/**< Shutter time */
 	uint8_t hdr_time1;			/**< Min exposure time for HDR series */
 	uint8_t hdr_time2;			/**< Max exposure time for HDR series */
 	uint16_t hdr_shots;			/**< Number of shots per HDR series */
@@ -75,7 +76,6 @@ struct param_class {
 	param_typ_t typ;
 	uint32_t min;
 	uint32_t max;
-	uint32_t def;
 	uint8_t step;
 	uint8_t shift_step;
 	void (*print)(const struct param *param, char *str, int len);
@@ -85,11 +85,12 @@ struct param_class {
 struct param {
 	const struct param_class *class;
 	void *value;
+	uint32_t def;
 };
 
 
-#define PARAM_CLASS(_name_, _typ_, _min_, _max_, _default_, _step_, _shift_step_, _print_)
-#define PARAM(_name_, _class_, _value_) extern const struct param _name_;
+#define PARAM_CLASS(_name_, _typ_, _min_, _max_, _step_, _shift_step_, _print_)
+#define PARAM(_name_, _class_, _value_, _default_) extern const struct param _name_;
 #include "param_def.h"
 #undef PARAM_CLASS
 #undef PARAM

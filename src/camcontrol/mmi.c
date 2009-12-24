@@ -28,6 +28,8 @@ static QState mmi_initial(struct mmi_ao *me);
 static QState mmi_hello(struct mmi_ao *me);
 static QState mmi_navigate(struct mmi_ao *me);
 static QState mmi_spherical_pan(struct mmi_ao *me);
+static QState mmi_giga_pan(struct mmi_ao *me);
+static QState mmi_show_msg(struct mmi_ao *me);
 static QState mmi_busy(struct mmi_ao *me);
 
 static QState execute_cmd(struct mmi_ao *me, int cmd);
@@ -35,6 +37,7 @@ static int modify_param(const struct param *param, int dir, int shift);
 static void print_param(const struct param *param);
 
 static void update_screen(struct mmi_ao *me);
+static void show_msg(char *msg, int timeout);
 
 /** MMI active object */
 struct mmi_ao mmi_ao;
@@ -111,15 +114,17 @@ static QState mmi_navigate(struct mmi_ao *me)
 			if (modify_param(menu_cur->param, Q_PAR(me), me->shift)) {
 				print_param(menu_cur->param);
 				if (menu_cur->cmd != CMD_NONE)
-					QActive_post((QActive *) me, SIG_EXECUTE_CMD, menu_cur->cmd);
+					QActive_post((QActive *) me, SIG_MMI_CMD, menu_cur->cmd);
 			}
 			break;
 		default:
 			break;
 		}
 		return Q_HANDLED();
-	case SIG_EXECUTE_CMD:
+	case SIG_MMI_CMD:
 		return execute_cmd(me, Q_PAR(me));
+	case SIG_MMI_SHOW_MSG:
+		return Q_TRAN(mmi_show_msg);
 	case SIG_KEY_PRESS:
 		switch (Q_PAR(me)) {
 		case KEY_UP:
@@ -148,7 +153,7 @@ static QState mmi_navigate(struct mmi_ao *me)
 			case MENU_TYP_CMD:
 				// Execute command
 				if (menu_cur->cmd)
-					QActive_post((QActive *) me, SIG_EXECUTE_CMD, menu_cur->cmd);
+					QActive_post((QActive *) me, SIG_MMI_CMD, menu_cur->cmd);
 				break;
 			case MENU_TYP_SUB:
 				// Go to sub item
@@ -207,6 +212,57 @@ static QState mmi_spherical_pan(struct mmi_ao *me)
 	return Q_SUPER(&QHsm_top);
 }
 
+static QState mmi_giga_pan(struct mmi_ao *me)
+{
+	char tmp[17];
+
+	switch (Q_SIG(me)) {
+	case Q_ENTRY_SIG:
+		prog_init_giga_pan();
+		lcd_clear();
+		lcd_write(0, 0, "Giga pan", 0);
+		snprintf(tmp, sizeof(tmp), "%dx%d", giga_pan.tiles.x, giga_pan.tiles.y);
+		lcd_write(0, 1, tmp, 0);
+		return Q_HANDLED();
+	case Q_EXIT_SIG:
+		return Q_HANDLED();
+	case Q_TIMEOUT_SIG:
+		return Q_HANDLED();
+	case SIG_KEY_PRESS:
+		switch (Q_PAR(me)) {
+		case KEY_ENTER:
+			QActive_post((QActive *) &prog_ao, SIG_PROG_START, PROG_GIGA_PAN);
+			return Q_TRAN(mmi_busy);
+		case KEY_LEFT:
+			return Q_TRAN(mmi_navigate);
+		}
+		return Q_HANDLED();;
+	}
+
+	return Q_SUPER(&QHsm_top);
+}
+
+static QState mmi_show_msg(struct mmi_ao *me)
+{
+	switch (Q_SIG(me)) {
+	case Q_ENTRY_SIG:
+		QActive_arm((QActive *) me, TICKS(Q_PAR(me) * 1000));
+		return Q_HANDLED();
+	case Q_EXIT_SIG:
+		QActive_disarm((QActive *) me);
+		return Q_HANDLED();
+	case Q_TIMEOUT_SIG:
+		return Q_TRAN(mmi_navigate);
+	case SIG_KEY_PRESS:
+		if (Q_PAR(me) == KEY_ENTER) {
+			return Q_TRAN(mmi_navigate);
+		}
+		return Q_HANDLED();;
+	}
+
+	return Q_SUPER(&QHsm_top);
+}
+
 static QState mmi_busy(struct mmi_ao *me)
 {
 	static const char busy_char[] = "abc";
@@ -240,36 +296,47 @@ static QState mmi_busy(struct mmi_ao *me)
 
 static QState execute_cmd(struct mmi_ao *me, int cmd)
 {
+	vec2f_t v;
+
 	switch (cmd) {
 	case CMD_SINGLE_SHOT:
+		QActive_post((QActive *) &shutter_ao, SIG_SHUTTER_START, 0);
 		break;
 	case CMD_SPHERICAL_PAN:
 		return Q_TRAN(mmi_spherical_pan);
 	case CMD_GIGA_PAN:
-		break;
+		return Q_TRAN(mmi_giga_pan);
 	case CMD_TIMELAPSE:
 		QActive_post((QActive *) &prog_ao, SIG_PROG_START, PROG_TIMELAPSE);
 		QActive_post((QActive *) &mmi_ao, SIG_PROG_START, PROG_TIMELAPSE);
 		break;
 	case CMD_SAVE:
+		show_msg("Saving...", 1);
+		param_save();
 		break;
 	case CMD_SERVO_MIN:
-		servo_move(0.0, 0.0);
+		vec2(&v, 0.0, 0.0);
+		servo_move(&v);
 		break;
 	case CMD_SERVO_CENTER:
-		servo_move(180.0, 90.0);
+		vec2(&v, 180.0, 90.0);
+		servo_move(&v);
 		break;
 	case CMD_SERVO_MAX:
-		servo_move(360.0, 180.0);
+		vec2(&v, 360.0, 180.0);
+		servo_move(&v);
 		break;
 	case CMD_UPDATE_CENTER:
-		servo_move(pd.center_x, pd.center_y);
+		vec2(&v, pd.center_x, pd.center_y);
+		servo_move(&v);
 		break;
 	case CMD_UPDATE_GIGA_START:
-		servo_move(pd.giga.start_x, pd.giga.start_y);
+		vec2(&v, pd.giga.start_x, pd.giga.start_y);
+		servo_move(&v);
 		break;
 	case CMD_UPDATE_GIGA_END:
-		servo_move(pd.giga.end_x, pd.giga.end_y);
+		vec2(&v, pd.giga.end_x, pd.giga.end_y);
+		servo_move(&v);
 		break;
 	}
 
@@ -318,4 +385,11 @@ static void update_screen(struct mmi_ao *me)
 	default:
 		break;
 	}
+}
+
+static void show_msg(char *msg, int timeout)
+{
+	lcd_clear();
+	lcd_write(0, 0, msg, 0);
+	QActive_post((QActive *) &mmi_ao, SIG_MMI_SHOW_MSG, timeout);
 }
