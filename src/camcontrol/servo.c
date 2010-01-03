@@ -8,6 +8,7 @@
  */
 
 #include <avr/io.h>
+#include <avr/interrupt.h>
 #include <math.h>
 #include "qpn_port.h"
 #include "bsp.h"
@@ -24,37 +25,73 @@
 #define SERVO_ORIGIN_X	(SERVO_CENTER - (SERVO_RANGE_X >> 1))
 #define SERVO_ORIGIN_Y	(SERVO_CENTER - (SERVO_RANGE_Y >> 1))
 
-#define SERVO_RATE_X	120		/**< Horizontal move rate (ms/deg) */
-#define SERVO_RATE_Y	60		/**< Vertical move rate (ms/deg) */
+#define SERVO_VEL		30		/**< Servo velocity (0.1 steps per 20ms) */
 
 /** Servo active object structure */
 struct servo_ao {
 	QActive super;
-	vec2f_t cur_pos;
-	vec2f_t new_pos;
+	vec2i_t pos;
+	vec2i_t ofs;
 };
 
 static QState servo_initial(struct servo_ao *me);
+static QState servo_center(struct servo_ao *me);
 static QState servo_idle(struct servo_ao *me);
 static QState servo_moving(struct servo_ao *me);
 
-static void servo_set_pos(int servo, float pos);
+static void compute_pos(vec2f_t *deg, vec2i_t *pos);
 
 /** Servo active object */
 struct servo_ao servo_ao;
 
 enum timeouts {
-	TIMEOUT_MIN_DELAY = TICKS(100),
+	TIMEOUT_WAIT_CENTER = TICKS(3000),
+	TIMEOUT_POST_DELAY = TICKS(3000),
 };
 
+
+#define CLAMP(_val_, _min_, _max_)			\
+	((_val_) < (_min_) ? (_min_) : ((_val_) > (_max_) ? (_max_) : (_val_)))
+
+#define ABS(_val_)							\
+	((_val_) < 0 ? -(_val_) : (_val_))
+
+ISR(TIMER1_OVF_vect)
+{
+	struct servo_ao *me = &servo_ao;
+	int16_t vel;
+
+	// Move X servo
+	if (me->ofs.x) {
+		vel = CLAMP(me->ofs.x, -SERVO_VEL, SERVO_VEL);
+		me->ofs.x -= vel;
+		me->pos.x += vel;
+		OCR1A = (me->pos.x / 10);
+		if ((me->ofs.x == 0) && (me->ofs.y == 0))
+			QActive_postISR((QActive *) me, SIG_SERVO_DONE, 0);
+	}
+
+	// Move Y servo
+	if (me->ofs.y) {
+		vel = CLAMP(me->ofs.y, -SERVO_VEL, SERVO_VEL);
+		me->ofs.y -= vel;
+		me->pos.y += vel;
+		OCR1B = (me->pos.y / 10);
+		if ((me->ofs.x == 0) && (me->ofs.y == 0))
+			QActive_postISR((QActive *) me, SIG_SERVO_DONE, 0);
+	}
+}
 
 /**
  * Constructor.
  */
 void servo_ctor(void)
 {
-	servo_ao.cur_pos.x = 180.0;
-	servo_ao.cur_pos.y = 90.0;
+	vec2f_t c;
+
+	vec2(&c, 180.0, 90.0);
+	compute_pos(&c, &servo_ao.pos);
+	vec2(&servo_ao.ofs, 0, 0);
 
 	// Setup PWM, Phase and Frequency correct, prescaler 8, enable OC1A and OC1B
 	TCCR1A = (2 << COM1A0) | (2 << COM1B0) | (0 << WGM10);
@@ -64,8 +101,10 @@ void servo_ctor(void)
 	ICR1 = 20000;
 
 	// Initial servo position
-	OCR1A = SERVO_CENTER;
-	OCR1B = SERVO_CENTER;
+	OCR1A = servo_ao.pos.x / 10;
+	OCR1B = servo_ao.pos.y / 10;
+
+	TIMSK |= _BV(TOV1);
 
 	// Enable OC1A and OC1B pins
 	DDRB |= (_BV(5) | _BV(6));
@@ -79,7 +118,15 @@ void servo_ctor(void)
  */
 void servo_move(vec2f_t *v)
 {
-	servo_ao.new_pos = *v;
+	struct servo_ao *me = &servo_ao;
+	vec2i_t new_pos;
+
+	TIMSK &= ~_BV(TOV1);
+	compute_pos(v, &new_pos);
+	me->ofs.x = new_pos.x - me->pos.x;
+	me->ofs.y = new_pos.y - me->pos.y;
+	TIMSK |= _BV(TOV1);
+
 	QActive_post((QActive *) &servo_ao, SIG_SERVO_MOVE, 0);
 }
 
@@ -88,7 +135,25 @@ void servo_move(vec2f_t *v)
  */
 static QState servo_initial(struct servo_ao *me)
 {
-	return Q_TRAN(servo_idle);
+	return Q_TRAN(servo_center);
+}
+
+/**
+ * Wait until the servos are centered.
+ */
+static QState servo_center(struct servo_ao *me)
+{
+	switch (Q_SIG(me)) {
+	case Q_ENTRY_SIG:
+		QActive_arm((QActive *) me, TIMEOUT_WAIT_CENTER);
+		return Q_HANDLED();
+	case Q_EXIT_SIG:
+		return Q_HANDLED();
+	case Q_TIMEOUT_SIG:
+		return Q_TRAN(servo_idle);
+	}
+
+	return Q_SUPER(&QHsm_top);
 }
 
 /**
@@ -96,8 +161,6 @@ static QState servo_initial(struct servo_ao *me)
  */
 static QState servo_idle(struct servo_ao *me)
 {
-	QTimeEvtCtr delay, delay1, delay2;
-
 	switch (Q_SIG(me)) {
 	case Q_ENTRY_SIG:
 		return Q_HANDLED();
@@ -106,18 +169,6 @@ static QState servo_idle(struct servo_ao *me)
 	case Q_TIMEOUT_SIG:
 		return Q_HANDLED();
 	case SIG_SERVO_MOVE:
-		// Compute time needed to move into new position
-		DBG("cur_pos %.2f/%.2f\n", me->cur_pos.x, me->cur_pos.y);
-		DBG("new_pos %.2f/%.2f\n", me->new_pos.x, me->new_pos.y);
-		delay1 = TICKS(fabs(me->new_pos.x - me->cur_pos.x) * SERVO_RATE_X);
-		delay2 = TICKS(fabs(me->new_pos.y - me->cur_pos.y) * SERVO_RATE_Y);
-		delay = delay1 > delay2 ? delay1 : delay2;
-		if (delay < TIMEOUT_MIN_DELAY)
-			delay = TIMEOUT_MIN_DELAY;
-		DBG("servo delay %d\n", delay * 20);
-		servo_set_pos(0, me->new_pos.x / 360.0);
-		servo_set_pos(1, me->new_pos.y / 180.0);
-		QActive_arm((QActive *) me, delay);
 		return Q_TRAN(servo_moving);
 	}
 
@@ -135,36 +186,28 @@ static QState servo_moving(struct servo_ao *me)
 	case Q_EXIT_SIG:
 		return Q_HANDLED();
 	case Q_TIMEOUT_SIG:
-		me->cur_pos = me->new_pos;
 		QActive_post((QActive *) &prog_ao, SIG_SERVO_DONE, 0);
 		return Q_TRAN(servo_idle);
+	case SIG_SERVO_MOVE:
+		QActive_disarm((QActive *) me);
+		return Q_HANDLED();
+	case SIG_SERVO_DONE:
+		DBG("servo moved internally\n");
+		QActive_arm((QActive *) me, TIMEOUT_POST_DELAY);
+		return Q_HANDLED();
 	}
 
 	return Q_SUPER(&QHsm_top);
 }
 
-/**
- * Sets the servo position.
- * @param servo Servo number
- * @param pos Servo position (0..1)
- */
-static void servo_set_pos(int servo, float pos)
+
+static void compute_pos(vec2f_t *deg, vec2i_t *pos)
 {
-	unsigned long ocr;
-
-	if (pos < 0.0)
-		pos = 0.0;
-	if (pos > 1.0)
-		pos = 1.0;
-
-	switch (servo) {
-	case 0:
-		ocr = SERVO_ORIGIN_X + (pos * SERVO_RANGE_X);
-		OCR1A = ocr;
-		break;
-	case 1:
-		ocr = SERVO_ORIGIN_Y + (pos * SERVO_RANGE_Y);
-		OCR1B = ocr;
-		break;
-	}
+	vec2f_t v;
+	v.x = deg->x / 360.0;
+	v.y = deg->y / 180.0;
+	v.x = CLAMP(v.x, 0.0, 1.0);
+	v.y = CLAMP(v.y, 0.0, 1.0);
+	pos->x = (SERVO_ORIGIN_X + (v.x * SERVO_RANGE_X)) * 10;
+	pos->y = (SERVO_ORIGIN_Y + (v.y * SERVO_RANGE_Y)) * 10;
 }
