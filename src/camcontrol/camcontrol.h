@@ -18,7 +18,7 @@ enum signals {						/**< Description			Parameter		Source		Destination	*/
 	SIG_MMI_SHOW_MSG,				/**< Shows an info message	Timeout			mmi			mmi			*/
 	SIG_SERVO_MOVE,					/**< Moves the servos into	-				mmi, prog	servo
 									     new position													*/
-	SIG_SERVO_DONE,					/**< Servo moved into new	-				servo		prog
+	SIG_SERVO_DONE,					/**< Servo moved into new	-				servo		servo, prog
 									     new position													*/
 	SIG_PROG_START,					/**< Starts the program		Program			mmi			prog		*/
 	SIG_PROG_STOP,					/**< Stops the program		-				mmi			prog		*/
