@@ -288,7 +288,9 @@ static QState mmi_busy(struct mmi_ao *me)
 			QActive_post((QActive *) &prog_ao, SIG_PROG_STOP, 0);
 			return Q_TRAN(mmi_navigate);
 		}
-		return Q_HANDLED();;
+		return Q_HANDLED();
+	case SIG_PROG_DONE:
+		return Q_TRAN(mmi_navigate);
 	}
 
 	return Q_SUPER(&QHsm_top);
