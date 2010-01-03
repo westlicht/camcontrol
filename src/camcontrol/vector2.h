@@ -15,7 +15,7 @@ typedef struct {
 
 /** Integer vector */
 typedef struct {
-	uint16_t x, y;
+	int16_t x, y;
 } vec2i_t;
 
 /**
