@@ -32,8 +32,8 @@ PARAM(p_center_x, &pc_deg_360, &pd.center_x, 180)
 PARAM(p_center_y, &pc_deg_180, &pd.center_y, 90)
 
 /* Giga pan */
-PARAM(p_giga_start_x, &pc_deg_360, &pd.giga.start_x, 90)
-PARAM(p_giga_start_y, &pc_deg_180, &pd.giga.start_y, 90)
-PARAM(p_giga_end_x, &pc_deg_360, &pd.giga.end_x, 270)
-PARAM(p_giga_end_y, &pc_deg_180, &pd.giga.end_y, 90)
+PARAM(p_giga_start_x, &pc_deg_360, &pd.giga.start_x, 130)
+PARAM(p_giga_start_y, &pc_deg_180, &pd.giga.start_y, 60)
+PARAM(p_giga_end_x, &pc_deg_360, &pd.giga.end_x, 230)
+PARAM(p_giga_end_y, &pc_deg_180, &pd.giga.end_y, 120)
 PARAM(p_giga_overlap, &pc_overlap, &pd.giga.overlap, 100)
