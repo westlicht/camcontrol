@@ -191,7 +191,7 @@ static QState mmi_spherical_pan(struct mmi_ao *me)
 		prog_init_spherical_pan();
 		lcd_clear();
 		lcd_write(0, 0, "Spherical pan", 0);
-		snprintf(tmp, sizeof(tmp), "%dx%d", spherical_pan.tiles_x, spherical_pan.tiles_y);
+		snprintf(tmp, sizeof(tmp), "%d tiles", spherical_pan.tiles);
 		lcd_write(0, 1, tmp, 0);
 		return Q_HANDLED();
 	case Q_EXIT_SIG:
@@ -221,7 +221,7 @@ static QState mmi_giga_pan(struct mmi_ao *me)
 		prog_init_giga_pan();
 		lcd_clear();
 		lcd_write(0, 0, "Giga pan", 0);
-		snprintf(tmp, sizeof(tmp), "%dx%d", giga_pan.tiles.x, giga_pan.tiles.y);
+		snprintf(tmp, sizeof(tmp), "%dx%d tiles", giga_pan.tiles.x, giga_pan.tiles.y);
 		lcd_write(0, 1, tmp, 0);
 		return Q_HANDLED();
 	case Q_EXIT_SIG:
@@ -265,7 +265,7 @@ static QState mmi_show_msg(struct mmi_ao *me)
 
 static QState mmi_busy(struct mmi_ao *me)
 {
-	static const char busy_char[] = "abc";
+	static const char busy_char[] = ". ";
 	static uint8_t busy_index;
 
 	switch (Q_SIG(me)) {
