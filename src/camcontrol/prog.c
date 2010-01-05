@@ -63,9 +63,13 @@ void prog_ctor(void)
 int prog_init_spherical_pan(void)
 {
 	struct spherical_info *info = &spherical_info;
+	float overlap;
 	float t;
 
 	init_camera();
+	overlap = deg2rad(pd.spherical.overlap / 100.0);
+	camera_info.fov.x -= overlap;
+	camera_info.fov.y -= overlap;
 
 	DBG("Spherical pan parameters:\n");
 
@@ -104,9 +108,13 @@ int prog_init_spherical_pan(void)
 int prog_init_giga_pan(void)
 {
 	struct giga_info *info = &giga_info;
+	float overlap;
 	vec2f_t size;
 
 	init_camera();
+	overlap = deg2rad(pd.giga.overlap / 100.0);
+	camera_info.fov.x -= overlap;
+	camera_info.fov.y -= overlap;
 
 	DBG("Giga pan parameters:\n");
 
@@ -190,6 +198,8 @@ static QState prog_spherical_pan(struct prog_ao *me)
 		return Q_HANDLED();
 	case Q_TIMEOUT_SIG:
 		return Q_HANDLED();
+	case SIG_PROG_STOP:
+		return Q_TRAN(prog_idle);
 	case SIG_PROG_STEP:
 		return Q_TRAN(prog_spherical_pan_step);
 	}
@@ -253,6 +263,8 @@ static QState prog_giga_pan(struct prog_ao *me)
 		return Q_HANDLED();
 	case Q_TIMEOUT_SIG:
 		return Q_HANDLED();
+	case SIG_PROG_STOP:
+		return Q_TRAN(prog_idle);
 	case SIG_PROG_STEP:
 		return Q_TRAN(prog_giga_pan_step);
 	}
@@ -321,7 +333,7 @@ static QState prog_timelapse(struct prog_ao *me)
 		return Q_HANDLED();
 	case Q_TIMEOUT_SIG:
 		me->seconds++;
-		if (me->seconds == pd.timelapse_rate) {
+		if (me->seconds == pd.timelapse.rate) {
 			// FIXME we could overflow the sutter queue if shutter is not done yet
 			QActive_post((QActive *) &shutter_ao, SIG_SHUTTER_START, 0);
 			me->seconds = 0;
@@ -346,16 +358,12 @@ static QState prog_timelapse_wait(struct prog_ao *me)
 static void init_camera(void)
 {
 	struct camera_info *info = &camera_info;
-	float overlap;
 
 	DBG("Camera info:\n");
 
 	// Compute field of view
-	info->fov.x = compute_fov(pd.focal_length / 10.0, pd.sensor_width / 10.0, pd.crop / 100.0);
-	info->fov.y = compute_fov(pd.focal_length / 10.0, pd.sensor_height / 10.0, pd.crop / 100.0);
-	overlap = deg2rad(pd.giga.overlap / 100.0);
-	info->fov.x -= overlap;
-	info->fov.y -= overlap;
+	info->fov.x = compute_fov(pd.camera.focal_length / 10.0, pd.camera.sensor_width / 10.0, pd.camera.crop / 100.0);
+	info->fov.y = compute_fov(pd.camera.focal_length / 10.0, pd.camera.sensor_height / 10.0, pd.camera.crop / 100.0);
 	DBG("fov %.2f/%.2f\n", rad2deg(info->fov.x), rad2deg(info->fov.y));
 }
 

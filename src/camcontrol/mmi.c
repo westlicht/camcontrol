@@ -330,7 +330,7 @@ static QState execute_cmd(struct mmi_ao *me, int cmd)
 		servo_move(&v);
 		break;
 	case CMD_UPDATE_CENTER:
-		vec2(&v, deg2rad(pd.center_x), deg2rad(pd.center_y));
+		vec2(&v, deg2rad(pd.single.center_x), deg2rad(pd.single.center_y));
 		servo_move(&v);
 		break;
 	case CMD_UPDATE_GIGA_START:

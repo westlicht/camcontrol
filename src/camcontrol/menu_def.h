@@ -11,15 +11,42 @@
 #include "param.h"
 #include "mmi.h"
 
+static const struct menu_item page_camera_setup[] = {
+	{
+		MENU_ITEM_PARAM("Sensor Width", &p_sensor_width, CMD_NONE),
+	}, {
+		MENU_ITEM_PARAM("Sensor Height", &p_sensor_height, CMD_NONE),
+	}, {
+		MENU_ITEM_PARAM("Crop", &p_crop, CMD_NONE),
+	}, {
+		MENU_ITEM_PARAM("Focal Length", &p_focal_length, CMD_NONE),
+	}, {
+		MENU_ITEM_LAST(),
+	}
+};
+
+static const struct menu_item page_shutter_setup[] = {
+	{
+		MENU_ITEM_PARAM("Mode", &p_shutter_mode, CMD_NONE),
+	}, {
+		MENU_ITEM_PARAM("HDR Min Exposure", &p_hdr_time1, CMD_NONE),
+	}, {
+		MENU_ITEM_PARAM("HDR Max Exposure", &p_hdr_time2, CMD_NONE),
+	}, {
+		MENU_ITEM_PARAM("HDR Shots", &p_hdr_shots, CMD_NONE),
+	}, {
+		MENU_ITEM_PARAM("Delay", &p_trigger_delay, CMD_NONE),
+	}, {
+		MENU_ITEM_LAST(),
+	}
+};
+
+
 static const struct menu_item page_single_shot[] = {
 	{
 		MENU_ITEM_PARAM("Center X", &p_center_x, CMD_UPDATE_CENTER),
 	}, {
 		MENU_ITEM_PARAM("Center Y", &p_center_y, CMD_UPDATE_CENTER),
-	}, {
-		MENU_ITEM_PARAM("Shutter mode", &p_shutter_mode, CMD_NONE),
-	}, {
-		MENU_ITEM_PARAM("Shutter time", &p_shutter_time, CMD_NONE),
 	}, {
 		MENU_ITEM_CMD("Start", CMD_SINGLE_SHOT),
 	}, {
@@ -29,9 +56,7 @@ static const struct menu_item page_single_shot[] = {
 
 static const struct menu_item page_spherical_pan[] = {
 	{
-		MENU_ITEM_PARAM("Focal length", &p_focal_length, CMD_NONE),
-	}, {
-		MENU_ITEM_PARAM("Shutter mode", &p_shutter_mode, CMD_NONE),
+		MENU_ITEM_PARAM("Overlap", &p_spherical_overlap, CMD_NONE),
 	}, {
 		MENU_ITEM_CMD("Start", CMD_SPHERICAL_PAN),
 	}, {
@@ -51,10 +76,6 @@ static const struct menu_item page_giga_pan[] = {
 	}, {
 		MENU_ITEM_PARAM("Overlap", &p_giga_overlap, CMD_NONE),
 	}, {
-		MENU_ITEM_PARAM("Focal length", &p_focal_length, CMD_NONE),
-	}, {
-		MENU_ITEM_PARAM("Shutter mode", &p_shutter_mode, CMD_NONE),
-	}, {
 		MENU_ITEM_CMD("Start", CMD_GIGA_PAN),
 	}, {
 		MENU_ITEM_LAST(),
@@ -66,30 +87,6 @@ static const struct menu_item page_timelapse[] = {
 		MENU_ITEM_PARAM("Trigger rate", &p_timelapse_rate, CMD_NONE),
 	}, {
 		MENU_ITEM_CMD("Start", CMD_TIMELAPSE),
-	}, {
-		MENU_ITEM_LAST(),
-	}
-};
-
-static const struct menu_item page_setup[] = {
-	{
-		MENU_ITEM_PARAM("Focal length", &p_focal_length, CMD_NONE),
-	}, {
-		MENU_ITEM_PARAM("Sensor width", &p_sensor_width, CMD_NONE),
-	}, {
-		MENU_ITEM_PARAM("Sensor height", &p_sensor_height, CMD_NONE),
-	}, {
-		MENU_ITEM_PARAM("Crop", &p_crop, CMD_NONE),
-	}, {
-		MENU_ITEM_PARAM("HDR min exposure", &p_hdr_time1, CMD_NONE),
-	}, {
-		MENU_ITEM_PARAM("HDR max exposure", &p_hdr_time2, CMD_NONE),
-	}, {
-		MENU_ITEM_PARAM("HDR shots", &p_hdr_shots, CMD_NONE),
-	}, {
-		MENU_ITEM_PARAM("Trigger delay", &p_trigger_delay, CMD_NONE),
-	}, {
-		MENU_ITEM_CMD("Save", CMD_SAVE),
 	}, {
 		MENU_ITEM_LAST(),
 	}
@@ -109,15 +106,19 @@ static const struct menu_item page_test[] = {
 
 static const struct menu_item page_main[] = {
 	{
-		MENU_ITEM_SUB("Single shot", page_single_shot),
+		MENU_ITEM_SUB("Camera Setup", page_camera_setup),
 	}, {
-		MENU_ITEM_SUB("Spherical pan", page_spherical_pan),
+		MENU_ITEM_SUB("Shutter Setup", page_shutter_setup),
 	}, {
-		MENU_ITEM_SUB("Giga pan", page_giga_pan),
+		MENU_ITEM_SUB("Single Shot", page_single_shot),
+	}, {
+		MENU_ITEM_SUB("Spherical Pan", page_spherical_pan),
+	}, {
+		MENU_ITEM_SUB("Giga Pan", page_giga_pan),
 	}, {
 		MENU_ITEM_SUB("Timelapse", page_timelapse),
 	}, {
-		MENU_ITEM_SUB("Settings", page_setup),
+		MENU_ITEM_CMD("Save Settings", CMD_SAVE),
 	}, {
 		MENU_ITEM_SUB("Test", page_test),
 	}, {

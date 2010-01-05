@@ -16,24 +16,30 @@
 
 /** Parameter data structure */
 struct param_data {
-	uint16_t focal_length;		/**< Focal length (mm * 0.1) */
-	uint16_t sensor_width;		/**< Sensor width (mm * 0.1) */
-	uint16_t sensor_height;		/**< Sensor height (mm * 0.1) */
-	uint16_t crop;				/**< Crop factor in 0.01 */
-	uint16_t pan_width;			/**< Panorama width (deg) */
-	uint16_t pan_height;		/**< Panorama height (deg) */
-	uint8_t shutter_mode;		/**< Shutter mode */
-	uint8_t shutter_time;		/**< Shutter time */
-	uint8_t hdr_time1;			/**< Min exposure time for HDR series */
-	uint8_t hdr_time2;			/**< Max exposure time for HDR series */
-	uint16_t hdr_shots;			/**< Number of shots per HDR series */
-	uint16_t trigger_delay;		/**< Trigger delay between shots in s * 0.01 */
-	uint32_t timelapse_rate;	/**< Timelapse trigger rate in s */
-	uint16_t center_x;			/**< Horizontal center position (deg) */
-	uint16_t center_y;			/**< Vertical center position (deg) */
+	/* Camera parameters */
+	struct {
+		uint16_t focal_length;	/**< Focal length (mm * 0.1) */
+		uint16_t sensor_width;	/**< Sensor width (mm * 0.1) */
+		uint16_t sensor_height;	/**< Sensor height (mm * 0.1) */
+		uint16_t crop;			/**< Crop factor in 0.01 */
+	} camera;
+	/* Shutter parameters */
+	struct {
+		uint8_t mode;			/**< Shutter mode */
+		uint8_t time;			/**< Shutter time */
+		uint8_t hdr_time1;		/**< Min exposure time for HDR series */
+		uint8_t hdr_time2;		/**< Max exposure time for HDR series */
+		uint16_t hdr_shots;		/**< Number of shots per HDR series */
+		uint16_t trigger_delay;	/**< Trigger delay between shots in s * 0.01 */
+	} shutter;
+	/* Single shot parameters */
+	struct {
+		uint16_t center_x;			/**< Horizontal center position (deg) */
+		uint16_t center_y;			/**< Vertical center position (deg) */
+	} single;
 	/* Spherical pan parameters */
 	struct {
-
+		uint16_t overlap;		/**< Minimal image overlap (deg * 0.01) */
 	} spherical;
 	/* Giga pan parameters */
 	struct {
@@ -43,6 +49,10 @@ struct param_data {
 		uint16_t end_y;			/**< Vertical end position (deg) */
 		uint16_t overlap;		/**< Minimal image overlap (deg * 0.01) */
 	} giga;
+	/* Timelapse parameters */
+	struct {
+		uint32_t rate;			/**< Timelapse trigger rate in s */
+	} timelapse;
 };
 
 /** Parameter data */

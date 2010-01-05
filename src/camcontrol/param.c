@@ -122,7 +122,7 @@ static void print_trigger_delay(const struct param *param, char *str, int len)
 	snprintf(str, len, "%u.%02u", *value / 100, *value % 100);
 }
 
-static void print_timelapse_rate(const struct param *param, char *str, int len)
+static void print_duration(const struct param *param, char *str, int len)
 {
 	uint32_t *value = param->value;
 	snprintf(str, len, "%02lu:%02lu:%02lu", *value / 3600, (*value / 60) % 60, *value % 60);
