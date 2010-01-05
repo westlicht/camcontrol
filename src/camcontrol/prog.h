@@ -21,28 +21,25 @@ enum programs {
 
 /** Camera info */
 struct camera_info {
-	vec2f_t fov;		/**< Field of view */
+	vec2f_t fov;			/**< Field of view */
 };
 
 /** Spherical pan info */
 struct spherical_info {
-	vec2f_t fov;		/**< Field of view */
-	uint16_t tiles;		/**< Total number of tiles */
-	float origin;
-	vec2f_t step;
-	uint16_t rows;
-	uint16_t cols;
-	uint16_t row;
-	uint16_t col;
-	vec2f_t pos;
+	uint16_t total_tiles;	/**< Total number of tiles */
+	float origin;			/**< Vertical origin of 2nd row */
+	vec2i_t tiles;			/**< Number of tiles (rows/cols) */
+	vec2f_t step;			/**< Step size (row/col) */
+	vec2i_t index;			/**< Index (row/col) */
+	vec2f_t pos;			/**< Camera position */
 };
 
 /** Giga pan info */
 struct giga_info {
-	vec2i_t tiles;
-	vec2f_t origin;
-	vec2f_t step;
-	vec2i_t index;
+	vec2i_t tiles;			/**< Number of tiles (rows/cols) */
+	vec2f_t origin;			/**< Origin */
+	vec2f_t step;			/**< Step size (row/col) */
+	vec2i_t index;			/**< Index (row/col) */
 };
 
 extern struct prog_ao prog_ao;

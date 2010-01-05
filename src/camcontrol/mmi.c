@@ -191,7 +191,7 @@ static QState mmi_spherical_pan(struct mmi_ao *me)
 		prog_init_spherical_pan();
 		lcd_clear();
 		lcd_write(0, 0, "Spherical pan", 0);
-		snprintf(tmp, sizeof(tmp), "%d tiles", spherical_info.tiles);
+		snprintf(tmp, sizeof(tmp), "%d tiles", spherical_info.total_tiles);
 		lcd_write(0, 1, tmp, 0);
 		return Q_HANDLED();
 	case Q_EXIT_SIG:

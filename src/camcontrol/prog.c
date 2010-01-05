@@ -70,25 +70,29 @@ int prog_init_spherical_pan(void)
 	DBG("Spherical pan parameters:\n");
 
 	// Compute number of rows
-	t = 180.0 - MIN(camera_info.fov.x, camera_info.fov.y);
-	info->rows = 2 + (ceil(t / camera_info.fov.y));
-	DBG("rows %d\n", info->rows);
+	t = M_PI - MIN(camera_info.fov.x, camera_info.fov.y);
+	info->tiles.y = 2 + (ceil(t / camera_info.fov.y));
+	DBG("rows %d\n", info->tiles.y);
 
 	// Compute vertical step size
-	info->step.y = t / (info->rows - 2);
-	DBG("step (normalized) %.2f/%.2f\n", info->step.x, info->step.y);
+	info->step.y = t / (info->tiles.y - 2);
+	DBG("step (normalized) %.2f/%.2f\n", rad2deg(info->step.x), rad2deg(info->step.y));
 
 	// Compute vertical origin
-	info->origin = (180.0 - (camera_info.fov.y * (info->rows - 3))) / 2.0;
-	DBG("origin %f\n", info->origin);
+	info->origin = (M_PI - (camera_info.fov.y * (info->tiles.y - 3))) / 2.0;
+	DBG("origin %f\n", rad2deg(info->origin));
 
-	// Compute number of tiles
-	info->tiles = 0;
-	for (info->row = 0; info->row < info->rows; info->row++) {
+	// Compute total number of tiles
+	info->total_tiles = 0;
+	for (info->index.y = 0; info->index.y  < info->tiles.y; info->index.y++) {
 		compute_spherical_row(info);
-		info->tiles += info->cols;
+		info->total_tiles += info->tiles.x;
 	}
-	DBG("tiles %d\n", info->tiles);
+	DBG("total tiles %d\n", info->total_tiles);
+
+	// Prepare 1st row
+	info->index.y = 0;
+	compute_spherical_row(info);
 
 	return 1;
 }
@@ -186,6 +190,8 @@ static QState prog_spherical_pan(struct prog_ao *me)
 		return Q_HANDLED();
 	case Q_TIMEOUT_SIG:
 		return Q_HANDLED();
+	case SIG_PROG_STEP:
+		return Q_TRAN(prog_spherical_pan_step);
 	}
 
 	return Q_SUPER(&QHsm_top);
@@ -193,15 +199,13 @@ static QState prog_spherical_pan(struct prog_ao *me)
 
 static QState prog_spherical_pan_step(struct prog_ao *me)
 {
-	vec2f_t pos;
+	struct spherical_info *info = &spherical_info;
 
 	switch (Q_SIG(me)) {
 	case Q_ENTRY_SIG:
 		// Move servos into position
-		vec2(&pos, giga_info.origin.x + giga_info.index.x * giga_info.step.x,
-				   giga_info.origin.y + giga_info.index.y * giga_info.step.y);
-		DBG("move to %d/%d (%.2f/%.2f)\n", giga_info.index.x, giga_info.index.y, rad2deg(pos.x), rad2deg(pos.y));
-		servo_move(&pos);
+		DBG("move to %d/%d (%.2f/%.2f)\n", info->index.x, info->index.y, rad2deg(info->pos.x), rad2deg(info->pos.y));
+		servo_move(&info->pos);
 		return Q_HANDLED();
 	case Q_EXIT_SIG:
 		return Q_HANDLED();
@@ -218,14 +222,16 @@ static QState prog_spherical_pan_step(struct prog_ao *me)
 		// Image is shut
 		DBG("shut done\n");
 		// Prepare next step
-		giga_info.index.x++;
-		if (giga_info.index.x == giga_info.tiles.x) {
-			giga_info.index.x = 0;
-			giga_info.index.y++;
-			if (giga_info.index.y >= giga_info.tiles.y) {
+		info->index.x++;
+		if (info->index.x == info->tiles.x) {
+			info->index.y++;
+			if (info->index.y >= info->tiles.y) {
 				QActive_post((QActive *) &mmi_ao, SIG_PROG_DONE, 0);
 				return Q_TRAN(prog_idle);
 			}
+			compute_spherical_row(info);
+		} else {
+			info->pos.x += info->step.x;
 		}
 		QActive_post((QActive *) me, SIG_PROG_STEP, 0);
 		return Q_HANDLED();
@@ -256,14 +262,15 @@ static QState prog_giga_pan(struct prog_ao *me)
 
 static QState prog_giga_pan_step(struct prog_ao *me)
 {
+	struct giga_info *info = &giga_info;
 	vec2f_t pos;
 
 	switch (Q_SIG(me)) {
 	case Q_ENTRY_SIG:
 		// Move servos into position
-		vec2(&pos, giga_info.origin.x + giga_info.index.x * giga_info.step.x,
-				   giga_info.origin.y + giga_info.index.y * giga_info.step.y);
-		DBG("move to %d/%d (%.2f/%.2f)\n", giga_info.index.x, giga_info.index.y, rad2deg(pos.x), rad2deg(pos.y));
+		vec2(&pos, info->origin.x + info->index.x * info->step.x,
+				   info->origin.y + info->index.y * info->step.y);
+		DBG("move to %d/%d (%.2f/%.2f)\n", info->index.x, info->index.y, rad2deg(pos.x), rad2deg(pos.y));
 		servo_move(&pos);
 		return Q_HANDLED();
 	case Q_EXIT_SIG:
@@ -281,11 +288,11 @@ static QState prog_giga_pan_step(struct prog_ao *me)
 		// Image is shut
 		DBG("shut done\n");
 		// Prepare next step
-		giga_info.index.x++;
-		if (giga_info.index.x == giga_info.tiles.x) {
-			giga_info.index.x = 0;
-			giga_info.index.y++;
-			if (giga_info.index.y >= giga_info.tiles.y) {
+		info->index.x++;
+		if (info->index.x == info->tiles.x) {
+			info->index.x = 0;
+			info->index.y++;
+			if (info->index.y >= info->tiles.y) {
 				QActive_post((QActive *) &mmi_ao, SIG_PROG_DONE, 0);
 				return Q_TRAN(prog_idle);
 			}
@@ -380,23 +387,32 @@ static float compute_fov(float focal_length, float size, float crop)
 
 static void compute_spherical_row(struct spherical_info *info)
 {
-	float a, t;
+	float a;
 
-	if (info->row == 0 ) {
+	if (info->index.y == 0 ) {
 		// Top row
-		info->cols = 1;
-		vec2(&info->pos, 0.0, 0.0);
-	} else if (info->row == info->rows - 1) {
+		info->tiles.x = 1;
+		vec2(&info->pos, deg2rad(0.0), deg2rad(0.0));
+	} else if (info->index.y == info->tiles.y - 1) {
 		// Bottom row
-		info->cols = 1;
-		vec2(&info->pos, 360.0, 180.0);
-	} else if (info->row < info->rows / 2) {
+		info->tiles.x = 1;
+		vec2(&info->pos, deg2rad(360.0), deg2rad(180.0));
+	} else if (info->index.y < info->tiles.y / 2) {
 		// Upper half row
-		vec2(&info->pos, 0.0, info->origin + (info->row - 1) * info->step.y);
+		vec2(&info->pos, 0.0, info->origin + (info->index.y - 1) * info->step.y);
 		a = info->pos.y + camera_info.fov.y / 2.0;
+		info->tiles.x = ceil(M_2PI / (camera_info.fov.x / sin(a)));
+		info->step.x = M_2PI / info->tiles.x;
 	} else {
 		// Lower half row
+		vec2(&info->pos, 0.0, info->origin + (info->index.y - 1) * info->step.y);
+		a = info->pos.y - camera_info.fov.y / 2.0;
+		info->tiles.x = ceil(M_2PI / (camera_info.fov.x / sin(a)));
+		info->step.x = M_2PI / info->tiles.x;
 	}
 
-	info->col = 0;
+	DBG("pos %.2f/%.2f\n", rad2deg(info->pos.x), rad2deg(info->pos.y));
+	DBG("cols %d\n", info->tiles.x);
+
+	info->index.x = 0;
 }
