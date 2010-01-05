@@ -85,6 +85,7 @@ $(BINDIR)/$(APP_NAME).elf : \
 	$(BINDIR)/servo.o \
 	$(BINDIR)/shutter.o \
 	$(BINDIR)/uart.o \
+	$(BINDIR)/utils.o \
 	$(BINDIR)/qepn.o \
 	$(BINDIR)/qfn.o
 	$(LINK) $(LINKFLAGS) \
@@ -103,6 +104,7 @@ $(BINDIR)/$(APP_NAME).elf : \
 	$(BINDIR)/servo.o \
 	$(BINDIR)/shutter.o \
 	$(BINDIR)/uart.o \
+	$(BINDIR)/utils.o \
 	$(BINDIR)/qepn.o \
 	$(BINDIR)/qfn.o \
 	-lm
@@ -146,6 +148,9 @@ $(BINDIR)/shutter.o: $(BLDDIR)/shutter.c $(APP_DEP) $(QP_DEP)
 	$(CC) $(CCFLAGS) $(CCINC) $<
 
 $(BINDIR)/uart.o: $(BLDDIR)/uart.c $(APP_DEP) $(QP_DEP)
+	$(CC) $(CCFLAGS) $(CCINC) $<
+
+$(BINDIR)/utils.o: $(BLDDIR)/utils.c $(APP_DEP) $(QP_DEP)
 	$(CC) $(CCFLAGS) $(CCINC) $<
 
 $(BINDIR)/qepn.o: $(QP_SRCDIR)/qepn.c $(QP_DEP)
