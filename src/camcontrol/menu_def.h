@@ -79,6 +79,8 @@ static const struct menu_item page_setup[] = {
 	}, {
 		MENU_ITEM_PARAM("Sensor height", &p_sensor_height, CMD_NONE),
 	}, {
+		MENU_ITEM_PARAM("Crop", &p_crop, CMD_NONE),
+	}, {
 		MENU_ITEM_PARAM("HDR min exposure", &p_hdr_time1, CMD_NONE),
 	}, {
 		MENU_ITEM_PARAM("HDR max exposure", &p_hdr_time2, CMD_NONE),
