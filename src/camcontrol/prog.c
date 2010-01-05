@@ -396,19 +396,24 @@ static void compute_spherical_row(struct spherical_info *info)
 	} else if (info->index.y == info->tiles.y - 1) {
 		// Bottom row
 		info->tiles.x = 1;
-		vec2(&info->pos, deg2rad(360.0), deg2rad(180.0));
-	} else if (info->index.y < info->tiles.y / 2) {
-		// Upper half row
-		vec2(&info->pos, 0.0, info->origin + (info->index.y - 1) * info->step.y);
-		a = info->pos.y + camera_info.fov.y / 2.0;
-		info->tiles.x = ceil(M_2PI / (camera_info.fov.x / sin(a)));
-		info->step.x = M_2PI / info->tiles.x;
+		vec2(&info->pos, (info->tiles.y % 2 == 0) ? deg2rad(0.0) : deg2rad(360.0), deg2rad(180.0));
 	} else {
-		// Lower half row
+		// Other rows
 		vec2(&info->pos, 0.0, info->origin + (info->index.y - 1) * info->step.y);
-		a = info->pos.y - camera_info.fov.y / 2.0;
+		if (info->index.y < info->tiles.y / 2) {
+			// Upper rows
+			a = info->pos.y + camera_info.fov.y / 2.0;
+		} else {
+			// Lower rows
+			a = info->pos.y - camera_info.fov.y / 2.0;
+		}
 		info->tiles.x = ceil(M_2PI / (camera_info.fov.x / sin(a)));
 		info->step.x = M_2PI / info->tiles.x;
+		// Invert even rows
+		if (info->index.y % 2 == 0) {
+			info->pos.x = info->step.x * (info->tiles.x - 1);
+			info->step.x = -info->step.x;
+		}
 	}
 
 	DBG("pos %.2f/%.2f\n", rad2deg(info->pos.x), rad2deg(info->pos.y));
