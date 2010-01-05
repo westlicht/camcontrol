@@ -18,7 +18,7 @@
 #include "key.h"
 
 #define NUM_KEYS		5
-#define NUM_DEBOUNCE	10
+#define NUM_DEBOUNCE	30
 #define KEY_PORT		A
 
 #define ENC_PORT		B
