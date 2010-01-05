@@ -95,7 +95,7 @@ static void print_mm(const struct param *param, char *str, int len)
 static void print_crop(const struct param *param, char *str, int len)
 {
 	uint16_t *value = param->value;
-	snprintf(str, len, "%u.%01u", *value / 10, *value % 10);
+	snprintf(str, len, "%u.%001u", *value / 100, *value % 100);
 }
 
 static void print_deg(const struct param *param, char *str, int len)
