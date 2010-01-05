@@ -15,8 +15,9 @@
 #include "debug.h"
 #include "shutter.h"
 #include "prog.h"
-#include "mmi.h"
 #include "servo.h"
+#include "utils.h"
+#include "mmi.h"
 
 /** MMI active object structure */
 struct mmi_ao {
