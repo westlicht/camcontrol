@@ -16,6 +16,7 @@
 #include "defines.h"
 #include "prog.h"
 #include "debug.h"
+#include "utils.h"
 #include "servo.h"
 
 #define SERVO_RANGE_X	700		/**< Horizontal servo range */
@@ -49,12 +50,6 @@ enum timeouts {
 	TIMEOUT_POST_DELAY = TICKS(3000),
 };
 
-
-#define CLAMP(_val_, _min_, _max_)			\
-	((_val_) < (_min_) ? (_min_) : ((_val_) > (_max_) ? (_max_) : (_val_)))
-
-#define ABS(_val_)							\
-	((_val_) < 0 ? -(_val_) : (_val_))
 
 ISR(TIMER1_OVF_vect)
 {
@@ -192,7 +187,6 @@ static QState servo_moving(struct servo_ao *me)
 		QActive_disarm((QActive *) me);
 		return Q_HANDLED();
 	case SIG_SERVO_DONE:
-		DBG("servo moved internally\n");
 		QActive_arm((QActive *) me, TIMEOUT_POST_DELAY);
 		return Q_HANDLED();
 	}
