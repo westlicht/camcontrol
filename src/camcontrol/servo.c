@@ -84,7 +84,7 @@ void servo_ctor(void)
 {
 	vec2f_t c;
 
-	vec2(&c, 180.0, 90.0);
+	vec2(&c, deg2rad(180.0), deg2rad(90.0));
 	compute_pos(&c, &servo_ao.pos);
 	vec2(&servo_ao.ofs, 0, 0);
 
@@ -109,7 +109,7 @@ void servo_ctor(void)
 
 /**
  * Moves the servos in a new position.
- * @param v New position in deg
+ * @param v New position in radians
  */
 void servo_move(vec2f_t *v)
 {
@@ -198,8 +198,8 @@ static QState servo_moving(struct servo_ao *me)
 static void compute_pos(vec2f_t *deg, vec2i_t *pos)
 {
 	vec2f_t v;
-	v.x = deg->x / 360.0;
-	v.y = deg->y / 180.0;
+	v.x = deg->x / M_2PI;
+	v.y = deg->y / M_PI;
 	v.x = CLAMP(v.x, 0.0, 1.0);
 	v.y = CLAMP(v.y, 0.0, 1.0);
 	pos->x = (SERVO_ORIGIN_X + (v.x * SERVO_RANGE_X)) * 10;

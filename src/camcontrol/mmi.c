@@ -191,7 +191,7 @@ static QState mmi_spherical_pan(struct mmi_ao *me)
 		prog_init_spherical_pan();
 		lcd_clear();
 		lcd_write(0, 0, "Spherical pan", 0);
-		snprintf(tmp, sizeof(tmp), "%d tiles", spherical_pan.tiles);
+		snprintf(tmp, sizeof(tmp), "%d tiles", spherical_info.tiles);
 		lcd_write(0, 1, tmp, 0);
 		return Q_HANDLED();
 	case Q_EXIT_SIG:
@@ -221,7 +221,7 @@ static QState mmi_giga_pan(struct mmi_ao *me)
 		prog_init_giga_pan();
 		lcd_clear();
 		lcd_write(0, 0, "Giga pan", 0);
-		snprintf(tmp, sizeof(tmp), "%dx%d tiles", giga_pan.tiles.x, giga_pan.tiles.y);
+		snprintf(tmp, sizeof(tmp), "%dx%d tiles", giga_info.tiles.x, giga_info.tiles.y);
 		lcd_write(0, 1, tmp, 0);
 		return Q_HANDLED();
 	case Q_EXIT_SIG:
@@ -317,27 +317,27 @@ static QState execute_cmd(struct mmi_ao *me, int cmd)
 		param_save();
 		break;
 	case CMD_SERVO_MIN:
-		vec2(&v, 0.0, 0.0);
+		vec2(&v, deg2rad(0.0), deg2rad(0.0));
 		servo_move(&v);
 		break;
 	case CMD_SERVO_CENTER:
-		vec2(&v, 180.0, 90.0);
+		vec2(&v, deg2rad(180.0), deg2rad(90.0));
 		servo_move(&v);
 		break;
 	case CMD_SERVO_MAX:
-		vec2(&v, 360.0, 180.0);
+		vec2(&v, deg2rad(360.0), deg2rad(180.0));
 		servo_move(&v);
 		break;
 	case CMD_UPDATE_CENTER:
-		vec2(&v, pd.center_x, pd.center_y);
+		vec2(&v, deg2rad(pd.center_x), deg2rad(pd.center_y));
 		servo_move(&v);
 		break;
 	case CMD_UPDATE_GIGA_START:
-		vec2(&v, pd.giga.start_x, pd.giga.start_y);
+		vec2(&v, deg2rad(pd.giga.start_x), deg2rad(pd.giga.start_y));
 		servo_move(&v);
 		break;
 	case CMD_UPDATE_GIGA_END:
-		vec2(&v, pd.giga.end_x, pd.giga.end_y);
+		vec2(&v, deg2rad(pd.giga.end_x), deg2rad(pd.giga.end_y));
 		servo_move(&v);
 		break;
 	}

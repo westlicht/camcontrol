@@ -19,7 +19,7 @@ PARAM_CLASS(pc_timelapse_rate, UINT32, 1, 100000, 1, 60, print_timelapse_rate)
 PARAM_CLASS(pc_overlap, UINT16, 10, 500, 1, 100, print_overlap)
 
 /* Parameters */
-PARAM(p_focal_length, &pc_focal_length, &pd.focal_length, 500)
+PARAM(p_focal_length, &pc_focal_length, &pd.focal_length, 300)
 PARAM(p_sensor_width, &pc_sensor_dim, &pd.sensor_width, 149)
 PARAM(p_sensor_height, &pc_sensor_dim, &pd.sensor_height, 223)
 PARAM(p_crop, &pc_crop, &pd.crop, 100)

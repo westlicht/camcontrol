@@ -10,6 +10,8 @@
 
 #include <math.h>
 
+#define M_2PI (M_PI * 2.0)
+
 #define CLAMP(_val_, _min_, _max_) \
 	((_val_) < (_min_) ? (_min_) : ((_val_) > (_max_) ? (_max_) : (_val_)))
 

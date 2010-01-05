@@ -19,24 +19,36 @@ enum programs {
 	PROG_TIMELAPSE,
 };
 
-/** Spherical pan parameters */
-struct spherical_pan {
-	vec2f_t fov;
-	uint16_t tiles_x;
-	uint16_t tiles_y;
+/** Camera info */
+struct camera_info {
+	vec2f_t fov;		/**< Field of view */
 };
 
-/** Giga pan parameters */
-struct giga_pan {
+/** Spherical pan info */
+struct spherical_info {
+	vec2f_t fov;		/**< Field of view */
+	uint16_t tiles;		/**< Total number of tiles */
+	float origin;
+	vec2f_t step;
+	uint16_t rows;
+	uint16_t cols;
+	uint16_t row;
+	uint16_t col;
+	vec2f_t pos;
+};
+
+/** Giga pan info */
+struct giga_info {
+	vec2i_t tiles;
 	vec2f_t origin;
 	vec2f_t step;
-	vec2i_t tiles;
 	vec2i_t index;
 };
 
 extern struct prog_ao prog_ao;
-extern struct spherical_pan spherical_pan;
-extern struct giga_pan giga_pan;
+extern struct camera_info camera_info;
+extern struct spherical_info spherical_info;
+extern struct giga_info giga_info;
 
 void prog_ctor(void);
 
