@@ -15,7 +15,7 @@
 struct param_data pd;
 
 /** Shutter time infos */
-struct shutter_time shutter_time[NUM_SHUTTER_TIMES] = {
+struct exposure_info exposure_info[NUM_EXPOSURE_INFOS] = {
 	{ "1/8000", 125 },
 	{ "1/6400", 156 },
 	{ "1/5000", 200 },
@@ -75,6 +75,8 @@ struct shutter_time shutter_time[NUM_SHUTTER_TIMES] = {
 /** Shutter modes */
 const char *shutter_mode[NUM_SHUTTER_MODES] = {
 	"Camera",
+	"Short",
+	"Long",
 	"HDR",
 };
 
@@ -95,7 +97,7 @@ static void print_mm(const struct param *param, char *str, int len)
 static void print_crop(const struct param *param, char *str, int len)
 {
 	uint16_t *value = param->value;
-	snprintf(str, len, "%u.%001u", *value / 100, *value % 100);
+	snprintf(str, len, "%u.%02u", *value / 100, *value % 100);
 }
 
 static void print_deg(const struct param *param, char *str, int len)
@@ -104,10 +106,10 @@ static void print_deg(const struct param *param, char *str, int len)
 	snprintf(str, len, "%u deg", *value);
 }
 
-static void print_shutter_time(const struct param *param, char *str, int len)
+static void print_exposure(const struct param *param, char *str, int len)
 {
 	uint8_t *value = param->value;
-	snprintf(str, len, "%s", shutter_time[*value].name);
+	snprintf(str, len, "%s", exposure_info[*value].name);
 }
 
 static void print_shutter_mode(const struct param *param, char *str, int len)

@@ -22,11 +22,12 @@ enum signals {						/**< Description			Parameter		Source		Destination	*/
 									     new position													*/
 	SIG_PROG_START,					/**< Starts the program		Program			mmi			prog		*/
 	SIG_PROG_STOP,					/**< Stops the program		-				mmi			prog		*/
-	SIG_PROG_STEP,					/**< Next step in program	-				prog		prog		*/
 	SIG_PROG_DONE,					/**< Program is done		-				prog		mmi			*/
+	SIG_PROG_STEP,					/**< Next step in program	-				prog		prog		*/
 	SIG_SHUTTER_START,				/**< Starts the shutter		-				prog		shutter		*/
 	SIG_SHUTTER_STOP,				/**< Stops the shutter		-				prog		shutter		*/
 	SIG_SHUTTER_DONE,				/**< Shutter cycle done		-				shutter		prog		*/
+	SIG_SHUTTER_STEP,				/**< Next shot				-				shutter		shutter		*/
 
 };
 

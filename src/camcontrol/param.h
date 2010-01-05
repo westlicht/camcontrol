@@ -26,11 +26,12 @@ struct param_data {
 	/* Shutter parameters */
 	struct {
 		uint8_t mode;			/**< Shutter mode */
-		uint8_t time;			/**< Shutter time */
+		uint8_t time;			/**< Exposure time */
+		uint32_t long_time;		/**< Long exposure time */
 		uint8_t hdr_time1;		/**< Min exposure time for HDR series */
 		uint8_t hdr_time2;		/**< Max exposure time for HDR series */
 		uint16_t hdr_shots;		/**< Number of shots per HDR series */
-		uint16_t trigger_delay;	/**< Trigger delay between shots in s * 0.01 */
+		uint16_t post_delay;	/**< Post delay between shots in s * 0.01 */
 	} shutter;
 	/* Single shot parameters */
 	struct {
@@ -59,18 +60,25 @@ struct param_data {
 extern struct param_data pd;
 
 /** Shutter time info */
-struct shutter_time {
+struct exposure_info {
 	const char *name;
 	const uint32_t us;
 };
 
-/** Shutter time infos */
-#define NUM_SHUTTER_TIMES	54
-extern struct shutter_time shutter_time[NUM_SHUTTER_TIMES];
+/** Exposure infos */
+#define NUM_EXPOSURE_INFOS	54
+extern struct exposure_info exposure_info[NUM_EXPOSURE_INFOS];
 
 /** Shutter modes */
-#define NUM_SHUTTER_MODES 	2
+#define NUM_SHUTTER_MODES 	4
 extern const char *shutter_mode[NUM_SHUTTER_MODES];
+
+enum shutter_mode {
+	SHUTTER_MODE_CAMERA,
+	SHUTTER_MODE_SHORT,
+	SHUTTER_MODE_LONG,
+	SHUTTER_MODE_HDR,
+};
 
 /** Parameter types */
 typedef enum {
