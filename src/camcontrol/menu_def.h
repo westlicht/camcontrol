@@ -39,6 +39,14 @@ static const struct menu_item page_servo_setup[] = {
     }
 };
 
+static const struct menu_item page_misc_setup[] = {
+    {
+        MENU_ITEM_PARAM("Backlight Time", &p_misc_backlight, CMD_NONE),
+    }, {
+        MENU_ITEM_LAST(),
+    }
+};
+
 static const struct menu_item page_shutter_setup[] = {
     {
         MENU_ITEM_PARAM("Mode", &p_shutter_mode, CMD_NONE),
@@ -127,6 +135,8 @@ static const struct menu_item page_main[] = {
         MENU_ITEM_SUB("Camera Setup", page_camera_setup),
     }, {
         MENU_ITEM_SUB("Servo Setup", page_servo_setup),
+    }, {
+        MENU_ITEM_SUB("Misc. Setup", page_misc_setup),
     }, {
         MENU_ITEM_SUB("Shutter Setup", page_shutter_setup),
     }, {
