@@ -139,9 +139,6 @@ static void print_overlap(const struct param *param, char *str, int len)
 
 
 
-
-
-
 // Parameter class and parameter definitions
 
 #define PARAM_CLASS(_name_, _typ_, _min_, _max_, _step_, _shift_step_, _print_) \

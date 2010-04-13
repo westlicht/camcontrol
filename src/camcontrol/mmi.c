@@ -329,6 +329,16 @@ static QState execute_cmd(struct mmi_ao *me, int cmd)
         vec2(&v, deg2rad(360.0), deg2rad(180.0));
         servo_move(&v);
         break;
+    case CMD_UPDATE_SERVO_MIN_X:
+        // TODO
+        //vec2(&v, 0, servo_ao.pos.y);
+        break;
+    case CMD_UPDATE_SERVO_MAX_X:
+        break;
+    case CMD_UPDATE_SERVO_MIN_Y:
+        break;
+    case CMD_UPDATE_SERVO_MAX_Y:
+        break;
     case CMD_UPDATE_CENTER:
         vec2(&v, deg2rad(pd.single.center_x), deg2rad(pd.single.center_y));
         servo_move(&v);

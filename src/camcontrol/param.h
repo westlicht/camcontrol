@@ -23,6 +23,13 @@ struct param_data {
         uint16_t sensor_height; /**< Sensor height (mm * 0.1) */
         uint16_t crop;          /**< Crop factor in 0.01 */
     } camera;
+    /* Servo parameters */
+    struct {
+        uint16_t min_x;
+        uint16_t max_x;
+        uint16_t min_y;
+        uint16_t max_y;
+    } servo;
     /* Shutter parameters */
     struct {
         uint8_t mode;           /**< Shutter mode */

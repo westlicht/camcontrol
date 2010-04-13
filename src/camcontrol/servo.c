@@ -15,16 +15,14 @@
 #include "camcontrol.h"
 #include "defines.h"
 #include "prog.h"
+#include "param.h"
 #include "debug.h"
 #include "utils.h"
 #include "servo.h"
 
-#define SERVO_RANGE_X   700     /**< Horizontal servo range */
-#define SERVO_RANGE_Y   600     /**< Vertical servo range */
-
 #define SERVO_CENTER    1500    /**< Servo center position */
-#define SERVO_ORIGIN_X  (SERVO_CENTER - (SERVO_RANGE_X >> 1))
-#define SERVO_ORIGIN_Y  (SERVO_CENTER - (SERVO_RANGE_Y >> 1))
+#define SERVO_RANGE     800     /**< Total servo range */
+#define SERVO_ORIGIN    (SERVO_CENTER - SERVO_RANGE)
 
 #define SERVO_VEL       30      /**< Servo velocity (0.1 steps per 20ms) */
 
@@ -202,6 +200,9 @@ static void compute_pos(vec2f_t *deg, vec2i_t *pos)
     v.y = deg->y / M_PI;
     v.x = CLAMP(v.x, 0.0, 1.0);
     v.y = CLAMP(v.y, 0.0, 1.0);
-    pos->x = (SERVO_ORIGIN_X + (v.x * SERVO_RANGE_X)) * 10;
-    pos->y = (SERVO_ORIGIN_Y + (v.y * SERVO_RANGE_Y)) * 10;
+
+    pos->x = (SERVO_ORIGIN + pd.servo.min_x +
+              (v.x * (pd.servo.max_x - pd.servo.min_x))) * 10;
+    pos->y = (SERVO_ORIGIN + pd.servo.min_y +
+              (v.y * (pd.servo.max_y - pd.servo.min_y))) * 10;
 }

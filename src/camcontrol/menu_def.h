@@ -25,6 +25,20 @@ static const struct menu_item page_camera_setup[] = {
     }
 };
 
+static const struct menu_item page_servo_setup[] = {
+    {
+        MENU_ITEM_PARAM("Horizontal Min", &p_servo_min_x, CMD_UPDATE_SERVO_MIN_X),
+    }, {
+        MENU_ITEM_PARAM("Horizontal Max", &p_servo_max_x, CMD_UPDATE_SERVO_MAX_X),
+    }, {
+        MENU_ITEM_PARAM("Vertical Min", &p_servo_min_y, CMD_UPDATE_SERVO_MIN_Y),
+    }, {
+        MENU_ITEM_PARAM("Vertical Max", &p_servo_max_y, CMD_UPDATE_SERVO_MAX_Y),
+    }, {
+        MENU_ITEM_LAST(),
+    }
+};
+
 static const struct menu_item page_shutter_setup[] = {
     {
         MENU_ITEM_PARAM("Mode", &p_shutter_mode, CMD_NONE),
@@ -111,6 +125,8 @@ static const struct menu_item page_test[] = {
 static const struct menu_item page_main[] = {
     {
         MENU_ITEM_SUB("Camera Setup", page_camera_setup),
+    }, {
+        MENU_ITEM_SUB("Servo Setup", page_servo_setup),
     }, {
         MENU_ITEM_SUB("Shutter Setup", page_shutter_setup),
     }, {

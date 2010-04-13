@@ -20,6 +20,11 @@ enum commands {
     CMD_SERVO_MIN,
     CMD_SERVO_CENTER,
     CMD_SERVO_MAX,
+    /* Servo setup commands */
+    CMD_UPDATE_SERVO_MIN_X,
+    CMD_UPDATE_SERVO_MAX_X,
+    CMD_UPDATE_SERVO_MIN_Y,
+    CMD_UPDATE_SERVO_MAX_Y,
     /* Parameter commands */
     CMD_UPDATE_CENTER,
     CMD_UPDATE_GIGA_START,
