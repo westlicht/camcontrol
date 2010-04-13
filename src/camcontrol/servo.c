@@ -29,6 +29,7 @@
 /** Servo active object structure */
 struct servo_ao {
     QActive super;
+    vec2f_t goal;
     vec2i_t pos;
     vec2i_t ofs;
 };
@@ -80,10 +81,8 @@ ISR(TIMER1_OVF_vect)
  */
 void servo_ctor(void)
 {
-    vec2f_t c;
-
-    vec2(&c, deg2rad(180.0), deg2rad(90.0));
-    compute_pos(&c, &servo_ao.pos);
+    vec2(&servo_ao.goal, deg2rad(180.0), deg2rad(90.0));
+    compute_pos(&servo_ao.goal, &servo_ao.pos);
     vec2(&servo_ao.ofs, 0, 0);
 
     // Setup PWM, Phase and Frequency correct, prescaler 8, enable OC1A and OC1B
@@ -114,13 +113,24 @@ void servo_move(vec2f_t *v)
     struct servo_ao *me = &servo_ao;
     vec2i_t new_pos;
 
+    servo_ao.goal = *v;
+
     TIMSK &= ~_BV(TOV1);
-    compute_pos(v, &new_pos);
+    compute_pos(&servo_ao.goal, &new_pos);
     me->ofs.x = new_pos.x - me->pos.x;
     me->ofs.y = new_pos.y - me->pos.y;
     TIMSK |= _BV(TOV1);
 
     QActive_post((QActive *) &servo_ao, SIG_SERVO_MOVE, 0);
+}
+
+/**
+ * Returns the current goal position of the servos.
+ * @param v Goal position in radians
+ */
+void servo_get_goal(vec2f_t *v)
+{
+    *v = servo_ao.goal;
 }
 
 /**

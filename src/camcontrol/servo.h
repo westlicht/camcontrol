@@ -14,5 +14,6 @@ extern struct servo_ao servo_ao;
 
 void servo_ctor(void);
 void servo_move(vec2f_t *v);
+void servo_get_goal(vec2f_t *v);
 
 #endif // __SERVO_H__
