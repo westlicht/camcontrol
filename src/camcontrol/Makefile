@@ -72,6 +72,7 @@ $(BINDIR)/$(APP_NAME).hex : $(BINDIR)/$(APP_NAME).elf
 	$(OBJCOPY) -j .text -j .data -O ihex $< $@
 
 $(BINDIR)/$(APP_NAME).elf : \
+	$(BINDIR)/backlight.o \
 	$(BINDIR)/bsp.o \
 	$(BINDIR)/debug.o \
 	$(BINDIR)/hd44780.o \
@@ -91,6 +92,7 @@ $(BINDIR)/$(APP_NAME).elf : \
 	$(LINK) $(LINKFLAGS) \
 	-o $(BINDIR)/$(APP_NAME).elf \
 	-Wl,-Map,$(BINDIR)/$(APP_NAME).map,--cref \
+	$(BINDIR)/backlight.o \
 	$(BINDIR)/bsp.o \
 	$(BINDIR)/debug.o \
 	$(BINDIR)/hd44780.o \
@@ -110,6 +112,9 @@ $(BINDIR)/$(APP_NAME).elf : \
 	-lm
 
 
+
+$(BINDIR)/backlight.o: $(BLDDIR)/backlight.c $(APP_DEP) $(QP_DEP)
+	$(CC) $(CCFLAGS) $(CCINC) $<
 
 $(BINDIR)/bsp.o: $(BLDDIR)/bsp.c $(APP_DEP) $(QP_DEP)
 	$(CC) $(CCFLAGS) $(CCINC) $<

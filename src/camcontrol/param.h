@@ -30,6 +30,10 @@ struct param_data {
         uint16_t min_y;
         uint16_t max_y;
     } servo;
+    /* Misc parameters */
+    struct {
+        uint16_t backlight;     /**< Backlight time in seconds */
+    } misc;
     /* Shutter parameters */
     struct {
         uint8_t mode;           /**< Shutter mode */

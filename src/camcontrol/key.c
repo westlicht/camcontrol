@@ -15,6 +15,7 @@
 #include "camcontrol.h"
 #include "debug.h"
 #include "mmi.h"
+#include "backlight.h"
 #include "key.h"
 
 #define NUM_KEYS        5
@@ -120,6 +121,7 @@ void key_scan(void)
 static void press(int index)
 {
     QActive_postISR((QActive *) &mmi_ao, SIG_KEY_PRESS, index);
+    QActive_postISR((QActive *) &backlight_ao, SIG_BACKLIGHT_ACTIVATE, 0);
 }
 
 /**
@@ -129,6 +131,7 @@ static void press(int index)
 static void release(int index)
 {
     QActive_postISR((QActive *) &mmi_ao, SIG_KEY_RELEASE, index);
+    QActive_postISR((QActive *) &backlight_ao, SIG_BACKLIGHT_ACTIVATE, 0);
 }
 
 /**
@@ -138,4 +141,5 @@ static void release(int index)
 static void encoder(int dir)
 {
     QActive_postISR((QActive *) &mmi_ao, SIG_ENCODER, dir);
+    QActive_postISR((QActive *) &backlight_ao, SIG_BACKLIGHT_ACTIVATE, 0);
 }

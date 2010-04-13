@@ -17,6 +17,7 @@
 #include "prog.h"
 #include "servo.h"
 #include "utils.h"
+#include "backlight.h"
 #include "mmi.h"
 
 /** MMI active object structure */
@@ -77,6 +78,7 @@ static QState mmi_hello(struct mmi_ao *me)
         // Print hello message
         lcd_write(0, 0, " CamControl 0.1", 0);
         lcd_write(0, 1, "----------------", 0);
+        QActive_post((QActive *) &backlight_ao, SIG_BACKLIGHT_ACTIVATE, 0);
         QActive_arm((QActive *) me, TIMEOUT_HELLO);
         return Q_HANDLED();
     case Q_EXIT_SIG:

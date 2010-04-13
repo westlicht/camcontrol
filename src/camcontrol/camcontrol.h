@@ -16,6 +16,7 @@ enum signals {                      /**< Description            Parameter       
     SIG_ENCODER,                    /**< Encoder turned         Direction       key         mmi         */
     SIG_MMI_CMD,                    /**< Executes a command     Command         mmi         mmi         */
     SIG_MMI_SHOW_MSG,               /**< Shows an info message  Timeout         mmi         mmi         */
+    SIG_BACKLIGHT_ACTIVATE,         /**< Activates backlight    -               mmi, key    backlight   */
     SIG_SERVO_MOVE,                 /**< Moves the servos into  -               mmi, prog   servo
                                          new position                                                   */
     SIG_SERVO_DONE,                 /**< Servo moved into new   -               servo       servo, prog

@@ -19,7 +19,7 @@
 #define QF_TIMEEVT_CTR_SIZE     2
 
 /* maximum # active objects--must match EXACTLY the QF_active[] definition  */
-#define QF_MAX_ACTIVE           4
+#define QF_MAX_ACTIVE           5
 
                                /* interrupt locking policy for IAR compiler */
 #define QF_INT_LOCK()           cli()

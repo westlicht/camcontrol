@@ -10,6 +10,7 @@ PARAM_CLASS(pc_focal_length, UINT16, 100, 5000, 1, 10, print_mm)
 PARAM_CLASS(pc_sensor_dim, UINT16, 100, 500, 1, 10, print_mm)
 PARAM_CLASS(pc_crop, UINT16, 100, 500, 1, 10, print_crop)
 PARAM_CLASS(pc_servo_range, UINT16, 0, 800, 1, 10, print_decimal)
+PARAM_CLASS(pc_backlight, UINT16, 10, 300, 1, 10, print_seconds)
 PARAM_CLASS(pc_deg_360, UINT16, 0, 360, 1, 10, print_deg)
 PARAM_CLASS(pc_deg_180, UINT16, 0, 180, 1, 10, print_deg)
 PARAM_CLASS(pc_shutter_mode, UINT8, 0, NUM_SHUTTER_MODES - 1, 1, 1, print_shutter_mode)
@@ -30,6 +31,9 @@ PARAM(p_servo_min_x, &pc_servo_range, &pd.servo.min_x, 50)
 PARAM(p_servo_max_x, &pc_servo_range, &pd.servo.max_x, 750)
 PARAM(p_servo_min_y, &pc_servo_range, &pd.servo.min_y, 100)
 PARAM(p_servo_max_y, &pc_servo_range, &pd.servo.max_x, 700)
+
+/* Misc parameters */
+PARAM(p_misc_backlight, &pc_backlight, &pd.misc.backlight, 15)
 
 /* Shutter parameters */
 PARAM(p_shutter_mode, &pc_shutter_mode, &pd.shutter.mode, 0)
