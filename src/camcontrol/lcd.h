@@ -14,7 +14,7 @@
 #ifndef __LCD_H__
 #define __LCD_H__
 
-#define LCD_FILL_BLANK	1
+#define LCD_FILL_BLANK  1
 
 void lcd_init(void);
 void lcd_clear(void);

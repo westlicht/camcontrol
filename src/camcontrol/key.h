@@ -10,17 +10,17 @@
 
 /* Keys */
 enum keys {
-	KEY_UP,
-	KEY_LEFT,
-	KEY_ENTER,
-	KEY_RIGHT,
-	KEY_DOWN,
+    KEY_UP,
+    KEY_LEFT,
+    KEY_ENTER,
+    KEY_RIGHT,
+    KEY_DOWN,
 };
 
 /* Encoder directions */
 enum enc_dirs {
-	ENC_UP,
-	ENC_DOWN,
+    ENC_UP,
+    ENC_DOWN,
 };
 
 void key_init(void);

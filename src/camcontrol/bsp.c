@@ -21,34 +21,34 @@
  */
 void bsp_init(void)
 {
-	// Input/Output Ports initialization
-	// Port A initialization
-	PORTA = 0x00;
-	DDRA = 0x40;
+    // Input/Output Ports initialization
+    // Port A initialization
+    PORTA = 0x00;
+    DDRA = 0x40;
 
-	// Port B initialization
-	PORTB = 0x00;
-	DDRB = 0x00;
+    // Port B initialization
+    PORTB = 0x00;
+    DDRB = 0x00;
 
-	// Port C initialization
-	PORTC = 0x00;
-	DDRC = 0xF7;
+    // Port C initialization
+    PORTC = 0x00;
+    DDRC = 0xF7;
 
-	// Port D initialization
-	PORTD = 0x00;
-	DDRD = 0x08;
+    // Port D initialization
+    PORTD = 0x00;
+    DDRD = 0x08;
 
-	// Port E initialization
-	PORTE = 0x00;
-	DDRE = 0x30;
+    // Port E initialization
+    PORTE = 0x00;
+    DDRE = 0x30;
 
-	// Port F initialization
-	PORTF = 0x00;
-	DDRF = 0x00;
+    // Port F initialization
+    PORTF = 0x00;
+    DDRF = 0x00;
 
-	// Port G initialization
-	PORTG = 0x00;
-	DDRG = 0x00;
+    // Port G initialization
+    PORTG = 0x00;
+    DDRG = 0x00;
 }
 
 /**
@@ -56,35 +56,35 @@ void bsp_init(void)
  */
 ISR(TIMER0_COMP_vect)
 {
-	static uint8_t counter;
+    static uint8_t counter;
 
-	key_scan();
-	if (++counter >= BSP_MS_PER_TICK) {
-		QF_tick();
-		counter = 0;
-	}
+    key_scan();
+    if (++counter >= BSP_MS_PER_TICK) {
+        QF_tick();
+        counter = 0;
+    }
 }
 
 void QF_onStartup(void)
 {
-	cli();
+    cli();
 
-	// Timer0 is used both for key scanning as well as system ticks
+    // Timer0 is used both for key scanning as well as system ticks
     // Set the output compare value (tick once per millisecond)
     OCR0  = ((F_CPU / 1024) / 1000 - 1);
-	// Set Timer0 in CTC mode, 1/1024 prescaler, start the timer ticking
-	TCCR0 = ((1 << WGM01) | (0 << WGM00) | (7 << CS00));
-	TIMSK |= _BV(OCIE0);
+    // Set Timer0 in CTC mode, 1/1024 prescaler, start the timer ticking
+    TCCR0 = ((1 << WGM01) | (0 << WGM00) | (7 << CS00));
+    TIMSK |= _BV(OCIE0);
 
-	sei();
+    sei();
 }
 
 void QF_onIdle(void)
 {
-	// Entered with interrupts LOCKED, see NOTE01
+    // Entered with interrupts LOCKED, see NOTE01
 
 #ifdef NDEBUG
-	SMCR = (0 << SM0) | (1 << SE);/*idle sleep mode, adjust to your project */
+    SMCR = (0 << SM0) | (1 << SE);/*idle sleep mode, adjust to your project */
 
       /* never separate the following two assembly instructions, see NOTE03 */
     __asm__ __volatile__ ("sei" "\n\t" :: );
@@ -98,7 +98,7 @@ void QF_onIdle(void)
 
 void Q_onAssert(char const Q_ROM * const Q_ROM_VAR file, int line)
 {
-	on_assert(file, line);
+    on_assert(file, line);
 }
 
 /*****************************************************************************

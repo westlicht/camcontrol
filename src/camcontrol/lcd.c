@@ -30,26 +30,26 @@
  */
 void lcd_init(void)
 {
-  hd44780_init();
+	hd44780_init();
 
-  /*
-   * Clear the display.
-   */
-  hd44780_outcmd(HD44780_CLR);
-  hd44780_wait_ready();
+	/*
+	 * Clear the display.
+	 */
+	hd44780_outcmd(HD44780_CLR);
+	hd44780_wait_ready();
 
-  /*
-   * Entry mode: auto-increment address counter, no display shift in
-   * effect.
-   */
-  hd44780_outcmd(HD44780_ENTMODE(1, 0));
-  hd44780_wait_ready();
+	/*
+	 * Entry mode: auto-increment address counter, no display shift in
+	 * effect.
+	 */
+	hd44780_outcmd(HD44780_ENTMODE(1, 0));
+	hd44780_wait_ready();
 
-  /*
-   * Enable display, deactivate cursor.
-   */
-  hd44780_outcmd(HD44780_DISPCTL(1, 0, 0));
-  hd44780_wait_ready();
+	/*
+	 * Enable display, deactivate cursor.
+	 */
+	hd44780_outcmd(HD44780_DISPCTL(1, 0, 0));
+	hd44780_wait_ready();
 }
 
 /**
@@ -57,10 +57,10 @@ void lcd_init(void)
  */
 void lcd_clear(void)
 {
-	hd44780_wait_ready();
-	hd44780_outcmd(HD44780_CLR);
-	hd44780_wait_ready();
-	hd44780_outcmd(HD44780_HOME);
+    hd44780_wait_ready();
+    hd44780_outcmd(HD44780_CLR);
+    hd44780_wait_ready();
+    hd44780_outcmd(HD44780_HOME);
 }
 
 /**
@@ -73,17 +73,17 @@ void lcd_clear(void)
  */
 void lcd_write(int x, int y, char *str, int flags)
 {
-	hd44780_wait_ready();
-	hd44780_outcmd(HD44780_DDADDR((y * 40 + x)));
-	while (*str != '\0' && x++ < 16) {
-		hd44780_wait_ready();
-		hd44780_outdata(*str++);
-	}
-	if (flags & LCD_FILL_BLANK)
-		while (x++ < 16) {
-			hd44780_wait_ready();
-			hd44780_outdata(' ');
-		}
+    hd44780_wait_ready();
+    hd44780_outcmd(HD44780_DDADDR((y * 40 + x)));
+    while (*str != '\0' && x++ < 16) {
+        hd44780_wait_ready();
+        hd44780_outdata(*str++);
+    }
+    if (flags & LCD_FILL_BLANK)
+        while (x++ < 16) {
+            hd44780_wait_ready();
+            hd44780_outdata(' ');
+        }
 }
 
 /**
@@ -94,8 +94,8 @@ void lcd_write(int x, int y, char *str, int flags)
  */
 void lcd_char(int x, int y, char c)
 {
-	hd44780_wait_ready();
-	hd44780_outcmd(HD44780_DDADDR((y * 40 + x)));
-	hd44780_wait_ready();
-	hd44780_outdata(c);
+    hd44780_wait_ready();
+    hd44780_outcmd(HD44780_DDADDR((y * 40 + x)));
+    hd44780_wait_ready();
+    hd44780_outdata(c);
 }

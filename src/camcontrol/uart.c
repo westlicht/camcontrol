@@ -25,18 +25,18 @@
  */
 void uart_init(void)
 {
-	UCSR1A = 0x00;
-	UCSR1B = (1 << RXEN1) | (1 << TXEN1);
-	UCSR1C = 0x06;
+    UCSR1A = 0x00;
+    UCSR1B = (1 << RXEN1) | (1 << TXEN1);
+    UCSR1C = 0x06;
 
 #define BAUD UART_BAUD
 #include <util/setbaud.h>
-	UBRR1H = UBRRH_VALUE;
-	UBRR1L = UBRRL_VALUE;
+    UBRR1H = UBRRH_VALUE;
+    UBRR1L = UBRRL_VALUE;
 #if USE_2X
-	UCSR1A |= (1 << U2X);
+    UCSR1A |= (1 << U2X);
 #else
-	UCSR1A &= ~(1 << U2X);
+    UCSR1A &= ~(1 << U2X);
 #endif
 }
 
@@ -46,12 +46,12 @@ void uart_init(void)
  */
 int uart_putchar(char c, FILE *stream)
 {
-	if (c == '\n')
-		uart_putchar('\r', stream);
-	loop_until_bit_is_set(UCSR1A, UDRE);
-	UDR1 = c;
+    if (c == '\n')
+        uart_putchar('\r', stream);
+    loop_until_bit_is_set(UCSR1A, UDRE);
+    UDR1 = c;
 
-	return 0;
+    return 0;
 }
 
 /*
@@ -98,80 +98,80 @@ uart_getchar(FILE *stream)
   if (rxp == 0)
     for (cp = b;;)
       {
-	loop_until_bit_is_set(UCSR1A, RXC);
-	if (UCSR1A & _BV(FE))
-	  return _FDEV_EOF;
-	if (UCSR1A & _BV(DOR))
-	  return _FDEV_ERR;
-	c = UDR1;
-	/* behaviour similar to Unix stty ICRNL */
-	if (c == '\r')
-	  c = '\n';
-	if (c == '\n')
-	  {
-	    *cp = c;
-	    uart_putchar(c, stream);
-	    rxp = b;
-	    break;
-	  }
-	else if (c == '\t')
-	  c = ' ';
+    loop_until_bit_is_set(UCSR1A, RXC);
+    if (UCSR1A & _BV(FE))
+      return _FDEV_EOF;
+    if (UCSR1A & _BV(DOR))
+      return _FDEV_ERR;
+    c = UDR1;
+    /* behaviour similar to Unix stty ICRNL */
+    if (c == '\r')
+      c = '\n';
+    if (c == '\n')
+      {
+        *cp = c;
+        uart_putchar(c, stream);
+        rxp = b;
+        break;
+      }
+    else if (c == '\t')
+      c = ' ';
 
-	if ((c >= (uint8_t)' ' && c <= (uint8_t)'\x7e') ||
-	    c >= (uint8_t)'\xa0')
-	  {
-	    if (cp == b + RX_BUFSIZE - 1)
-	      uart_putchar('\a', stream);
-	    else
-	      {
-		*cp++ = c;
-		uart_putchar(c, stream);
-	      }
-	    continue;
-	  }
+    if ((c >= (uint8_t)' ' && c <= (uint8_t)'\x7e') ||
+        c >= (uint8_t)'\xa0')
+      {
+        if (cp == b + RX_BUFSIZE - 1)
+          uart_putchar('\a', stream);
+        else
+          {
+        *cp++ = c;
+        uart_putchar(c, stream);
+          }
+        continue;
+      }
 
-	switch (c)
-	  {
-	  case 'c' & 0x1f:
-	    return -1;
+    switch (c)
+      {
+      case 'c' & 0x1f:
+        return -1;
 
-	  case '\b':
-	  case '\x7f':
-	    if (cp > b)
-	      {
-		uart_putchar('\b', stream);
-		uart_putchar(' ', stream);
-		uart_putchar('\b', stream);
-		cp--;
-	      }
-	    break;
+      case '\b':
+      case '\x7f':
+        if (cp > b)
+          {
+        uart_putchar('\b', stream);
+        uart_putchar(' ', stream);
+        uart_putchar('\b', stream);
+        cp--;
+          }
+        break;
 
-	  case 'r' & 0x1f:
-	    uart_putchar('\r', stream);
-	    for (cp2 = b; cp2 < cp; cp2++)
-	      uart_putchar(*cp2, stream);
-	    break;
+      case 'r' & 0x1f:
+        uart_putchar('\r', stream);
+        for (cp2 = b; cp2 < cp; cp2++)
+          uart_putchar(*cp2, stream);
+        break;
 
-	  case 'u' & 0x1f:
-	    while (cp > b)
-	      {
-		uart_putchar('\b', stream);
-		uart_putchar(' ', stream);
-		uart_putchar('\b', stream);
-		cp--;
-	      }
-	    break;
+      case 'u' & 0x1f:
+        while (cp > b)
+          {
+        uart_putchar('\b', stream);
+        uart_putchar(' ', stream);
+        uart_putchar('\b', stream);
+        cp--;
+          }
+        break;
 
-	  case 'w' & 0x1f:
-	    while (cp > b && cp[-1] != ' ')
-	      {
-		uart_putchar('\b', stream);
-		uart_putchar(' ', stream);
-		uart_putchar('\b', stream);
-		cp--;
-	      }
-	    break;
-	  }
+      case 'w' & 0x1f:
+        while (cp > b && cp[-1] != ' ')
+          {
+        uart_putchar('\b', stream);
+        uart_putchar(' ', stream);
+        uart_putchar('\b', stream);
+        cp--;
+          }
+        break;
+      }
       }
 
   c = *rxp++;

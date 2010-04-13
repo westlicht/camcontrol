@@ -26,11 +26,11 @@ static QEvent servo_queue[8];
 
 /* QF_active[] array defines all active object control blocks --------------*/
 QActiveCB const Q_ROM Q_ROM_VAR QF_active[] = {
-	{ (QActive *) 0,			(QEvent *) 0,	0						},
-	{ (QActive *) &mmi_ao,		mmi_queue,		Q_DIM(mmi_queue)		},
-	{ (QActive *) &prog_ao,		prog_queue,		Q_DIM(prog_queue)		},
-	{ (QActive *) &shutter_ao,	shutter_queue,	Q_DIM(shutter_queue)	},
-	{ (QActive *) &servo_ao,	servo_queue,	Q_DIM(servo_queue)	},
+    { (QActive *) 0,            (QEvent *) 0,   0                       },
+    { (QActive *) &mmi_ao,      mmi_queue,      Q_DIM(mmi_queue)        },
+    { (QActive *) &prog_ao,     prog_queue,     Q_DIM(prog_queue)       },
+    { (QActive *) &shutter_ao,  shutter_queue,  Q_DIM(shutter_queue)    },
+    { (QActive *) &servo_ao,    servo_queue,    Q_DIM(servo_queue)  	},
 };
 
 /* Make sure that the QF_active[] array matches QF_MAX_ACTIVE in qpn_port.h */
@@ -44,24 +44,24 @@ FILE uart_str = FDEV_SETUP_STREAM(uart_putchar, uart_getchar, _FDEV_SETUP_RW);
  */
 int main (void)
 {
-	cli();
+    cli();
 
-	bsp_init();
+    bsp_init();
 
-	lcd_init();
-	key_init();
-	uart_init();
+    lcd_init();
+    key_init();
+    uart_init();
 
-	stdout = &uart_str;
+    stdout = &uart_str;
 
-	printf("CamControl 0.1\n");
+    printf("CamControl 0.1\n");
 
-	param_init();
+    param_init();
 
-	mmi_ctor();
-	prog_ctor();
-	shutter_ctor();
-	servo_ctor();
+    mmi_ctor();
+    prog_ctor();
+    shutter_ctor();
+    servo_ctor();
 
-	QF_run();
+    QF_run();
 }

@@ -174,7 +174,7 @@ hd44780_init(void)
   HD44780_DDR = _BV(HD44780_RS) | _BV(HD44780_RW) | _BV(HD44780_E)
     | HD44780_DATABITS;
 
-  _delay_ms(110);		/* 40 ms needed for Vcc = 2.7 V */
+  _delay_ms(110);       /* 40 ms needed for Vcc = 2.7 V */
   hd44780_outnibble(HD44780_FNSET(1, 0, 0) >> 4, 0);
   _delay_ms(15);
   hd44780_outnibble(HD44780_FNSET(1, 0, 0) >> 4, 0);

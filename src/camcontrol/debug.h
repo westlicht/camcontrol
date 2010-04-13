@@ -16,8 +16,8 @@
 #define DEBUG
 
 /* Debug LED */
-#define DBG_LED_ON()	PORTA |= _BV(6)
-#define DBG_LED_OFF()	PORTA &= ~_BV(6)
+#define DBG_LED_ON()    PORTA |= _BV(6)
+#define DBG_LED_OFF()   PORTA &= ~_BV(6)
 
 /* Debug print */
 #ifdef DEBUG
@@ -29,11 +29,11 @@
 void on_assert(const char *filename, uint16_t line);
 
 /** Assertion macro */
-#define ASSERT(_expr_)							\
-	do {										\
-		if (!(_expr_)) {						\
-			on_assert(__FILE__, __LINE__);		\
-		}										\
-	} while(0)
+#define ASSERT(_expr_)                          \
+    do {                                        \
+        if (!(_expr_)) {                        \
+            on_assert(__FILE__, __LINE__);      \
+        }                                       \
+    } while(0)
 
 #endif // __DEBUG_H__
