@@ -35,8 +35,8 @@ struct param_data {
 	} shutter;
 	/* Single shot parameters */
 	struct {
-		uint16_t center_x;			/**< Horizontal center position (deg) */
-		uint16_t center_y;			/**< Vertical center position (deg) */
+		uint16_t center_x;		/**< Horizontal center position (deg) */
+		uint16_t center_y;		/**< Vertical center position (deg) */
 	} single;
 	/* Spherical pan parameters */
 	struct {
