@@ -91,7 +91,7 @@ static void print_decimal(const struct param *param, char *str, int len)
 static void print_seconds(const struct param *param, char *str, int len)
 {
     uint16_t *value = param->value;
-    snprintf(str, len, "%u s", *value);
+    snprintf(str, len, "%u sec", *value);
 }
 
 static void print_mm(const struct param *param, char *str, int len)

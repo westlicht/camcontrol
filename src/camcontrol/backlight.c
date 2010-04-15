@@ -33,11 +33,19 @@ static QState backlight_on(struct backlight_ao *me);
 /** Backlight active object */
 struct backlight_ao backlight_ao;
 
+
+#define BACKLIGHT_INIT()    DDRG |= _BV(0)
+#define BACKLIGHT_ON()      PORTG |= _BV(0)
+#define BACKLIGHT_OFF()     PORTG &= ~_BV(0)
+
+
 /**
  * Constructor.
  */
 void backlight_ctor(void)
 {
+    BACKLIGHT_INIT();
+
     QActive_ctor((QActive *) &backlight_ao, (QStateHandler) backlight_initial);
 }
 
@@ -56,10 +64,10 @@ static QState backlight_off(struct backlight_ao *me)
 {
     switch (Q_SIG(me)) {
     case Q_ENTRY_SIG:
-        DBG("disable backlight\n"); // TODO
+        BACKLIGHT_OFF();
         return Q_HANDLED();
     case Q_EXIT_SIG:
-        DBG("enable backlight\n"); // TODO
+        BACKLIGHT_ON();
         return Q_HANDLED();
     case SIG_BACKLIGHT_ACTIVATE:
         return Q_TRAN(backlight_on);
