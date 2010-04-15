@@ -63,6 +63,10 @@ enum timeouts {
 # define SHUTTER_OFF()  PORTB &= ~_BV(0)
 #endif
 
+#define AF_INIT()       DDRG |= _BV(1)
+#define AF_ON()         PORTG |= _BV(1)
+#define AF_OFF()        PORTG &= ~_BV(1)
+
 
 /**
  * Triggers the shutter.
