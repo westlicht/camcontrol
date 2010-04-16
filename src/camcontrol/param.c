@@ -80,8 +80,6 @@ const char *shutter_mode[NUM_SHUTTER_MODES] = {
     "HDR",
 };
 
-
-
 static void print_decimal(const struct param *param, char *str, int len)
 {
     uint16_t *value = param->value;
@@ -112,16 +110,22 @@ static void print_deg(const struct param *param, char *str, int len)
     snprintf(str, len, "%u deg", *value);
 }
 
+static void print_shutter_mode(const struct param *param, char *str, int len)
+{
+    uint8_t *value = param->value;
+    snprintf(str, len, "%s", shutter_mode[*value]);
+}
+
 static void print_exposure(const struct param *param, char *str, int len)
 {
     uint8_t *value = param->value;
     snprintf(str, len, "%s", exposure_info[*value].name);
 }
 
-static void print_shutter_mode(const struct param *param, char *str, int len)
+static void print_exposure_step(const struct param *param, char *str, int len)
 {
     uint8_t *value = param->value;
-    snprintf(str, len, "%s", shutter_mode[*value]);
+    snprintf(str, len, "%d.%d", *value / 4, *value % 4);
 }
 
 static void print_trigger_delay(const struct param *param, char *str, int len)

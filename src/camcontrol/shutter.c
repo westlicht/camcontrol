@@ -8,6 +8,7 @@
  * @author Simon Kallweit, simon@weirdsoft.ch
  */
 
+#include <math.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "qpn_port.h"
@@ -24,7 +25,7 @@
 /** Shutter active object structure */
 struct shutter_ao {
     QActive super;
-    int hdr_shot;
+    int hdr_index;
 };
 
 static QState shutter_initial(struct shutter_ao *me);
@@ -134,7 +135,7 @@ static QState shutter_idle(struct shutter_ao *me)
             shutter_trigger(200000);
             return Q_TRAN(shutter_post_delay);
         case SHUTTER_MODE_SHORT:
-            shutter_trigger(exposure_info[pd.shutter.time].us);
+            shutter_trigger(exposure_info[pd.shutter.exposure_short].us);
             return Q_TRAN(shutter_post_delay);
         case SHUTTER_MODE_LONG:
             return Q_TRAN(shutter_long);
@@ -154,7 +155,7 @@ static QState shutter_long(struct shutter_ao *me)
 {
     switch (Q_SIG(me)) {
     case Q_ENTRY_SIG:
-        QActive_arm((QActive *) me, TICKS(pd.shutter.long_time * 1000));
+        QActive_arm((QActive *) me, TICKS(pd.shutter.exposure_long * 1000));
         SHUTTER_ON();
         return Q_HANDLED();
     case Q_EXIT_SIG:
@@ -172,13 +173,12 @@ static QState shutter_long(struct shutter_ao *me)
 
 static QState shutter_hdr(struct shutter_ao *me)
 {
-    uint32_t min = exposure_info[pd.shutter.hdr_time1].us;
-    uint32_t max = exposure_info[pd.shutter.hdr_time2].us;
     uint32_t us;
 
     switch (Q_SIG(me)) {
     case Q_ENTRY_SIG:
-        me->hdr_shot = 0;
+        // Set initial index
+        me->hdr_index = -pd.shutter.hdr_steps_n;
         QActive_post((QActive *) me, SIG_SHUTTER_STEP, 0);
         return Q_HANDLED();
     case Q_EXIT_SIG:
@@ -190,10 +190,16 @@ static QState shutter_hdr(struct shutter_ao *me)
     case SIG_SHUTTER_STOP:
         return Q_TRAN(shutter_idle);
     case SIG_SHUTTER_STEP:
-        us = min + ((max - min) / (pd.shutter.hdr_shots - 1)) * me->hdr_shot;
+        if (me->hdr_index < 0) {
+            us = (uint32_t) ((float) pd.shutter.exposure_short * pow(2.0, -me->hdr_index / 4.0));
+        } else if (me->hdr_index > 0) {
+            us = (uint32_t) ((float) pd.shutter.exposure_short * pow(0.5, me->hdr_index / 4.0));
+        } else {
+            us = pd.shutter.exposure_short;
+        }
         shutter_trigger(us);
-        me->hdr_shot++;
-        if (me->hdr_shot < pd.shutter.hdr_shots) {
+        me->hdr_index++;
+        if (me->hdr_index <= pd.shutter.hdr_steps_p) {
             QActive_arm((QActive *) me, TICKS(pd.shutter.post_delay * 10));
             return Q_HANDLED();
         } else {

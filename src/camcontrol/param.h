@@ -37,11 +37,11 @@ struct param_data {
     /* Shutter parameters */
     struct {
         uint8_t mode;           /**< Shutter mode */
-        uint8_t time;           /**< Exposure time */
-        uint32_t long_time;     /**< Long exposure time */
-        uint8_t hdr_time1;      /**< Min exposure time for HDR series */
-        uint8_t hdr_time2;      /**< Max exposure time for HDR series */
-        uint16_t hdr_shots;     /**< Number of shots per HDR series */
+        uint8_t exposure_short; /**< Short exposure time */
+        uint32_t exposure_long; /**< Long exposure time */
+        uint8_t exposure_step;  /**< Exposure step */
+        uint8_t hdr_steps_n;    /**< Negative HDR steps */
+        uint8_t hdr_steps_p;    /**< Positive HDR steps */
         uint16_t post_delay;    /**< Post delay between shots in s * 0.01 */
     } shutter;
     /* Single shot parameters */

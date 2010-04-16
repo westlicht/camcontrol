@@ -51,15 +51,15 @@ static const struct menu_item page_shutter_setup[] = {
     {
         MENU_ITEM_PARAM("Mode", &p_shutter_mode, CMD_NONE),
     }, {
-        MENU_ITEM_PARAM("Short Exposure", &p_shutter_time, CMD_NONE),
+        MENU_ITEM_PARAM("Short Exposure", &p_exposure_short, CMD_NONE),
     }, {
-        MENU_ITEM_PARAM("Long Exposure", &p_shutter_long_time, CMD_NONE),
+        MENU_ITEM_PARAM("Long Exposure", &p_exposure_long, CMD_NONE),
     }, {
-        MENU_ITEM_PARAM("HDR Min Exposure", &p_hdr_time1, CMD_NONE),
+        MENU_ITEM_PARAM("Exposure Step", &p_exposure_step, CMD_NONE),
     }, {
-        MENU_ITEM_PARAM("HDR Max Exposure", &p_hdr_time2, CMD_NONE),
+        MENU_ITEM_PARAM("HDR Steps [-]", &p_hdr_steps_n, CMD_NONE),
     }, {
-        MENU_ITEM_PARAM("HDR Shots", &p_hdr_shots, CMD_NONE),
+        MENU_ITEM_PARAM("HDR Steps [+]", &p_hdr_steps_p, CMD_NONE),
     }, {
         MENU_ITEM_PARAM("Post Delay", &p_trigger_delay, CMD_NONE),
     }, {
