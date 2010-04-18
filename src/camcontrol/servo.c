@@ -22,7 +22,7 @@
 
 #define SERVO_CENTER    1500    /**< Servo center position */
 #define SERVO_RANGE     800     /**< Total servo range */
-#define SERVO_ORIGIN    (SERVO_CENTER - SERVO_RANGE)
+#define SERVO_ORIGIN    (SERVO_CENTER - SERVO_RANGE / 2)
 
 #define SERVO_VEL       30      /**< Servo velocity (0.1 steps per 20ms) */
 
