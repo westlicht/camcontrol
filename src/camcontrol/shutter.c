@@ -191,9 +191,11 @@ static QState shutter_hdr(struct shutter_ao *me)
         return Q_TRAN(shutter_idle);
     case SIG_SHUTTER_STEP:
         if (me->hdr_index < 0) {
-            us = (uint32_t) ((float) pd.shutter.exposure_short * pow(2.0, -me->hdr_index / 4.0));
+            us = (uint32_t) ((float) pd.shutter.exposure_short *
+                                     pow(2.0, -me->hdr_index / 4.0));
         } else if (me->hdr_index > 0) {
-            us = (uint32_t) ((float) pd.shutter.exposure_short * pow(0.5, me->hdr_index / 4.0));
+            us = (uint32_t) ((float) pd.shutter.exposure_short *
+                                     pow(0.5, me->hdr_index / 4.0));
         } else {
             us = pd.shutter.exposure_short;
         }
