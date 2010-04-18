@@ -31,7 +31,7 @@ PARAM(p_crop, &pc_crop, &pd.camera.crop, 100)
 PARAM(p_servo_min_x, &pc_servo_range, &pd.servo.min_x, 50)
 PARAM(p_servo_max_x, &pc_servo_range, &pd.servo.max_x, 750)
 PARAM(p_servo_min_y, &pc_servo_range, &pd.servo.min_y, 100)
-PARAM(p_servo_max_y, &pc_servo_range, &pd.servo.max_x, 700)
+PARAM(p_servo_max_y, &pc_servo_range, &pd.servo.max_y, 700)
 
 /* Misc parameters */
 PARAM(p_misc_backlight, &pc_backlight, &pd.misc.backlight, 15)
