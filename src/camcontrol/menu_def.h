@@ -151,6 +151,8 @@ static const struct menu_item page_main[] = {
     }, {
         MENU_ITEM_SUB("Setup", page_setup),
     }, {
+        MENU_ITEM_CMD("Shutdown", CMD_SHUTDOWN),
+    }, {
         MENU_ITEM_SUB("Test", page_test),
     }, {
         MENU_ITEM_LAST(),

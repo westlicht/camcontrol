@@ -363,6 +363,10 @@ static QState execute_cmd(struct mmi_ao *me, int cmd)
         vec2(&v, deg2rad(pd.giga.end_x), deg2rad(pd.giga.end_y));
         servo_move(&v);
         break;
+    case CMD_SHUTDOWN:
+        vec2(&v, deg2rad(180.0), deg2rad(180.0));
+        servo_move(&v);
+        break;
     }
 
     return Q_HANDLED();

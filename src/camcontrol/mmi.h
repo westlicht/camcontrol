@@ -29,6 +29,8 @@ enum commands {
     CMD_UPDATE_CENTER,
     CMD_UPDATE_GIGA_START,
     CMD_UPDATE_GIGA_END,
+    /* Misc commands */
+    CMD_SHUTDOWN,
 };
 
 extern struct mmi_ao mmi_ao;

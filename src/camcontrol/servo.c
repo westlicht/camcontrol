@@ -81,7 +81,7 @@ ISR(TIMER1_OVF_vect)
  */
 void servo_ctor(void)
 {
-    vec2(&servo_ao.goal, deg2rad(180.0), deg2rad(90.0));
+    vec2(&servo_ao.goal, deg2rad(180.0), deg2rad(180.0));
     compute_pos(&servo_ao.goal, &servo_ao.pos);
     vec2(&servo_ao.ofs, 0, 0);
 
